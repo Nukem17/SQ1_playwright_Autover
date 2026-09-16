@@ -1,8 +1,10 @@
 # SQ1 Playwright Autover
 
-Playwright-testproject met TypeScript. Gebruik Node.js 22 of nieuwer en npm.
+Playwright-testproject met TypeScript. Gebruik een actuele Node.js-versie uit de 22.x-, 24.x- of 26.x-reeks en npm.
 
 ## Installatie
+
+Voor Firefox-tests op een eigen computer zonder Docker: zie [README-oumaima.md](README-oumaima.md).
 
 Voer na het klonen van de repository deze ene opdrachtregel uit in de projectmap:
 

@@ -4,14 +4,14 @@ Met deze stappen kun je de Playwright-tests op je eigen computer in Firefox uitv
 
 ## 1. Controleer Node.js en npm
 
-Installeer Node.js 22 of nieuwer als dat nog niet aanwezig is. npm wordt daarbij meegeïnstalleerd. Controleer de installatie in een terminal:
+Installeer een actuele Node.js-versie uit de ondersteunde 22.x-, 24.x- of 26.x-reeks als dat nog niet aanwezig is. npm wordt daarbij meegeïnstalleerd. Controleer de installatie in een terminal:
 
 ```sh
 node --version
 npm --version
 ```
 
-Op Windows kun je **Opdrachtprompt (cmd)** gebruiken; op macOS en Linux een terminal. Je hebt internettoegang nodig om de pakketten en Firefox te downloaden.
+Op Windows kun je **Opdrachtprompt (cmd)** gebruiken; op macOS en Linux een terminal. Playwright ondersteunt Windows 11 of nieuwer, macOS 14 of nieuwer, en de genoemde versies van Debian en Ubuntu. Je hebt internettoegang nodig om de pakketten en Firefox te downloaden.
 
 ## 2. Installeer Playwright en Firefox
 
@@ -49,6 +49,6 @@ npx playwright test --project=firefox --headed
 
 Open na een testrun het HTML-rapport met `npx playwright show-report`.
 
-De map `test/` is momenteel leeg. De testopdracht meldt daarom dat er geen tests zijn gevonden totdat er testbestanden zijn toegevoegd.
+De map `test/` is momenteel leeg. Voor een echte websitetest is nog een `.spec.ts`-testbestand in die map nodig, plus toegang tot de website die je wilt testen. De testopdracht meldt tot die tijd dat er geen tests zijn gevonden. Hiervoor hoef je geen extra npm-pakketten te installeren.
 
-Meer informatie: [Playwright-browsers installeren](https://playwright.dev/docs/browsers) en [Playwright-projecten uitvoeren](https://playwright.dev/docs/test-projects).
+Meer informatie: [ondersteunde systemen](https://playwright.dev/docs/intro#system-requirements), [Playwright-browsers installeren](https://playwright.dev/docs/browsers) en [Playwright-projecten uitvoeren](https://playwright.dev/docs/test-projects).
