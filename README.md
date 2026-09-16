@@ -1,21 +1,21 @@
 # SQ1 Playwright Autover
 
-Playwright test project using TypeScript. Use Node.js 22 or newer and npm.
+Playwright-testproject met TypeScript. Gebruik Node.js 22 of nieuwer en npm.
 
-## Install
+## Installatie
 
-After cloning the repository, run this single command line from the project directory:
+Voer na het klonen van de repository deze ene opdrachtregel uit in de projectmap:
 
 ```sh
 npm ci && npx playwright install --with-deps
 ```
 
-`npm ci` installs the exact package versions recorded in `package-lock.json`. The Playwright command installs the Chromium, Firefox, and WebKit browsers and their system dependencies. On Linux, installing system dependencies may ask for administrator access.
+`npm ci` installeert de exacte pakketversies uit `package-lock.json`. De Playwright-opdracht installeert de browsers Chromium, Firefox en WebKit en de benodigde systeempakketten. Op Linux kan voor het installeren van systeempakketten om beheerdersrechten worden gevraagd.
 
-## Run tests
+## Tests uitvoeren
 
 ```sh
 npx playwright test
 ```
 
-The `test/` directory is currently empty, so no tests run until test files are added.
+De map `test/` is momenteel leeg. Er worden pas tests uitgevoerd wanneer daar testbestanden aan zijn toegevoegd.
