@@ -1,30 +1,19 @@
-# Firefox-tests lokaal uitvoeren — Oumaima
+# Playwright met Firefox lokaal gebruiken — Oumaima
 
-Deze handleiding is voor het uitvoeren van de Playwright-tests op je eigen computer, zonder Docker.
+Met deze stappen kun je de Playwright-tests op je eigen computer in Firefox uitvoeren. Docker is hiervoor niet nodig. Voer alle opdrachten uit in de projectmap, waar `package.json` staat.
 
-## 1. Benodigdheden
+## 1. Controleer Node.js en npm
 
-- Git om de repository te klonen.
-- Node.js 22 of nieuwer, inclusief npm. Controleer dit met `node --version` en `npm --version`.
-- Een door Playwright ondersteund besturingssysteem. Op Windows kun je de opdrachten hieronder uitvoeren in **Opdrachtprompt (cmd)**; op macOS of Linux in een terminal. Voor Linux werkt de automatische installatie van systeempakketten op ondersteunde distributies zoals Ubuntu en Debian. Op Fedora werkt die stap niet automatisch.
-- Internettoegang voor het downloaden van npm-pakketten en de Playwright-versie van Firefox.
-
-## 2. Repository klonen
-
-Voer deze opdrachten uit in de map waar je het project wilt bewaren:
+Installeer Node.js 22 of nieuwer als dat nog niet aanwezig is. npm wordt daarbij meegeïnstalleerd. Controleer de installatie in een terminal:
 
 ```sh
-git clone https://github.com/Nukem17/SQ1_playwright_Autover.git
-cd SQ1_playwright_Autover
+node --version
+npm --version
 ```
 
-Wil je de gezamenlijke werkbranch gebruiken, schakel dan over naar `test-zion`:
+Op Windows kun je **Opdrachtprompt (cmd)** gebruiken; op macOS en Linux een terminal. Je hebt internettoegang nodig om de pakketten en Firefox te downloaden.
 
-```sh
-git switch test-zion
-```
-
-## 3. Afhankelijkheden en Firefox installeren
+## 2. Installeer Playwright en Firefox
 
 Voer vanuit de projectmap deze ene opdrachtregel uit:
 
@@ -32,26 +21,34 @@ Voer vanuit de projectmap deze ene opdrachtregel uit:
 npm ci && npx playwright install --with-deps firefox
 ```
 
-`npm ci` installeert de pakketversies uit `package-lock.json`. De tweede opdracht installeert de Firefox-versie die bij Playwright hoort en, waar ondersteund, de benodigde systeempakketten. Op Linux kan om beheerdersrechten worden gevraagd. Je hoeft Firefox niet apart via een browserwebsite te installeren.
+`npm ci` installeert de exacte pakketversies uit `package-lock.json`. De tweede opdracht installeert de Firefox-versie die bij deze Playwright-versie hoort en, waar ondersteund, de benodigde systeempakketten. Een aparte installatie van Firefox is niet nodig.
 
-## 4. Tests uitvoeren
+Op Linux kan om beheerdersrechten worden gevraagd. De automatische installatie van systeempakketten is bedoeld voor door Playwright ondersteunde Linux-distributies, zoals Ubuntu en Debian; op Fedora werkt deze stap niet automatisch.
+
+## 3. Controleer of Firefox start
+
+Dit werkt ook zolang er nog geen testbestanden zijn:
+
+```sh
+node -e "require('@playwright/test').firefox.launch().then(browser => browser.close()).then(() => console.log('Firefox werkt')).catch(error => { console.error(error); process.exit(1); })"
+```
+
+Als je `Firefox werkt` ziet, kan Playwright Firefox starten.
+
+## 4. Voer de tests uit
 
 ```sh
 npx playwright test --project=firefox
 ```
 
-Wil je tijdens het testen het Firefox-venster zien, gebruik dan:
+Gebruik `--headed` als je het browservenster wilt zien:
 
 ```sh
 npx playwright test --project=firefox --headed
 ```
 
-Na een testrun kun je het HTML-rapport openen met:
+Open na een testrun het HTML-rapport met `npx playwright show-report`.
 
-```sh
-npx playwright show-report
-```
-
-De map `test/` bevat momenteel nog geen testbestanden. Zolang er geen tests aan de branch zijn toegevoegd, meldt Playwright dat er geen tests zijn gevonden. Haal nieuwe tests later op met `git pull` en voer de testopdracht opnieuw uit.
+De map `test/` is momenteel leeg. De testopdracht meldt daarom dat er geen tests zijn gevonden totdat er testbestanden zijn toegevoegd.
 
 Meer informatie: [Playwright-browsers installeren](https://playwright.dev/docs/browsers) en [Playwright-projecten uitvoeren](https://playwright.dev/docs/test-projects).
