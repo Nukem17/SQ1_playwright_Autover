@@ -1,38 +1,20 @@
-# SQ1 Playwright Autover
+# Lancyr autoverzekering — Playwright
 
-Playwright-testproject met TypeScript. Gebruik een actuele Node.js-versie uit de 22.x-, 24.x- of 26.x-reeks en npm.
+Dit project test de autoverzekeringsfunnel van Lancyr met Playwright en TypeScript. De hoofdtest draait in Chromium via Docker en stopt vóór **Sluit af**.
 
-## Installatie
+## Snel starten
 
-Voor Firefox-tests op een eigen computer zonder Docker: zie [README-oumaima.md](README-oumaima.md).
-
-Voer na het klonen van de repository deze ene opdrachtregel uit in de projectmap:
+Je hebt Node.js, npm en een werkende Docker Engine nodig. Open een terminal in deze projectmap en voer uit:
 
 ```sh
-npm ci && npx playwright install --with-deps
+npm run test:lancyr
 ```
 
-`npm ci` installeert de exacte pakketversies uit `package-lock.json`. De Playwright-opdracht installeert de browsers Chromium, Firefox en WebKit en de benodigde systeempakketten. Op Linux kan voor het installeren van systeempakketten om beheerdersrechten worden gevraagd.
+Dit commando bouwt de image en draait de tests. De uitslag verschijnt in de terminal. Elke run krijgt een eigen map onder `test-runs/` met een korte samenvatting, een HTML-rapport en eventuele screenshots en traces. Het overzicht met datum en tijd staat in [TESTRESULTATEN-lancyr.md](TESTRESULTATEN-lancyr.md).
 
-## Tests uitvoeren
+## Meer informatie
 
-```sh
-npx playwright test
-```
+- [Lancyr-test: controles, rapporten en Playwright-features](README-lancyr-test.md)
+- [Firefox lokaal zonder Docker installeren — Oumaima](README-oumaima.md)
 
-### Met Docker
-
-Met Docker zijn de browsers en systeempakketten al beschikbaar in de Playwright-image. Voer na het klonen van de repository in de projectmap uit:
-
-```sh
-docker build -t sq1-playwright .
-docker run --rm --init --ipc=host sq1-playwright
-```
-
-Voor alleen Chromium:
-
-```sh
-docker run --rm --init --ipc=host sq1-playwright npx playwright test --project=chromium
-```
-
-De map `test/` is momenteel leeg. Er worden pas tests uitgevoerd wanneer daar testbestanden aan zijn toegevoegd.
+Een fout en het bijbehorende screenshot op de echte Lancyr-site demonstreren? Gebruik `npm run test:screenshot-demo`. Die demo draait niet mee met `npm run test:lancyr`.

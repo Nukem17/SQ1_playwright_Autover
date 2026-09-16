@@ -1,54 +1,40 @@
-# Playwright met Firefox lokaal gebruiken — Oumaima
+# Playwright met Firefox zonder Docker — Oumaima
 
-Met deze stappen kun je de Playwright-tests op je eigen computer in Firefox uitvoeren. Docker is hiervoor niet nodig. Voer alle opdrachten uit in de projectmap, waar `package.json` staat.
+Je kunt de Lancyr-test lokaal in Firefox draaien. Docker of WSL is daarvoor niet nodig. Open een terminal in de projectmap, waar `package.json` staat.
 
-## 1. Controleer Node.js en npm
+## Eenmalig installeren
 
-Installeer een actuele Node.js-versie uit de ondersteunde 22.x-, 24.x- of 26.x-reeks als dat nog niet aanwezig is. npm wordt daarbij meegeïnstalleerd. Controleer de installatie in een terminal:
+Installeer Node.js met npm en controleer of beide werken:
 
 ```sh
 node --version
 npm --version
 ```
 
-Op Windows kun je **Opdrachtprompt (cmd)** gebruiken; op macOS en Linux een terminal. Playwright ondersteunt Windows 11 of nieuwer, macOS 14 of nieuwer, en de genoemde versies van Debian en Ubuntu. Je hebt internettoegang nodig om de pakketten en Firefox te downloaden.
-
-## 2. Installeer Playwright en Firefox
-
-Voer vanuit de projectmap deze ene opdrachtregel uit:
+Installeer daarna de projectpakketten en Playwrights Firefox:
 
 ```sh
-npm ci && npx playwright install --with-deps firefox
+npm ci
+npx playwright install --with-deps firefox
 ```
 
-`npm ci` installeert de exacte pakketversies uit `package-lock.json`. De tweede opdracht installeert de Firefox-versie die bij deze Playwright-versie hoort en, waar ondersteund, de benodigde systeempakketten. Een aparte installatie van Firefox is niet nodig.
+`npm ci` gebruikt de versies uit `package-lock.json`. Playwright downloadt zijn eigen Firefox; een losse Firefox-installatie is niet nodig. Op Linux kunnen beheerdersrechten nodig zijn voor systeempakketten.
 
-Op Linux kan om beheerdersrechten worden gevraagd. De automatische installatie van systeempakketten is bedoeld voor door Playwright ondersteunde Linux-distributies, zoals Ubuntu en Debian; op Fedora werkt deze stap niet automatisch.
+## De test draaien
 
-## 3. Controleer of Firefox start
+De volledige funneltest heeft een testkenteken nodig. In **PowerShell**:
 
-Dit werkt ook zolang er nog geen testbestanden zijn:
+```powershell
+$env:LANCYR_TEST_KENTEKEN = '88-LSV-7'
+npx playwright test test/lancyr-autoverzekering.spec.ts --project=firefox
+```
+
+Op **macOS of Linux**:
 
 ```sh
-node -e "require('@playwright/test').firefox.launch().then(browser => browser.close()).then(() => console.log('Firefox werkt')).catch(error => { console.error(error); process.exit(1); })"
+LANCYR_TEST_KENTEKEN=88-LSV-7 npx playwright test test/lancyr-autoverzekering.spec.ts --project=firefox
 ```
 
-Als je `Firefox werkt` ziet, kan Playwright Firefox starten.
+De uitslag staat in de terminal. Open het HTML-rapport met `npx playwright show-report`. Bij een fout staan screenshots en traces in `test-results/`.
 
-## 4. Voer de tests uit
-
-```sh
-npx playwright test --project=firefox
-```
-
-Gebruik `--headed` als je het browservenster wilt zien:
-
-```sh
-npx playwright test --project=firefox --headed
-```
-
-Open na een testrun het HTML-rapport met `npx playwright show-report`.
-
-De map `test/` is momenteel leeg. Voor een echte websitetest is nog een `.spec.ts`-testbestand in die map nodig, plus toegang tot de website die je wilt testen. De testopdracht meldt tot die tijd dat er geen tests zijn gevonden. Hiervoor hoef je geen extra npm-pakketten te installeren.
-
-Meer informatie: [ondersteunde systemen](https://playwright.dev/docs/intro#system-requirements), [Playwright-browsers installeren](https://playwright.dev/docs/browsers) en [Playwright-projecten uitvoeren](https://playwright.dev/docs/test-projects).
+De test stopt vóór **Sluit af**. Wat precies gecontroleerd wordt, staat in [README-lancyr-test.md](README-lancyr-test.md). De Lancyr-route is tot nu toe in Chromium via Docker geverifieerd; een Firefox-run kan verschillen laten zien die nog onderzocht moeten worden.

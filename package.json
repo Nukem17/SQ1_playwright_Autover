@@ -2,6 +2,10 @@
   "name": "sq1_playwright_autover",
   "version": "1.0.0",
   "license": "ISC",
+  "scripts": {
+    "test:lancyr": "bash scripts/run-lancyr-chromium.sh",
+    "test:screenshot-demo": "bash scripts/run-screenshot-demo.sh"
+  },
   "devDependencies": {
     "@playwright/test": "1.63.0",
     "@types/node": "26.5.1",
