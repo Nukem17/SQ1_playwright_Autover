@@ -37,4 +37,4 @@ LANCYR_TEST_KENTEKEN=88-LSV-7 npx playwright test test/lancyr-autoverzekering.sp
 
 De uitslag staat in de terminal. Open het HTML-rapport met `npx playwright show-report`. Bij een fout staan screenshots en traces in `test-results/`.
 
-De test stopt vóór **Sluit af**. Wat precies gecontroleerd wordt, staat in [README-lancyr-test.md](README-lancyr-test.md). De Lancyr-route is tot nu toe in Chromium via Docker geverifieerd; een Firefox-run kan verschillen laten zien die nog onderzocht moeten worden.
+De test stopt vóór **Sluit af**. Wat precies gecontroleerd wordt, staat in [README-lancyr-test.md](README-lancyr-test.md). De route is in Firefox binnen Docker getest; op een eigen computer kunnen browserinstellingen of systeemonderdelen verschillen.

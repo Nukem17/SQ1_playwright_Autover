@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+// Deze losse demo laat zien wat Playwright bewaart als een zichtbaarheidstest faalt.
+
 test('demo: maak een screenshot wanneer een controle faalt', async ({ page }) => {
   // Een gewone test-run slaat deze demonstratie over.
   test.skip(process.env.RUN_SCREENSHOT_DEMO !== '1', 'Alleen uitvoeren met npm run test:screenshot-demo');

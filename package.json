@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "ISC",
   "scripts": {
-    "test:lancyr": "bash scripts/run-lancyr-chromium.sh",
+    "test:lancyr": "bash scripts/run-lancyr-browsers.sh",
     "test:screenshot-demo": "bash scripts/run-screenshot-demo.sh"
   },
   "devDependencies": {

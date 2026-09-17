@@ -6,6 +6,12 @@ Voer `npm run test:lancyr` uit. Elke run krijgt een eigen map met een kort `SAME
 
 | Tijd (Amsterdam) | Uitslag | Lokale samenvatting | Opmerking |
 | --- | --- | --- | --- |
+| 17-09-2026, 13:20:32 – 17-09-2026, 13:21:16 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_13-20-32_oVK5tL/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
+| 17-09-2026, 13:07:05 – 17-09-2026, 13:07:55 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_13-07-05_7wHD2A/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
+| 17-09-2026, 12:52:07 – 17-09-2026, 12:52:52 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_12-52-07_68jB9P/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
+| 17-09-2026, 09:45:22 – 17-09-2026, 09:46:12 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_09-45-22_lYv4mf/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
+| 17-09-2026, 09:26:36 – 17-09-2026, 09:27:29 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_09-26-36_MPVdqb/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
+| 17-09-2026, 09:08:12 – 17-09-2026, 09:08:53 | 2 geslaagd, 1 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_09-08-12_w5r314/SAMENVATTING.md` | Bekijk de fout in het rapport en de trace. |
 | 16-09-2026, 15:39:57 – 16-09-2026, 15:40:27 | 3 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-16_15-39-57_fdSdVu/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
 | 16-09-2026, 15:21:41 – 16-09-2026, 15:22:12 | 3 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-16_15-21-41_Qk69t3/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
 | 16-09-2026, 15:07:25 – 16-09-2026, 15:07:57 | 3 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-16_15-07-25_47VO1u/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
@@ -13,7 +19,7 @@ Voer `npm run test:lancyr` uit. Elke run krijgt een eigen map met een kort `SAME
 ## Reikwijdte
 
 - Website: https://www.lancyr.nl/prive/autoverzekering/
-- Browser: Playwright Chromium, project `chromium`
+- Browsers voor nieuwe runs: Playwright Chromium en Firefox. Eerdere handmatige runs hieronder waren alleen in Chromium.
 - De geautomatiseerde route loopt van de homepage tot de winkelwagen met gekozen WA+ en a.s.r.-aanbod.
 - Een scherm voor gegevens van de verzekeringnemer verscheen in deze route niet vóór **Sluit af**.
 - Grens: nooit op **Sluit af** klikken. De test eindigt vóór het versturen van een aanvraag.
@@ -35,7 +41,7 @@ Na elke belangrijke overgang komt een zichtbaarheidscontrole. Een exacte premie 
 
 ## Uitvoeren
 
-In deze WSL-omgeving draait Chromium via Docker. Start en bewaar alles met één opdracht:
+In deze WSL-omgeving draaien Chromium en Firefox via Docker. Start en bewaar alles met één opdracht:
 
 ```sh
 npm run test:lancyr

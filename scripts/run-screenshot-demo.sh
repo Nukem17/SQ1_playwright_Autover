@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Net als de gewone runner: vanuit de projectmap bouwen en een eigen runmap maken.
 project_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$project_dir"
 docker build -t sq1-playwright .
@@ -9,7 +10,8 @@ mkdir -p test-runs
 run_dir="$(mktemp -d "$project_dir/test-runs/screenshot-demo_$(date +%Y-%m-%d_%H-%M-%S)_XXXXXX")"
 mkdir -p "$run_dir/html" "$run_dir/test-results"
 
-# De test hoort te falen; daarna controleren we of het screenshot echt bestaat.
+# De test hoort te falen. Door -v blijven screenshot en rapport buiten Docker staan.
+# Daarna controleren we of er ook echt een PNG is gemaakt.
 if docker run --rm --init --ipc=host --user "$(id -u):$(id -g)" \
   -e RUN_SCREENSHOT_DEMO=1 \
   -e PLAYWRIGHT_HTML_OPEN=never \

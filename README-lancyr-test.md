@@ -1,12 +1,12 @@
 # De Lancyr-test
 
-De code staat in [test/lancyr-autoverzekering.spec.ts](test/lancyr-autoverzekering.spec.ts). Je start de Chromium-test vanuit de projectmap met:
+De code staat in [test/lancyr-autoverzekering.spec.ts](test/lancyr-autoverzekering.spec.ts). Je start de tests in Chromium en Firefox vanuit de projectmap met:
 
 ```sh
 npm run test:lancyr
 ```
 
-Het script bouwt de Docker-image, start een tijdelijke container en toont de uitslag in de terminal. Je hoeft `docker run` niet zelf te typen. Standaard gebruikt de test kenteken `88-LSV-7`. Voor een ander goedgekeurd kenteken: `LANCYR_TEST_KENTEKEN=ANDER-KENTEKEN npm run test:lancyr`. Pas dan ook de verwachting `Toyota Prius` in de test aan.
+Het script bouwt de Docker-image, start een tijdelijke container en toont per browser de uitslag in de terminal. Je hoeft `docker run` niet zelf te typen. Standaard gebruikt de test kenteken `88-LSV-7`. Voor een ander goedgekeurd kenteken: `LANCYR_TEST_KENTEKEN=ANDER-KENTEKEN npm run test:lancyr`. Pas dan ook de verwachting `Toyota Prius` in de test aan.
 
 ## Wat is geslaagd?
 
@@ -14,11 +14,11 @@ De drie tests controleren het volgende:
 
 1. Op de autopagina zijn de titel, het verplichte kentekenveld en **Bereken Premie** zichtbaar.
 2. Een klik op **Bereken Premie** met een leeg kenteken laat je op de autopagina.
-3. De funnel loopt via het menu, kenteken, adres, persoonlijke situatie en rijgegevens naar **WA +**, een zichtbaar aanbod en de winkelwagen. De ingevulde waarden en tussenpagina's worden gecontroleerd. In de winkelwagen staan de twee optionele extra dekkingen uit.
+3. De funnel loopt via het menu, kenteken, adres, persoonlijke situatie en rijgegevens naar **WA +**, een zichtbaar aanbod en de winkelwagen. De ingevulde waarden en tussenpagina's worden gecontroleerd. Op de aanbodpagina blijven **WA +** en een positieve jaarpremie zichtbaar. In de winkelwagen staan de twee optionele extra dekkingen uit.
 
 Als een controle (`expect`) niet klopt of een stap niet binnen de wachttijd lukt, faalt de test. De test klikt **niet** op **Sluit af**, want dat kan een echte aanvraag starten. Vóór die knop verscheen in de onderzochte route geen apart formulier voor e-mail of telefoon.
 
-Dit is één functionele desktoproute. Mobiele weergave, visuele opmaak, laadsnelheid, de exacte premie en de naam van de verzekeraar worden niet als harde verwachting gecontroleerd. De ingangsdatum wordt automatisch de eerstvolgende 20 september.
+Dit is één functionele desktoproute per browser. Mobiele weergave, visuele opmaak, laadsnelheid, de exacte premie en de naam van de verzekeraar worden niet als harde verwachting gecontroleerd. De ingangsdatum wordt automatisch de eerstvolgende 20 september.
 
 ## Resultaten bekijken
 
