@@ -1,38 +1,38 @@
-# SQ1 Playwright Autover
+# Lancyr autoverzekering — Playwright
 
-Playwright-testproject met TypeScript. Gebruik een actuele Node.js-versie uit de 22.x-, 24.x- of 26.x-reeks en npm.
+Dit project test de autoverzekeringsfunnel van Lancyr met Playwright en TypeScript. De hoofdtest draait in Chromium en Firefox via Docker en stopt vóór **Sluit af**.
 
-## Installatie
+## Snel starten
 
-Voor Firefox-tests op een eigen computer zonder Docker: zie [README-oumaima.md](README-oumaima.md).
+Je hebt Node.js **24.21.0**, npm **11.19.0** en een werkende Docker Engine nodig. Met nvm kies je de vastgelegde Node-versie via `nvm install` en `nvm use` in deze projectmap. Nvm zelf is optioneel.
 
-Voer na het klonen van de repository deze ene opdrachtregel uit in de projectmap:
-
-```sh
-npm ci && npx playwright install --with-deps
-```
-
-`npm ci` installeert de exacte pakketversies uit `package-lock.json`. De Playwright-opdracht installeert de browsers Chromium, Firefox en WebKit en de benodigde systeempakketten. Op Linux kan voor het installeren van systeempakketten om beheerdersrechten worden gevraagd.
-
-## Tests uitvoeren
+Installeer lokaal de vastgelegde dependencies en controleer TypeScript:
 
 ```sh
-npx playwright test
+npm ci
+npm run typecheck
 ```
 
-### Met Docker
-
-Met Docker zijn de browsers en systeempakketten al beschikbaar in de Playwright-image. Voer na het klonen van de repository in de projectmap uit:
+Start daarna de tests:
 
 ```sh
-docker build -t sq1-playwright .
-docker run --rm --init --ipc=host sq1-playwright
+npm run test:lancyr
 ```
 
-Voor alleen Chromium:
+Dit commando bouwt de image en draait de tests. De uitslag verschijnt in de terminal. Elke run krijgt een eigen map onder `test-runs/` met een korte samenvatting, een HTML-rapport en eventuele screenshots en traces. Het overzicht met datum en tijd staat in [TESTRESULTATEN-lancyr.md](TESTRESULTATEN-lancyr.md).
 
-```sh
-docker run --rm --init --ipc=host sq1-playwright npx playwright test --project=chromium
-```
+## Versiebeheer van tooling
 
-De map `test/` is momenteel leeg. Er worden pas tests uitgevoerd wanneer daar testbestanden aan zijn toegevoegd.
+Node en npm zijn exact vastgelegd in `package.json`; `.npmrc` laat npm bij een afwijkende runtimeversie stoppen tijdens installatie. `.nvmrc` legt Node vast voor nvm. `packageManager` documenteert de npm-versie, maar installeert die niet automatisch.
+
+Directe dependencies staan met exacte versies in `package.json`; `package-lock.json` legt ook indirecte dependencies vast. Gebruik lokaal en in CI `npm ci`. De Dockerfile gebruikt images met vaste digests en controleert Node en npm tijdens de build. Playwright blijft op 1.63.0, passend bij de browserimage.
+
+Updates gebeuren bewust in een aparte branch bij beveiligingsproblemen, aflopende ondersteuning, relevante bugfixes of benodigde functionaliteit. Werk bij een runtime-update `.nvmrc`, `package.json`, het lockbestand en de Dockerfile samen bij. Controleer daarna een schone Docker-build, `npm run typecheck` en de tests in alle drie de browsers. Controleer ondersteuning en beveiligingsupdates periodiek; vastzetten vervangt onderhoud niet.
+
+## Meer informatie
+
+- [Lancyr-test: controles, rapporten en Playwright-features](README-lancyr-test.md)
+- [Firefox lokaal zonder Docker installeren — Oumaima](README-oumaima.md)
+- [Presentatiedocumentatie: ontwerp, Docker en Git](DOCUMENTATIE-PRESENTATIE.md)
+
+Een fout en het bijbehorende screenshot op de echte Lancyr-site demonstreren? Gebruik `npm run test:screenshot-demo`. Die demo draait niet mee met `npm run test:lancyr`.

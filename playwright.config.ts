@@ -1,4 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
+
+// Deze instellingen gelden voor alle .spec.ts-bestanden in test/.
 export default defineConfig({
   testDir: './test',
   fullyParallel: true,
@@ -7,9 +9,12 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    trace: 'on-first-retry',
+    // Bij een fout kunnen we terugkijken via een screenshot en een trace.
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
   },
   projects: [
+    // Eén testbestand kan zo in meerdere browsers draaien.
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
