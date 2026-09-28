@@ -6,6 +6,9 @@ Voer `npm run test:lancyr` uit. Elke run krijgt een eigen map met een kort `SAME
 
 | Tijd (Amsterdam) | Uitslag | Lokale samenvatting | Opmerking |
 | --- | --- | --- | --- |
+| 25-09-2026, 16:35:53 – 25-09-2026, 16:36:38 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-25_16-35-53_ljKCkl/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
+| 25-09-2026, 10:43:03 – 25-09-2026, 10:47:02 | 4 geslaagd, 2 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-25_10-43-03_NVK1fk/SAMENVATTING.md` | Bekijk de fout in het rapport en de trace. |
+| 25-09-2026, 09:11:48 – 25-09-2026, 09:12:45 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-25_09-11-48_45saQ5/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
 | 17-09-2026, 13:20:32 – 17-09-2026, 13:21:16 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_13-20-32_oVK5tL/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
 | 17-09-2026, 13:07:05 – 17-09-2026, 13:07:55 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_13-07-05_7wHD2A/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
 | 17-09-2026, 12:52:07 – 17-09-2026, 12:52:52 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-17_12-52-07_68jB9P/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
