@@ -1,0 +1,13 @@
+# De runner bouwt deze lokale basis eerst opnieuw vanuit de project-Dockerfile.
+FROM sq1-playwright:latest
+
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       novnc=1:1.3.0-2 \
+       websockify=0.10.0+dfsg1-5build2 \
+       x11vnc=0.9.16-10 \
+    && rm -rf /var/lib/apt/lists/*
+
+EXPOSE 6080
+ENTRYPOINT ["bash", "/app/scripts/start-viewer.sh"]

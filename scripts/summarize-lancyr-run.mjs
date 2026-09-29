@@ -1,8 +1,8 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 
-// Deze drie waarden geeft het shellscript mee na de Docker-run.
-const [runDirectory, startedAt, exitCode] = process.argv.slice(2);
+// Het shellscript geeft ook de browsermodus mee; oudere aanroepen blijven geldig.
+const [runDirectory, startedAt, exitCode, mode = 'headless'] = process.argv.slice(2);
 const reportFile = join(runDirectory, 'results.json');
 const overviewFile = 'TESTRESULTATEN-lancyr.md';
 const runName = basename(runDirectory);
@@ -48,6 +48,8 @@ const summary = [
   `# Lancyr-test — ${timestamp}`,
   '',
   `**Uitslag:** ${result}`,
+  '',
+  `**Browsermodus:** ${mode}`,
   '',
   `**Runmap:** \`test-runs/${runName}/\``,
   '',

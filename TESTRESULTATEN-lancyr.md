@@ -6,6 +6,8 @@ Voer `npm run test:lancyr` uit. Elke run krijgt een eigen map met een kort `SAME
 
 | Tijd (Amsterdam) | Uitslag | Lokale samenvatting | Opmerking |
 | --- | --- | --- | --- |
+| 29-09-2026, 12:16:31 – 29-09-2026, 12:17:22 | 3 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-29_12-16-31_visible_1AzRgE/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
+| 28-09-2026, 16:05:16 – 28-09-2026, 16:06:02 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-28_16-05-16_headed_vEmI51/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
 | 25-09-2026, 16:35:53 – 25-09-2026, 16:36:38 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-25_16-35-53_ljKCkl/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |
 | 25-09-2026, 10:43:03 – 25-09-2026, 10:47:02 | 4 geslaagd, 2 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-25_10-43-03_NVK1fk/SAMENVATTING.md` | Bekijk de fout in het rapport en de trace. |
 | 25-09-2026, 09:11:48 – 25-09-2026, 09:12:45 | 6 geslaagd, 0 gefaald, 0 instabiel, 0 overgeslagen | `test-runs/2026-09-25_09-11-48_45saQ5/SAMENVATTING.md` | Alle uitgevoerde controles geslaagd. |

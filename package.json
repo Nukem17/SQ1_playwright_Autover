@@ -10,6 +10,8 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test:lancyr": "bash scripts/run-lancyr-browsers.sh",
+    "test:lancyr:headed": "bash scripts/run-lancyr-browsers.sh headed",
+    "test:lancyr:visible": "bash scripts/run-lancyr-browsers.sh visible",
     "test:screenshot-demo": "bash scripts/run-screenshot-demo.sh"
   },
   "devDependencies": {
