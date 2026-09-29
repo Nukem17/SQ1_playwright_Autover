@@ -1,6 +1,6 @@
 # De Lancyr-test
 
-De code staat in [test/lancyr-autoverzekering.spec.ts](test/lancyr-autoverzekering.spec.ts). Je start de tests in Chromium en Firefox vanuit de projectmap met:
+De code staat in [test/lancyr-autoverzekering.spec.ts](test/lancyr-autoverzekering.spec.ts). Je start de tests in Chromium, Firefox en WebKit vanuit de projectmap met:
 
 ```sh
 npm run test:lancyr
