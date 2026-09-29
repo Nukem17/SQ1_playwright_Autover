@@ -49,7 +49,7 @@ echo "Run: ${run_dir#$project_dir/}"
 echo "Browsermodus: $mode"
 container_run_dir="/app/test-runs/$(basename "$run_dir")"
 
-# De runmap en het centrale overzicht zijn gekoppeld aan bestanden op de host.
+# De runmap is gekoppeld aan een map op de host.
 # --user voorkomt bestanden van root/nobody die je later niet kunt verwijderen.
 # De Playwright-commando's draaien IN de container, in alle drie de browsers.
 # Bewaar ook bij een mislukte test de exitcode, zodat de samenvatting nog wordt gemaakt.
@@ -59,7 +59,6 @@ docker run "${container_options[@]}" --rm --init --ipc=host --user "$(id -u):$(i
   -e "PLAYWRIGHT_HTML_OUTPUT_DIR=$container_run_dir/html" \
   -e "PLAYWRIGHT_JSON_OUTPUT_FILE=$container_run_dir/results.json" \
   -v "$run_dir:$container_run_dir" \
-  --mount "type=bind,source=$project_dir/TESTRESULTATEN-lancyr.md,target=/app/TESTRESULTATEN-lancyr.md" \
   "$image" bash scripts/run-and-summarize.sh "$container_run_dir" "$run_started" "$mode" \
   "${browser_command[@]}" test/lancyr-autoverzekering.spec.ts \
   --workers="$workers" \

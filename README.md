@@ -11,7 +11,7 @@ bash scripts/run-lancyr-browsers.sh          # headless
 bash scripts/run-lancyr-browsers.sh headed   # headed
 ```
 
-De runmap en `TESTRESULTATEN-lancyr.md` worden gekoppeld aan de container, zodat de rapporten op je computer blijven staan. `scripts/run-and-summarize.sh` maakt de samenvatting ook na een testfout en behoudt de test-exitcode. Als alleen de rapportverwerking faalt, eindigt de run eveneens met een fout. Als Docker zelf niet start, kan er geen samenvatting worden gemaakt.
+De runmap wordt gekoppeld aan de container, zodat de rapporten op je computer blijven staan. `scripts/run-and-summarize.sh` maakt de samenvatting ook na een testfout en behoudt de test-exitcode. Als alleen de rapportverwerking faalt, eindigt de run eveneens met een fout. Als Docker zelf niet start, kan er geen samenvatting worden gemaakt.
 
 Voor de npm-commando's en lokale typecontrole heb je Node.js **24.21.0** en npm **11.19.0** nodig. Met nvm kies je de vastgelegde Node-versie via `nvm install` en `nvm use` in deze projectmap. Nvm zelf is optioneel.
 
@@ -28,7 +28,7 @@ Start daarna de tests:
 npm run test:lancyr
 ```
 
-Dit commando bouwt de image en draait de tests. De uitslag verschijnt in de terminal. Elke run krijgt een eigen map onder `test-runs/` met een korte samenvatting, een HTML-rapport en eventuele screenshots en traces. Het overzicht met datum en tijd staat in [TESTRESULTATEN-lancyr.md](TESTRESULTATEN-lancyr.md).
+Dit commando bouwt de image en draait de tests. De uitslag verschijnt in de terminal. Elke run krijgt een eigen map onder `test-runs/` met een korte samenvatting, een HTML-rapport en eventuele screenshots en traces. Datum, tijd en uitslag staan in `SAMENVATTING.md` binnen de runmap.
 
 ## Headless en headed uitvoeren
 
