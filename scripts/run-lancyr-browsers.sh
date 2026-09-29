@@ -6,7 +6,7 @@ set -euo pipefail
 project_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$project_dir"
 
-# Beide modi gebruiken dezelfde tests, browsers en rapportage.
+# Alle modi gebruiken de browserprojecten uit playwright.config.ts.
 mode="${1:-headless}"
 if [[ $# -gt 1 || "$mode" != headless && "$mode" != headed && "$mode" != visible ]]; then
   echo 'Gebruik: bash scripts/run-lancyr-browsers.sh [headless|headed|visible]' >&2
@@ -14,7 +14,7 @@ if [[ $# -gt 1 || "$mode" != headless && "$mode" != headed && "$mode" != visible
 fi
 image=sq1-playwright
 container_options=()
-projects=(--project=chromium --project=firefox --workers=2)
+workers=2
 browser_command=(npx playwright test)
 if [[ "$mode" == visible ]]; then
   if [[ ! -t 0 || ! -t 1 ]]; then
@@ -23,7 +23,7 @@ if [[ "$mode" == visible ]]; then
   fi
   image=sq1-playwright-viewer
   container_options=(-it -p 127.0.0.1:6080:6080)
-  projects=(--project=chromium --workers=1)
+  workers=1
   browser_command=(npx playwright test --headed)
 fi
 if [[ "$mode" == headed ]]; then
@@ -49,9 +49,9 @@ echo "Run: ${run_dir#$project_dir/}"
 echo "Browsermodus: $mode"
 container_run_dir="/app/test-runs/$(basename "$run_dir")"
 
-# De runmap en het centrale overzicht zijn gekoppeld aan bestanden op de host.
+# De runmap is gekoppeld aan een map op de host.
 # --user voorkomt bestanden van root/nobody die je later niet kunt verwijderen.
-# De Playwright-commando's draaien IN de container, in beide browsers.
+# De Playwright-commando's draaien IN de container, in alle drie de browsers.
 # Bewaar ook bij een mislukte test de exitcode, zodat de samenvatting nog wordt gemaakt.
 docker run "${container_options[@]}" --rm --init --ipc=host --user "$(id -u):$(id -g)" \
   -e "LANCYR_TEST_KENTEKEN=$test_plate" \
@@ -59,8 +59,7 @@ docker run "${container_options[@]}" --rm --init --ipc=host --user "$(id -u):$(i
   -e "PLAYWRIGHT_HTML_OUTPUT_DIR=$container_run_dir/html" \
   -e "PLAYWRIGHT_JSON_OUTPUT_FILE=$container_run_dir/results.json" \
   -v "$run_dir:$container_run_dir" \
-  --mount "type=bind,source=$project_dir/TESTRESULTATEN-lancyr.md,target=/app/TESTRESULTATEN-lancyr.md" \
   "$image" bash scripts/run-and-summarize.sh "$container_run_dir" "$run_started" "$mode" \
   "${browser_command[@]}" test/lancyr-autoverzekering.spec.ts \
-  "${projects[@]}" \
+  --workers="$workers" \
   --output="$container_run_dir/test-results" --reporter=list,html,json

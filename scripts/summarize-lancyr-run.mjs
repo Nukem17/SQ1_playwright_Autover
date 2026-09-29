@@ -4,7 +4,6 @@ import { basename, join } from 'node:path';
 // Het shellscript geeft ook de browsermodus mee; oudere aanroepen blijven geldig.
 const [runDirectory, startedAt, exitCode, mode = 'headless'] = process.argv.slice(2);
 const reportFile = join(runDirectory, 'results.json');
-const overviewFile = 'TESTRESULTATEN-lancyr.md';
 const runName = basename(runDirectory);
 
 // Zet de UTC-tijd uit de run om naar een leesbare Nederlandse datum en tijd.
@@ -22,7 +21,6 @@ function allSpecs(suites) {
 const finishedAt = new Date().toISOString();
 const timestamp = `${amsterdamTime(startedAt)} – ${amsterdamTime(finishedAt)}`;
 let result = 'NIET UITGEVOERD';
-let detail = 'Geen JSON-resultaat; bekijk de terminaluitvoer.';
 let testLines = [];
 
 try {
@@ -30,7 +28,6 @@ try {
   const report = JSON.parse(readFileSync(reportFile, 'utf8'));
   const { expected, unexpected, flaky, skipped } = report.stats;
   result = `${expected} geslaagd, ${unexpected} gefaald, ${flaky} instabiel, ${skipped} overgeslagen`;
-  detail = unexpected || flaky ? 'Bekijk de fout in het rapport en de trace.' : 'Alle uitgevoerde controles geslaagd.';
   testLines = allSpecs(report.suites).map(spec => {
     const labels = { expected: 'GESLAAGD', unexpected: 'GEFAALD', flaky: 'INSTABIEL', skipped: 'OVERGESLAGEN' };
     const status = spec.tests.map(item => `${item.projectName}: ${labels[item.status] ?? item.status}`).join(', ');
@@ -60,15 +57,6 @@ const summary = [
   '',
 ].join('\n');
 writeFileSync(join(runDirectory, 'SAMENVATTING.md'), summary);
-
-const tableHeader = '| --- | --- | --- | --- |\n';
-const overview = readFileSync(overviewFile, 'utf8');
-const newRow = `| ${timestamp} | ${result} | \`test-runs/${runName}/SAMENVATTING.md\` | ${detail} |`;
-if (!overview.includes(tableHeader)) {
-  throw new Error(`Tabelkop ontbreekt in ${overviewFile}`);
-}
-// Zet de nieuwste run direct onder de tabelkop, dus boven oudere runs.
-writeFileSync(overviewFile, overview.replace(tableHeader, `${tableHeader}${newRow}\n`));
 
 console.log(`\nSamenvatting: test-runs/${runName}/SAMENVATTING.md`);
 console.log(`HTML-rapport: test-runs/${runName}/html/index.html`);

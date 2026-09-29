@@ -1,6 +1,6 @@
 # De Lancyr-test
 
-De code staat in [test/lancyr-autoverzekering.spec.ts](test/lancyr-autoverzekering.spec.ts). Je start de tests in Chromium en Firefox vanuit de projectmap met:
+De code staat in [test/lancyr-autoverzekering.spec.ts](test/lancyr-autoverzekering.spec.ts). Je start de tests in Chromium, Firefox en WebKit vanuit de projectmap met:
 
 ```sh
 npm run test:lancyr
@@ -31,7 +31,7 @@ Elke run blijft in een eigen map `test-runs/<datum-tijd>/` staan:
 | `results.json` | Ruwe testdata. |
 | `test-results/` | Screenshot en trace als een test faalt. |
 
-Het pad van de nieuwste map verschijnt aan het eind in de terminal. In [TESTRESULTATEN-lancyr.md](TESTRESULTATEN-lancyr.md) staat de nieuwste run bovenaan, met tijd in Amsterdam. De volledige runmappen zijn lokaal bewaard en worden niet naar Git gepusht; commit het resultatenoverzicht als collega's de korte uitslagen in Git moeten zien.
+Het pad van de nieuwste map verschijnt aan het eind in de terminal. Elke runmap bevat een eigen `SAMENVATTING.md` met de uitslag en tijd in Amsterdam. Runmappen worden lokaal bewaard en niet naar Git gepusht. Het oude bestand `TESTRESULTATEN-lancyr.md` wordt niet meer automatisch aangevuld.
 
 Wil je een HTML-rapport in je browser bekijken? Gebruik `npx playwright show-report test-runs/NAAM-VAN-RUNMAP/html`. Vervang `NAAM-VAN-RUNMAP` door de mapnaam die het script toont en open daarna het adres uit de terminal.
 
