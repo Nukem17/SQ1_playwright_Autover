@@ -74,6 +74,7 @@ Updates gebeuren bewust in een aparte branch bij beveiligingsproblemen, aflopend
 
 ## Meer informatie
 
+- [Aparte visuele referentietest en demonstratie met CSS-verschuiving](README-visual-test.md)
 - [Lancyr-test: controles, rapporten en Playwright-features](README-lancyr-test.md)
 - [Firefox lokaal zonder Docker installeren — Oumaima](README-oumaima.md)
 - [Presentatiedocumentatie: ontwerp, Docker en Git](DOCUMENTATIE-PRESENTATIE.md)

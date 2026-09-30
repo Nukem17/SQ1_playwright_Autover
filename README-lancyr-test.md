@@ -57,3 +57,14 @@ Deze [losse demo-test](test/screenshot-demo.spec.ts) opent de echte Lancyr-autop
 | `:visible` | Alleen de zichtbare aanbodknop kiezen; de site heeft ook verborgen opties in de HTML. |
 
 In [playwright.config.ts](playwright.config.ts) staat `screenshot: 'only-on-failure'` en `trace: 'retain-on-failure'`. Daarom verschijnen deze bestanden alleen na een fout. De test is TypeScript; `npx tsc --noEmit` controleert de types zonder bestanden te maken.
+
+## Een fouttrace van de volledige funnel demonstreren
+
+```bash
+bash scripts/run-lancyr-browsers.sh funnel-demo
+# Of: npm run test:lancyr:funnel-demo
+```
+
+Deze aparte demonstratierun gebruikt de bestaande funneltest in Chromium headless, met één worker en zonder retries. Na de zes gewone stappen, bij de winkelwagen, controleert een zevende stap bewust een verkeerde koptekst. De foutmelding vermeldt expliciet dat het een demonstratie is. Er wordt nooit op **Sluit af** geklikt. Zonder deze demonstratiemodus is de extra controle uitgeschakeld.
+
+De run hoort met foutcode 1 te eindigen. Open `test-runs/<datum-tijd>_funnel-demo_<code>/html/index.html` via Live Preview, selecteer de funneltest en open de trace. Je kunt de volledige uitvoering via acties en tijdlijn terugkijken. Controleer dat stap 7 de fout veroorzaakte: een eerdere storing op de live site is geen geslaagde demonstratie van de bedoelde eindcontrole. Screenshots, trace en samenvatting blijven in dezelfde runmap bewaard.

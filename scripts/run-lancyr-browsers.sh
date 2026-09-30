@@ -8,14 +8,22 @@ cd "$project_dir"
 
 # Alle modi gebruiken de browserprojecten uit playwright.config.ts.
 mode="${1:-headless}"
-if [[ $# -gt 1 || "$mode" != headless && "$mode" != headed && "$mode" != visible ]]; then
-  echo 'Gebruik: bash scripts/run-lancyr-browsers.sh [headless|headed|visible]' >&2
+if [[ $# -gt 1 || "$mode" != headless && "$mode" != headed && "$mode" != visible && "$mode" != funnel-demo ]]; then
+  echo 'Gebruik: bash scripts/run-lancyr-browsers.sh [headless|headed|visible|funnel-demo]' >&2
   exit 2
 fi
 image=sq1-playwright
 container_options=()
 workers=2
 browser_command=(npx playwright test)
+test_options=()
+funnel_demo=0
+if [[ "$mode" == funnel-demo ]]; then
+  funnel_demo=1
+  workers=1
+  test_options=(--project=chromium --grep 'doorloop de funnel tot vlak vóór Sluit af' --retries=0)
+  echo 'DEMO: de gewone funnel draait headless in Chromium en faalt bewust bij de winkelwagen.'
+fi
 if [[ "$mode" == visible ]]; then
   if [[ ! -t 0 || ! -t 1 ]]; then
     echo 'Visible vereist een interactieve terminal. Gebruik headed voor CI.' >&2
@@ -55,6 +63,7 @@ container_run_dir="/app/test-runs/$(basename "$run_dir")"
 # Bewaar ook bij een mislukte test de exitcode, zodat de samenvatting nog wordt gemaakt.
 docker run "${container_options[@]}" --rm --init --ipc=host --user "$(id -u):$(id -g)" \
   -e "LANCYR_TEST_KENTEKEN=$test_plate" \
+  -e "LANCYR_FUNNEL_DEMO=$funnel_demo" \
   -e PLAYWRIGHT_HTML_OPEN=never \
   -e "PLAYWRIGHT_HTML_OUTPUT_DIR=$container_run_dir/html" \
   -e "PLAYWRIGHT_JSON_OUTPUT_FILE=$container_run_dir/results.json" \
@@ -62,4 +71,5 @@ docker run "${container_options[@]}" --rm --init --ipc=host --user "$(id -u):$(i
   "$image" bash scripts/run-and-summarize.sh "$container_run_dir" "$run_started" "$mode" \
   "${browser_command[@]}" test/lancyr-autoverzekering.spec.ts \
   --workers="$workers" \
+  "${test_options[@]}" \
   --output="$container_run_dir/test-results" --reporter=list,html,json

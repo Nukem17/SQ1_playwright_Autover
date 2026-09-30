@@ -173,4 +173,12 @@ test('doorloop de funnel tot vlak vóór Sluit af', async ({ page }) => {
     await expect(page.getByText('Sluit af', { exact: true })).toBeVisible();
     // Niet aanklikken: Sluit af kan een echte aanvraag starten.
   });
+
+  if (process.env.LANCYR_FUNNEL_DEMO === '1') {
+    await test.step('7. DEMO — bewust verkeerde verwachting om de fouttrace te tonen', async () => {
+      await expect(page.getByRole('heading', { name: 'Jouw keuzes' }),
+        'DEMO: bewust verkeerde koptekst; dit is geen echte fout in de website',
+      ).toHaveText('DEMO — deze koptekst hoort niet in de winkelwagen', { timeout: 1000 });
+    });
+  }
 });

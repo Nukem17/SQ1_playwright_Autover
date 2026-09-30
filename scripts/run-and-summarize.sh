@@ -11,6 +11,9 @@ test_exit=0
 
 summary_exit=0
 node scripts/summarize-lancyr-run.mjs "$run_dir" "$run_started" "$test_exit" "$mode" || summary_exit=$?
+if [[ "$mode" == headless-visual-* ]]; then
+  node scripts/create-visual-overview.mjs "$run_dir" "$mode" || summary_exit=$?
+fi
 
 # Een rapportagefout mag een testfout niet maskeren of een groene run opleveren.
 if (( test_exit != 0 )); then

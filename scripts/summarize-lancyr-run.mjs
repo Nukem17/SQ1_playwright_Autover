@@ -53,6 +53,7 @@ const summary = [
   ...testLines,
   '',
   `**HTML-rapport:** \`html/index.html\``,
+  ...(mode.startsWith('headless-visual-') ? ['', '**Visueel overzicht:** [Zo hoort het / Actueel / Verschil](VISUEEL-OVERZICHT.html)'] : []),
   `**Screenshots en traces bij fouten:** \`test-results/\``,
   '',
 ].join('\n');
