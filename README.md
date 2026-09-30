@@ -38,7 +38,7 @@ Dit commando bouwt de image en draait de tests. De uitslag verschijnt in de term
 npm run test:lancyr:headed
 ```
 
-De browserselectie staat centraal in `playwright.config.ts`: alle drie de projecten worden in elke modus uitgevoerd. Beide commando's gebruiken `scripts/run-lancyr-browsers.sh` en dezelfde testcode in `test/`. Chromium, Firefox en WebKit draaien met twee workers, dezelfde testdata en dezelfde rapportage-instellingen. Headed gebruikt `xvfb-run -a` en `--headed` in Docker. Xvfb is al aanwezig in de Playwright-image; extra dependencies zijn niet nodig. Het browservenster draait op een virtueel scherm en verschijnt niet op je desktop.
+De browserselectie staat centraal in `playwright.config.ts`: alle drie de projecten worden in headless, headed en visible uitgevoerd. De aparte funnel-demo selecteert alleen Chromium. Beide commando's gebruiken `scripts/run-lancyr-browsers.sh` en dezelfde testcode in `test/`. Chromium, Firefox en WebKit draaien met twee workers, dezelfde testdata en dezelfde rapportage-instellingen. Headed gebruikt `xvfb-run -a` en `--headed` in Docker. Xvfb is al aanwezig in de Playwright-image; extra dependencies zijn niet nodig. Het browservenster draait op een virtueel scherm en verschijnt niet op je desktop.
 
 Uitvoer blijft onder `test-runs/`, met de modus in de mapnaam, bijvoorbeeld `2026-09-28_14-30-00_headed_XXXXXX/`. Elke run bevat `results.json`, `SAMENVATTING.md`, `html/` en `test-results/`. De samenvatting vermeldt de browsermodus. Bestaande runmappen blijven bruikbaar.
 
@@ -64,8 +64,6 @@ De drie extra pakketten zijn exact vastgelegd in de viewer-Dockerfile. Indirecte
 
 ## Versiebeheer van tooling
 
-
-
 Node en npm zijn exact vastgelegd in `package.json`; `.npmrc` laat npm bij een afwijkende runtimeversie stoppen tijdens installatie. `.nvmrc` legt Node vast voor nvm. `packageManager` documenteert de npm-versie, maar installeert die niet automatisch.
 
 Directe dependencies staan met exacte versies in `package.json`; `package-lock.json` legt ook indirecte dependencies vast. Gebruik lokaal en in CI `npm ci`. De Dockerfile gebruikt images met vaste digests en controleert Node en npm tijdens de build. Playwright blijft op 1.63.0, passend bij de browserimage.
@@ -74,8 +72,9 @@ Updates gebeuren bewust in een aparte branch bij beveiligingsproblemen, aflopend
 
 ## Meer informatie
 
+- [Onderzoek: visuele regressie als bouwsteen voor de centrale testsuite](ONDERZOEK-VISUELE-REGRESSIE.md)
+- [Aparte visuele referentietest en demonstratie met CSS-verschuiving](README-visual-test.md)
 - [Lancyr-test: controles, rapporten en Playwright-features](README-lancyr-test.md)
-- [Firefox lokaal zonder Docker installeren — Oumaima](README-oumaima.md)
 - [Presentatiedocumentatie: ontwerp, Docker en Git](DOCUMENTATIE-PRESENTATIE.md)
 
-Een fout en het bijbehorende screenshot op de echte Lancyr-site demonstreren? Gebruik `npm run test:screenshot-demo`. Die demo draait niet mee met `npm run test:lancyr`.
+Een fout met screenshot en trace van de volledige funnel demonstreren? Gebruik `bash scripts/run-lancyr-browsers.sh funnel-demo`. Deze aparte demonstratie draait headless in Chromium en faalt bewust bij de winkelwagen.
