@@ -28,26 +28,27 @@ INSERT INTO autoverzekering_scenarios VALUES (
   '["Schade Voor Inzittenden Basis","Rechtsbijstand Motorrijtuigen Basis"]'
 );
 
--- Vijf fictieve gebruikers voor de lokale proef. Adressen zijn verzonnen;
--- postcode/adrescombinaties en premieberekeningen zijn niet live gevalideerd.
+-- Vijf fictieve gebruikers met openbare OBA-adressen in Amsterdam.
+-- Geen werkelijke woonadressen van deze personen; niet in de live funnel gevalideerd.
+-- Bron: https://oba.nl/nl/locaties en OBA-locatiegegevens.
 INSERT INTO autoverzekering_scenarios VALUES
-  ('testgebruiker-anna', '88-LSV-7', 'Toyota Prius', '1234AB', '12', 'Voorbeeldstraat',
-   'Teststad', '1992-03-18', 'Nee', 'alleenstaande_zonder_kinderen', 'Ja',
+  ('testgebruiker-anna', '88-LSV-7', 'Toyota Prius', '1011DL', '143', 'Oosterdokskade',
+   'Amsterdam', '1992-03-18', 'Nee', 'alleenstaande_zonder_kinderen', 'Ja',
    'Ikzelf', '8', '20000', 9, 20, 'bc', 'WA +', 'WA+',
    '["Schade Voor Inzittenden Basis","Rechtsbijstand Motorrijtuigen Basis"]'),
-  ('testgebruiker-bram', '88-LSV-7', 'Toyota Prius', '2345CD', '34', 'Demolaan',
-   'Proefdorp', '1985-07-09', 'Ja', 'alleenstaande_zonder_kinderen', 'Ja',
+  ('testgebruiker-bram', '88-LSV-7', 'Toyota Prius', '1071TT', '430', 'Roelof Hartplein',
+   'Amsterdam', '1985-07-09', 'Ja', 'alleenstaande_zonder_kinderen', 'Ja',
    'Ikzelf', '12', '20000', 9, 20, 'bc', 'WA +', 'WA+',
    '["Schade Voor Inzittenden Basis","Rechtsbijstand Motorrijtuigen Basis"]'),
-  ('testgebruiker-celine', '88-LSV-7', 'Toyota Prius', '3456EF', '56', 'Testplein',
-   'Voorbeeldstad', '1998-11-24', 'Nee', 'alleenstaande_zonder_kinderen', 'Ja',
+  ('testgebruiker-celine', '88-LSV-7', 'Toyota Prius', '1094HW', '2', 'Javaplein',
+   'Amsterdam', '1998-11-24', 'Nee', 'alleenstaande_zonder_kinderen', 'Ja',
    'Ikzelf', '4', '20000', 9, 20, 'bc', 'WA +', 'WA+',
    '["Schade Voor Inzittenden Basis","Rechtsbijstand Motorrijtuigen Basis"]'),
-  ('testgebruiker-daan', '88-LSV-7', 'Toyota Prius', '4567GH', '78', 'Proefweg',
-   'Demodorp', '1976-01-30', 'Ja', 'alleenstaande_zonder_kinderen', 'Ja',
+  ('testgebruiker-daan', '88-LSV-7', 'Toyota Prius', '1068EL', '16', 'Osdorpplein',
+   'Amsterdam', '1976-01-30', 'Ja', 'alleenstaande_zonder_kinderen', 'Ja',
    'Ikzelf', '20', '20000', 9, 20, 'bc', 'WA +', 'WA+',
    '["Schade Voor Inzittenden Basis","Rechtsbijstand Motorrijtuigen Basis"]'),
-  ('testgebruiker-emma', '88-LSV-7', 'Toyota Prius', '5678JK', '90', 'Oefenlaan',
-   'Testdam', '2001-06-12', 'Nee', 'alleenstaande_zonder_kinderen', 'Ja',
+  ('testgebruiker-emma', '88-LSV-7', 'Toyota Prius', '1024NB', '302', 'Waterlandplein',
+   'Amsterdam', '2001-06-12', 'Nee', 'alleenstaande_zonder_kinderen', 'Ja',
    'Ikzelf', '2', '20000', 9, 20, 'bc', 'WA +', 'WA+',
    '["Schade Voor Inzittenden Basis","Rechtsbijstand Motorrijtuigen Basis"]');
