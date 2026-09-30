@@ -31,17 +31,9 @@ Elke run blijft in een eigen map `test-runs/<datum-tijd>/` staan:
 | `results.json` | Ruwe testdata. |
 | `test-results/` | Screenshot en trace als een test faalt. |
 
-Het pad van de nieuwste map verschijnt aan het eind in de terminal. Elke runmap bevat een eigen `SAMENVATTING.md` met de uitslag en tijd in Amsterdam. Runmappen worden lokaal bewaard en niet naar Git gepusht. Het oude bestand `TESTRESULTATEN-lancyr.md` wordt niet meer automatisch aangevuld.
+Het pad van de nieuwste map verschijnt aan het eind in de terminal. Elke runmap bevat een eigen `SAMENVATTING.md` met de uitslag en tijd in Amsterdam. Runmappen worden lokaal bewaard en niet naar Git gepusht. Er is geen centraal resultatenlogboek.
 
 Wil je een HTML-rapport in je browser bekijken? Gebruik `npx playwright show-report test-runs/NAAM-VAN-RUNMAP/html`. Vervang `NAAM-VAN-RUNMAP` door de mapnaam die het script toont en open daarna het adres uit de terminal.
-
-## Screenshot bij een fout zien
-
-```sh
-npm run test:screenshot-demo
-```
-
-Deze [losse demo-test](test/screenshot-demo.spec.ts) opent de echte Lancyr-autopagina en zoekt bewust naar een kop die daar nog niet staat. Hij faalt expres. Het script toont daarna het pad naar het screenshot en rapport in een eigen map `test-runs/screenshot-demo_<datum-tijd>/`.
 
 ## Playwright in deze code
 
@@ -68,3 +60,15 @@ bash scripts/run-lancyr-browsers.sh funnel-demo
 Deze aparte demonstratierun gebruikt de bestaande funneltest in Chromium headless, met één worker en zonder retries. Na de zes gewone stappen, bij de winkelwagen, controleert een zevende stap bewust een verkeerde koptekst. De foutmelding vermeldt expliciet dat het een demonstratie is. Er wordt nooit op **Sluit af** geklikt. Zonder deze demonstratiemodus is de extra controle uitgeschakeld.
 
 De run hoort met foutcode 1 te eindigen. Open `test-runs/<datum-tijd>_funnel-demo_<code>/html/index.html` via Live Preview, selecteer de funneltest en open de trace. Je kunt de volledige uitvoering via acties en tijdlijn terugkijken. Controleer dat stap 7 de fout veroorzaakte: een eerdere storing op de live site is geen geslaagde demonstratie van de bedoelde eindcontrole. Screenshots, trace en samenvatting blijven in dezelfde runmap bewaard.
+
+## Reikwijdte en mogelijke vervolgstappen
+
+De test bezoekt de live website https://www.lancyr.nl/prive/autoverzekering/. Een exacte premie of verzekeraar is geen vaste verwachting; tijdens een eerdere onderzochte run was het aanbod van a.s.r. Als de route vóór **Sluit af** later extra gegevens van de verzekeringnemer vraagt, breid de test dan eerst uit met goedgekeurde testgegevens.
+
+| Mogelijk vervolg | Benodigd / verwachte controle |
+| --- | --- |
+| Ongeldig kenteken | Afgesproken ongeldige invoer; duidelijke validatie en niet doorgaan. |
+| Andere voertuigen en dekkingen | Goedgekeurde gegevens; passende voertuigverwachtingen en consistente dekking. |
+| Aanvraag afronden | Expliciete toestemming en een veilige testomgeving; valt buiten deze live proef. |
+
+De visuele opmaak van het startscherm wordt apart gecontroleerd in de [visuele proef](README-visual-test.md).

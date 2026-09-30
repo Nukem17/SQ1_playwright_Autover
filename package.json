@@ -13,7 +13,6 @@
     "test:lancyr:headed": "bash scripts/run-lancyr-browsers.sh headed",
     "test:lancyr:visible": "bash scripts/run-lancyr-browsers.sh visible",
     "test:lancyr:funnel-demo": "bash scripts/run-lancyr-browsers.sh funnel-demo",
-    "test:screenshot-demo": "bash scripts/run-screenshot-demo.sh",
     "test:visual": "bash scripts/run-lancyr-visual.sh",
     "test:visual:reference": "bash scripts/run-lancyr-visual.sh reference",
     "test:visual:demo": "bash scripts/run-lancyr-visual.sh demo"
