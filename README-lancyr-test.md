@@ -6,7 +6,7 @@ De code staat in [test/lancyr-autoverzekering.spec.ts](test/lancyr-autoverzekeri
 npm run test:lancyr
 ```
 
-Het script bouwt de Docker-image, start een tijdelijke container en toont per browser de uitslag in de terminal. Je hoeft `docker run` niet zelf te typen. Standaard gebruikt de test kenteken `88-LSV-7`. Voor een ander goedgekeurd kenteken: `LANCYR_TEST_KENTEKEN=ANDER-KENTEKEN npm run test:lancyr`. Pas dan ook de verwachting `Toyota Prius` in de test aan.
+Het script bouwt de Docker-image en initialiseert zo nodig SQLite. De lange funnel haalt zijn gegevens op uit scenario `standaard`. Met `bash scripts/run-lancyr-browsers.sh headless standaard` kies je expliciet een scenario. Invoer en bijbehorende verwachtingen staan in de database; zie [Testdata uit SQLite](README-testdata.md).
 
 ## Wat is geslaagd?
 
@@ -45,7 +45,7 @@ Wil je een HTML-rapport in je browser bekijken? Gebruik `npx playwright show-rep
 | `getByRole`, `getByText`, `locator` | Onderdelen van de pagina vinden. |
 | `expect(...).toBeVisible()` | Controleren of iets zichtbaar is. |
 | `toHaveValue`, `toBeChecked`, `toHaveURL`, `toHaveText`, `toHaveCount`, `toContainText` | Waarden, keuzes, pagina's en aantallen controleren. |
-| `test.setTimeout`, `test.skip` | Meer tijd geven aan de lange funnel en die overslaan zonder kenteken. |
+| `test.setTimeout`, `test.skip` | Meer tijd geven aan de lange funnel. |
 | `:visible` | Alleen de zichtbare aanbodknop kiezen; de site heeft ook verborgen opties in de HTML. |
 
 In [playwright.config.ts](playwright.config.ts) staat `screenshot: 'only-on-failure'` en `trace: 'retain-on-failure'`. Daarom verschijnen deze bestanden alleen na een fout. De test is TypeScript; `npx tsc --noEmit` controleert de types zonder bestanden te maken.

@@ -72,6 +72,8 @@ Updates gebeuren bewust in een aparte branch bij beveiligingsproblemen, aflopend
 
 ## Meer informatie
 
+- [Testdata uit SQLite: scenarioselectie en demonstratie](README-testdata.md)
+
 - [Onderzoek: visuele regressie als bouwsteen voor de centrale testsuite](ONDERZOEK-VISUELE-REGRESSIE.md)
 - [Aparte visuele referentietest en demonstratie met CSS-verschuiving](README-visual-test.md)
 - [Lancyr-test: controles, rapporten en Playwright-features](README-lancyr-test.md)

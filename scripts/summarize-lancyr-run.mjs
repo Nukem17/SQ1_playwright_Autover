@@ -22,11 +22,17 @@ const finishedAt = new Date().toISOString();
 const timestamp = `${amsterdamTime(startedAt)} – ${amsterdamTime(finishedAt)}`;
 let result = 'NIET UITGEVOERD';
 let testLines = [];
+let scenarioLines = [];
 
 try {
   // De JSON-reporter levert aantallen en de uitslag per browser.
   const report = JSON.parse(readFileSync(reportFile, 'utf8'));
   const { expected, unexpected, flaky, skipped } = report.stats;
+  const scenarios = new Set(allSpecs(report.suites).flatMap(spec =>
+    spec.tests.flatMap(item => (item.annotations ?? [])
+      .filter(annotation => annotation.type === 'Testdata')
+      .map(annotation => annotation.description))));
+  scenarioLines = [...scenarios].map(scenario => `**Testdata:** ${scenario}`);
   result = `${expected} geslaagd, ${unexpected} gefaald, ${flaky} instabiel, ${skipped} overgeslagen`;
   testLines = allSpecs(report.suites).map(spec => {
     const labels = { expected: 'GESLAAGD', unexpected: 'GEFAALD', flaky: 'INSTABIEL', skipped: 'OVERGESLAGEN' };
@@ -51,6 +57,7 @@ const summary = [
   `**Runmap:** \`test-runs/${runName}/\``,
   '',
   ...testLines,
+  ...scenarioLines,
   '',
   `**HTML-rapport:** \`html/index.html\``,
   ...(mode.startsWith('headless-visual-') ? ['', '**Visueel overzicht:** [Zo hoort het / Actueel / Verschil](VISUEEL-OVERZICHT.html)'] : []),

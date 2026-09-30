@@ -61,11 +61,11 @@ De lange klantreis heeft zes benoemde stappen:
 5. WA + kiezen, geselecteerde dekking en een positieve premie controleren, aanbod kiezen.
 6. Winkelwagen controleren: extra opties uit, WA+ en **Sluit af** zichtbaar. Daar stopt de gewone test.
 
-Het testkenteken en de voertuigverwachting zijn specifiek voor deze proef. De datum schuift naar de eerstvolgende 20 september. Een exacte premie of verzekeraar is geen vaste verwachting.
+Het testkenteken en de voertuigverwachting worden samen met de overige scenariogegevens uit SQLite opgehaald. De datum schuift naar de eerstvolgende 20 september. Een exacte premie of verzekeraar is geen vaste verwachting.
 
 **Vertel dit:** “Een klik is geen bewijs dat iets werkt. Daarom controleren we ook de volgende pagina en de ingevulde waarden.”
 
-`getByRole`, `getByText` en `locator` vinden elementen. `fill`, `click`, `check` en `selectOption` bedienen de site. `expect` controleert het resultaat. `test.step` groepeert de klantreis in het rapport. De helpers `sluitCookieMelding`, `vulVeld` en `ingangsdatum` voorkomen herhaling. Zonder kenteken slaat de lange test over; de runner geeft standaard het afgesproken testkenteken door.
+`getByRole`, `getByText` en `locator` vinden elementen. `fill`, `click`, `check` en `selectOption` bedienen de site. `expect` controleert het resultaat. `test.step` groepeert de klantreis in het rapport. De helpers `sluitCookieMelding`, `vulVeld` en `bepaalIngangsdatum` voorkomen herhaling. De runner valideert het database-scenario vooraf; de funneltest haalt dit op via SQL en bewaart de gebruikte waarden als rapportbijlage. Zie [Testdata uit SQLite](README-testdata.md).
 
 ## 5. Docker en uitvoermodi
 
