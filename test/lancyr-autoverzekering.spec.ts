@@ -102,11 +102,21 @@ test('doorloop de funnel tot vlak vóór Sluit af', async ({ page }, testInfo) =
     await expect(page).toHaveURL(/\/prive\/autoverzekering\/bereken-autopremie\/?$/);
   });
 
-  await test.step('4. Vul rijgegevens en ingangsdatum in', async () => {
+  await test.step('4. Controleer bestuurder en vul rijgegevens in', async () => {
     const bestuurder = page.locator('select[name="bestuurder"]');
     await expect(bestuurder).toBeVisible();
     await bestuurder.selectOption(gegevens.bestuurder);
     await expect(bestuurder).toHaveValue(gegevens.bestuurder);
+    if (gegevens.verwachteUitkomst === 'bestuurder-geblokkeerd') {
+      await expect(page.getByText(/Gaat jouw kind of iemand anders dan jij of je partner/)).toBeVisible();
+      await expect(page.getByText('Start berekening', { exact: true })).toBeHidden();
+      await expect(page.locator('input[name="schadevrij"]')).toBeHidden();
+      await expect(page).toHaveURL(/\/prive\/autoverzekering\/bereken-autopremie\/?$/);
+      return;
+    }
+    if (gegevens.bestuurder === 'Partner') {
+      await vulVeld(page, 'geboortedatum_partner', gegevens.geboortedatumPartner!);
+    }
     await vulVeld(page, 'schadevrij', gegevens.schadevrij);
     const kilometrage = page.locator('select[name="kilometrage"]');
     await expect(kilometrage).toBeVisible();
@@ -118,6 +128,11 @@ test('doorloop de funnel tot vlak vóór Sluit af', async ({ page }, testInfo) =
     await startBerekening.click();
     await expect(page.getByRole('heading', { name: 'Kies je dekking' })).toBeVisible({ timeout: 60000 });
   });
+
+  if (gegevens.verwachteUitkomst === 'bestuurder-geblokkeerd') {
+    testInfo.annotations.push({ type: 'Verwachte uitkomst', description: 'Berekening geblokkeerd voor inwonend kind; geen winkelwagen verwacht.' });
+    return;
+  }
 
   await test.step('5. Kies de dekking uit de database en het zichtbare aanbod', async () => {
     const dekking = page.locator(`.dekking_${gegevens.dekking}`);
@@ -133,8 +148,11 @@ test('doorloop de funnel tot vlak vóór Sluit af', async ({ page }, testInfo) =
     await expect(page.locator('select[name="dekking"]:visible')).toHaveValue(gegevens.dekking);
 
     // De site bewaart andere aanbiedingen verborgen in de HTML.
-    const aanbod = page.locator('.product_item:visible');
-    await expect(aanbod).toHaveCount(1, { timeout: 30000 });
+    // Kies het afgesproken product; volgorde en aantal aanbiedingen kunnen verschillen.
+    const aanbod = page.locator('.product_item:visible').filter({
+      has: page.locator(`.choose_product[product_id="${gegevens.aanbodProductId}"]`),
+    });
+    await expect(aanbod).toBeVisible({ timeout: 30000 });
     const jaarpremie = aanbod.locator('.product_header_item').filter({ hasText: 'Per jaar' });
     await expect(jaarpremie).toBeVisible();
     // Check op een bedrag boven nul, zonder een premie vast te zetten die kan wijzigen.
@@ -144,15 +162,27 @@ test('doorloop de funnel tot vlak vóór Sluit af', async ({ page }, testInfo) =
     await kiesAanbod.click();
   });
 
-  await test.step('6. Controleer de winkelwagen en stop', async () => {
+  await test.step('6. Kies extra dekkingen uit de database en controleer de winkelwagen', async () => {
     await expect(page).toHaveURL(/\/prive\/winkelwagen\/?$/, { timeout: 30000 });
     await expect(page.getByRole('heading', { name: 'Jouw keuzes' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 3 }).filter({ hasText: gegevens.verwachtVoertuig })).toBeVisible({ timeout: 30000 });
+    const extraKnoppen = page.locator('.type_dekking_check [data-state]');
+    await expect(extraKnoppen).toHaveCount(gegevens.extraDekkingen.length);
     for (const extra of gegevens.extraDekkingen) {
-      await expect(page.getByText(extra)).toBeVisible();
+      const blok = page.locator('.type_dekking_l_blok_content').filter({
+        has: page.getByText(extra, { exact: true }),
+      });
+      const knop = blok.locator('[data-state]');
+      await expect(knop).toBeVisible();
+      await expect(knop).toHaveAttribute('data-state', 'unchecked');
+      if (gegevens.geselecteerdeExtras.includes(extra)) {
+        await knop.click();
+        await expect(knop).toHaveAttribute('data-state', 'checked');
+        // De gekozen extra moet ook in het verzekeringsoverzicht terechtkomen.
+        await expect(page.getByText(extra, { exact: true })).toHaveCount(2);
+      }
     }
-    // Een derde vakje staat standaard aan, maar is uitgeschakeld en geen extra dekking.
-    await expect(page.locator('input[type="checkbox"]:not(:disabled)')).toHaveCount(gegevens.extraDekkingen.length);
-    await expect(page.locator('input[type="checkbox"]:not(:disabled):checked')).toHaveCount(0);
+    await expect(page.locator('.type_dekking_check [data-state="checked"]')).toHaveCount(gegevens.geselecteerdeExtras.length);
     await expect(page.getByText(gegevens.dekkingWinkelwagen, { exact: true })).toBeVisible();
     await expect(page.getByText('Sluit af', { exact: true })).toBeVisible();
     // Niet aanklikken: Sluit af kan een echte aanvraag starten.

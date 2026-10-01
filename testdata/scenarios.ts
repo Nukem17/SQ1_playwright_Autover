@@ -23,6 +23,10 @@ export interface AutoverzekeringScenario {
   dekkingTitel: string;
   dekkingWinkelwagen: string;
   extraDekkingen: string[];
+  aanbodProductId: string;
+  geboortedatumPartner: string | null;
+  verwachteUitkomst: 'winkelwagen' | 'bestuurder-geblokkeerd';
+  geselecteerdeExtras: string[];
 }
 
 // Tests kennen alleen deze functie; een toekomstige API kan hetzelfde object leveren.
@@ -60,7 +64,21 @@ export async function haalTestscenarioOp(
     let extras: unknown;
     try { extras = JSON.parse(String(row.extraDekkingen)); } catch { throw new Error('extraDekkingen moet een JSON-lijst bevatten.'); }
     if (!Array.isArray(extras) || !extras.every(value => typeof value === 'string' && value.trim())) throw new Error('extraDekkingen moet een lijst met teksten zijn.');
-    return { ...row, extraDekkingen: extras } as unknown as AutoverzekeringScenario;
+    if (!/^\d+$/.test(String(row.aanbodProductId))) throw new Error('aanbodProductId moet een productnummer zijn.');
+    if (!['Ikzelf', 'Partner', 'Kind-inwonend'].includes(String(row.bestuurder))) throw new Error('Onbekende bestuurder.');
+    if (!['gezin_met_kinderen', 'alleenstaande_met_kinderen', 'gezin_zonder_kinderen', 'alleenstaande_zonder_kinderen'].includes(String(row.gezin))) throw new Error('Onbekende gezinssamenstelling.');
+    if (!['7500', '10000', '12000', '15000', '20000', '25000', '30000', '35000'].includes(String(row.kilometrage))) throw new Error('Onbekende kilometragekeuze.');
+    if (!['wa', 'bc', 'vc'].includes(String(row.dekking))) throw new Error('Onbekende dekking.');
+    if (!['winkelwagen', 'bestuurder-geblokkeerd'].includes(String(row.verwachteUitkomst))) throw new Error('Onbekende verwachteUitkomst; initialiseer de database via de runner.');
+    if ((row.bestuurder === 'Kind-inwonend') !== (row.verwachteUitkomst === 'bestuurder-geblokkeerd')) throw new Error('Kind-inwonend moet bestuurder-geblokkeerd verwachten.');
+    if (row.bestuurder === 'Partner') {
+      const partner = String(row.geboortedatumPartner);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(partner) || !Number.isFinite(Date.parse(partner)) || new Date(partner).toISOString().slice(0, 10) !== partner) throw new Error('Partner vereist een geldige geboortedatumPartner.');
+    }
+    let selected: unknown;
+    try { selected = JSON.parse(String(row.geselecteerdeExtras)); } catch { throw new Error('geselecteerdeExtras moet een JSON-lijst bevatten.'); }
+    if (!Array.isArray(selected) || new Set(selected).size !== selected.length || !selected.every(value => extras.includes(value))) throw new Error('geselecteerdeExtras moet unieke namen uit extraDekkingen bevatten.');
+    return { ...row, extraDekkingen: extras, geselecteerdeExtras: selected } as unknown as AutoverzekeringScenario;
   } finally {
     db.close();
   }

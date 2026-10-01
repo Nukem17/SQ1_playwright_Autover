@@ -54,8 +54,8 @@ fi
 docker run --rm --user "$(id -u):$(id -g)" \
   -v "$project_dir/testdata:/app/testdata" sq1-playwright node scripts/init-testdata.mjs
 docker run --rm --user "$(id -u):$(id -g)" \
-  -e "LANCYR_TEST_SCENARIO=$scenario" -v "$project_dir/testdata:/app/testdata:ro" \
-  sq1-playwright node -e "require('./testdata/scenarios.ts').haalTestscenarioOp().then(s => console.log('Testscenario gecontroleerd: ' + s.id)).catch(e => { console.error(e.message); process.exitCode = 1; })"
+  -e "LANCYR_TEST_SCENARIO=$scenario" -e "LANCYR_FUNNEL_DEMO=$funnel_demo" -v "$project_dir/testdata:/app/testdata:ro" \
+  sq1-playwright node -e "require('./testdata/scenarios.ts').haalTestscenarioOp().then(s => { if (process.env.LANCYR_FUNNEL_DEMO === '1' && s.verwachteUitkomst !== 'winkelwagen') throw new Error('Funnel-demo vereist een scenario dat de winkelwagen bereikt.'); console.log('Testscenario gecontroleerd: ' + s.id); }).catch(e => { console.error(e.message); process.exitCode = 1; })"
 run_started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 # Iedere run krijgt een eigen map. De willekeurige suffix voorkomt overschrijven.

@@ -58,10 +58,10 @@ De lange klantreis heeft zes benoemde stappen:
 2. Kenteken invullen en wachten op de verwachte voertuiggegevens.
 3. Adres, geboortedatum, ondernemerschap, gezinssamenstelling en privacykeuze invullen.
 4. Bestuurder, schadevrije jaren, kilometrage en ingangsdatum invullen; premie berekenen.
-5. WA + kiezen, geselecteerde dekking en een positieve premie controleren, aanbod kiezen.
-6. Winkelwagen controleren: extra opties uit, WA+ en **Sluit af** zichtbaar. Daar stopt de gewone test.
+5. De dekking uit het database-scenario kiezen, geselecteerde dekking en een positieve premie controleren, afgesproken aanbod kiezen.
+6. Winkelwagen controleren: dekking en extra opties volgens het scenario, **Sluit af** zichtbaar. Bij Kind-inwonend stopt de test al in stap 4 na de verwachte blokkade. Bij Partner wordt een extra geboortedatum ingevuld. Zie de scenariomatrix in [README-testdata.md](README-testdata.md).
 
-Het testkenteken en de voertuigverwachting worden samen met de overige scenariogegevens uit SQLite opgehaald. De datum schuift naar de eerstvolgende 20 september. Een exacte premie of verzekeraar is geen vaste verwachting.
+Het testkenteken en de voertuigverwachting worden samen met de overige scenariogegevens uit SQLite opgehaald. De datum schuift naar de eerstvolgende 20 september. De premie staat niet vast; het gewenste productnummer en de extra dekkingen horen bij het scenario.
 
 **Vertel dit:** “Een klik is geen bewijs dat iets werkt. Daarom controleren we ook de volgende pagina en de ingevulde waarden.”
 

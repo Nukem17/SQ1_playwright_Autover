@@ -14,7 +14,7 @@ De drie tests controleren het volgende:
 
 1. Op de autopagina zijn de titel, het verplichte kentekenveld en **Bereken Premie** zichtbaar.
 2. Een klik op **Bereken Premie** met een leeg kenteken laat je op de autopagina.
-3. De funnel loopt via het menu, kenteken, adres, persoonlijke situatie en rijgegevens naar **WA +**, een zichtbaar aanbod en de winkelwagen. De ingevulde waarden en tussenpagina's worden gecontroleerd. Op de aanbodpagina blijven **WA +** en een positieve jaarpremie zichtbaar. In de winkelwagen staan de twee optionele extra dekkingen uit.
+3. De funnel gebruikt het database-scenario voor gezin, bestuurder, dekking, product en extra opties. Bij Partner wordt ook de partnergeboortedatum ingevuld. Dekking en positieve premie worden gecontroleerd; in de winkelwagen worden de afgesproken extra opties gekozen. Bij Kind-inwonend controleert de test de melding en blokkade en stopt hij daar. Zie de scenariomatrix in [README-testdata.md](README-testdata.md).
 
 Als een controle (`expect`) niet klopt of een stap niet binnen de wachttijd lukt, faalt de test. De test klikt **niet** op **Sluit af**, want dat kan een echte aanvraag starten. Vóór die knop verscheen in de onderzochte route geen apart formulier voor e-mail of telefoon.
 
@@ -63,7 +63,7 @@ De run hoort met foutcode 1 te eindigen. Open `test-runs/<datum-tijd>_funnel-dem
 
 ## Reikwijdte en mogelijke vervolgstappen
 
-De test bezoekt de live website https://www.lancyr.nl/prive/autoverzekering/. Een exacte premie of verzekeraar is geen vaste verwachting; tijdens een eerdere onderzochte run was het aanbod van a.s.r. Als de route vóór **Sluit af** later extra gegevens van de verzekeringnemer vraagt, breid de test dan eerst uit met goedgekeurde testgegevens.
+De test bezoekt de live website https://www.lancyr.nl/prive/autoverzekering/. De exacte premie staat niet vast; het gewenste productnummer en de bijbehorende extra opties komen uit de database. Als de route vóór **Sluit af** later extra gegevens van de verzekeringnemer vraagt, breid de test dan eerst uit met goedgekeurde testgegevens.
 
 | Mogelijk vervolg | Benodigd / verwachte controle |
 | --- | --- |
