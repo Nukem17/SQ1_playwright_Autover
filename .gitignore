@@ -7,3 +7,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Lokale SQLite-data wordt apart gekoppeld aan de container.
+testdata/*.sqlite*
+testdata/*.tmp

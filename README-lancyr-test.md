@@ -6,7 +6,7 @@ De code staat in [test/lancyr-autoverzekering.spec.ts](test/lancyr-autoverzekeri
 npm run test:lancyr
 ```
 
-Het script bouwt de Docker-image, start een tijdelijke container en toont per browser de uitslag in de terminal. Je hoeft `docker run` niet zelf te typen. Standaard gebruikt de test kenteken `88-LSV-7`. Voor een ander goedgekeurd kenteken: `LANCYR_TEST_KENTEKEN=ANDER-KENTEKEN npm run test:lancyr`. Pas dan ook de verwachting `Toyota Prius` in de test aan.
+Het script bouwt de Docker-image en initialiseert zo nodig SQLite. De lange funnel haalt zijn gegevens op uit scenario `standaard`. Met `bash scripts/run-lancyr-browsers.sh headless standaard` kies je expliciet een scenario. Invoer en bijbehorende verwachtingen staan in de database; zie [Testdata uit SQLite](README-testdata.md).
 
 ## Wat is geslaagd?
 
@@ -14,7 +14,7 @@ De drie tests controleren het volgende:
 
 1. Op de autopagina zijn de titel, het verplichte kentekenveld en **Bereken Premie** zichtbaar.
 2. Een klik op **Bereken Premie** met een leeg kenteken laat je op de autopagina.
-3. De funnel loopt via het menu, kenteken, adres, persoonlijke situatie en rijgegevens naar **WA +**, een zichtbaar aanbod en de winkelwagen. De ingevulde waarden en tussenpagina's worden gecontroleerd. Op de aanbodpagina blijven **WA +** en een positieve jaarpremie zichtbaar. In de winkelwagen staan de twee optionele extra dekkingen uit.
+3. De funnel gebruikt het database-scenario voor gezin, bestuurder, dekking, product en extra opties. Bij Partner wordt ook de partnergeboortedatum ingevuld. Dekking en positieve premie worden gecontroleerd; in de winkelwagen worden de afgesproken extra opties gekozen. Bij Kind-inwonend controleert de test de melding en blokkade en stopt hij daar. Zie de scenariomatrix in [README-testdata.md](README-testdata.md).
 
 Als een controle (`expect`) niet klopt of een stap niet binnen de wachttijd lukt, faalt de test. De test klikt **niet** op **Sluit af**, want dat kan een echte aanvraag starten. Vóór die knop verscheen in de onderzochte route geen apart formulier voor e-mail of telefoon.
 
@@ -45,7 +45,7 @@ Wil je een HTML-rapport in je browser bekijken? Gebruik `npx playwright show-rep
 | `getByRole`, `getByText`, `locator` | Onderdelen van de pagina vinden. |
 | `expect(...).toBeVisible()` | Controleren of iets zichtbaar is. |
 | `toHaveValue`, `toBeChecked`, `toHaveURL`, `toHaveText`, `toHaveCount`, `toContainText` | Waarden, keuzes, pagina's en aantallen controleren. |
-| `test.setTimeout`, `test.skip` | Meer tijd geven aan de lange funnel en die overslaan zonder kenteken. |
+| `test.setTimeout`, `test.skip` | Meer tijd geven aan de lange funnel. |
 | `:visible` | Alleen de zichtbare aanbodknop kiezen; de site heeft ook verborgen opties in de HTML. |
 
 In [playwright.config.ts](playwright.config.ts) staat `screenshot: 'only-on-failure'` en `trace: 'retain-on-failure'`. Daarom verschijnen deze bestanden alleen na een fout. De test is TypeScript; `npx tsc --noEmit` controleert de types zonder bestanden te maken.
@@ -63,7 +63,7 @@ De run hoort met foutcode 1 te eindigen. Open `test-runs/<datum-tijd>_funnel-dem
 
 ## Reikwijdte en mogelijke vervolgstappen
 
-De test bezoekt de live website https://www.lancyr.nl/prive/autoverzekering/. Een exacte premie of verzekeraar is geen vaste verwachting; tijdens een eerdere onderzochte run was het aanbod van a.s.r. Als de route vóór **Sluit af** later extra gegevens van de verzekeringnemer vraagt, breid de test dan eerst uit met goedgekeurde testgegevens.
+De test bezoekt de live website https://www.lancyr.nl/prive/autoverzekering/. De exacte premie staat niet vast; het gewenste productnummer en de bijbehorende extra opties komen uit de database. Als de route vóór **Sluit af** later extra gegevens van de verzekeringnemer vraagt, breid de test dan eerst uit met goedgekeurde testgegevens.
 
 | Mogelijk vervolg | Benodigd / verwachte controle |
 | --- | --- |

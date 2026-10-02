@@ -3,3 +3,7 @@ playwright-report
 test-results
 test-runs
 .git
+
+# Lokale SQLite-data wordt apart gekoppeld aan de container.
+testdata/*.sqlite*
+testdata/*.tmp
