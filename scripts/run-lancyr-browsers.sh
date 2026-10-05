@@ -80,7 +80,7 @@ docker run "${container_options[@]}" --rm --init --ipc=host --user "$(id -u):$(i
   -v "$run_dir:$container_run_dir" \
   -v "$project_dir/testdata:/app/testdata:ro" \
   "$image" bash scripts/run-and-summarize.sh "$container_run_dir" "$run_started" "$mode" \
-  "${browser_command[@]}" test/lancyr-autoverzekering.spec.ts \
+  "${browser_command[@]}" test/autoverzerkeringsfunnel/lancyr-autoverzekering.spec.ts \
   --workers="$workers" \
   "${test_options[@]}" \
   --output="$container_run_dir/test-results" --reporter=list,html,json

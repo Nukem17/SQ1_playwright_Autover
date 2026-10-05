@@ -93,3 +93,7 @@ Bij Anna gaf de premie-API met nul schadevrije jaren de melding `Ongeldig aantal
 ```bash
 bash scripts/run-lancyr-browsers.sh headless testgebruiker-anna
 ```
+
+## Schade melden-regressie
+
+Dezelfde SQLite-database bevat ook `regressie_paginas` en `regressie_scenarios`, toegevoegd via migratie `002-schade-regressie.sql`. Deze gegevens zijn gescheiden van de autoverzekeringsscenario’s en worden gelezen via `testdata/regressie.ts`. Zie [de Schade melden-handleiding](README-schade-regressie.md).

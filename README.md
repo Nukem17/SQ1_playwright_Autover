@@ -1,6 +1,6 @@
-# Lancyr autoverzekering — Playwright
+# Lancyr — Playwright-regressietests
 
-Dit project test de autoverzekeringsfunnel van Lancyr met Playwright en TypeScript. De hoofdtest draait in Chromium, Firefox en WebKit via Docker en stopt vóór **Sluit af**.
+Dit project test onderdelen van de Lancyr-website met Playwright en TypeScript: de autoverzekeringsfunnel en de pagina’s/FAQ van Schade melden. Tests draaien in Chromium, Firefox en WebKit via Docker. De autoverzekeringsfunnel stopt vóór **Sluit af**.
 
 ## Snel starten
 
@@ -9,6 +9,7 @@ Voor uitvoering via de shellscripts heb je Bash en een werkende Docker Engine no
 ```sh
 bash scripts/run-lancyr-browsers.sh          # headless
 bash scripts/run-lancyr-browsers.sh headed   # headed
+bash scripts/run-schade-regressie.sh        # Schade melden, onafhankelijk van autoverzekering
 ```
 
 De runmap wordt gekoppeld aan de container, zodat de rapporten op je computer blijven staan. `scripts/run-and-summarize.sh` maakt de samenvatting ook na een testfout en behoudt de test-exitcode. Als alleen de rapportverwerking faalt, eindigt de run eveneens met een fout. Als Docker zelf niet start, kan er geen samenvatting worden gemaakt.
@@ -71,6 +72,8 @@ Directe dependencies staan met exacte versies in `package.json`; `package-lock.j
 Updates gebeuren bewust in een aparte branch bij beveiligingsproblemen, aflopende ondersteuning, relevante bugfixes of benodigde functionaliteit. Werk bij een runtime-update `.nvmrc`, `package.json`, het lockbestand en de Dockerfile samen bij. Controleer daarna een schone Docker-build, `npm run typecheck` en de tests in alle drie de browsers. Controleer ondersteuning en beveiligingsupdates periodiek; vastzetten vervangt onderhoud niet.
 
 ## Meer informatie
+
+- [Schade melden: regressiesuite, CSV-bron en uitbreiden](README-schade-regressie.md)
 
 - [Testdata uit SQLite: scenarioselectie en demonstratie](README-testdata.md)
 

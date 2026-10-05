@@ -30,7 +30,7 @@ function card(title, caption, source, target, missing) {
   }
   return `<section><h2>${title}</h2><p>${caption}</p>${content}</section>`;
 }
-const reference = find('autoverzekering-start-expected.png') ?? 'test/lancyr-visual.spec.ts-snapshots/autoverzekering-start-chromium-linux.png';
+const reference = find('autoverzekering-start-expected.png') ?? 'test/autoverzerkeringsfunnel/lancyr-visual.spec.ts-snapshots/autoverzekering-start-chromium-linux.png';
 const actual = find('autoverzekering-start-actual.png') ?? find('actueel.png');
 const cards = [
   card('1. Zo hoort het', 'De opgeslagen referentie voor deze vergelijking.', reference, 'referentie.png', 'Geen referentie beschikbaar.'),

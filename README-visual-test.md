@@ -12,7 +12,7 @@ Voer vanuit de projectmap uit; Docker en Bash zijn nodig, lokale Node/npm niet.
    bash scripts/run-lancyr-visual.sh reference
    ```
 
-   Bekijk `test/lancyr-visual.spec.ts-snapshots/autoverzekering-start-chromium-linux.png`. Controleer zelf logo, tekst, kentekenveld en knop. Een succesvolle opname bewijst nog niet dat het ontwerp juist is. Dit commando vernieuwt ook een bestaande referentie; gebruik het alleen voor een bewust beoordeelde wijziging. Bewaar de goedgekeurde PNG samen met de test in Git.
+   Bekijk `test/autoverzerkeringsfunnel/lancyr-visual.spec.ts-snapshots/autoverzekering-start-chromium-linux.png`. Controleer zelf logo, tekst, kentekenveld en knop. Een succesvolle opname bewijst nog niet dat het ontwerp juist is. Dit commando vernieuwt ook een bestaande referentie; gebruik het alleen voor een bewust beoordeelde wijziging. Bewaar de goedgekeurde PNG samen met de test in Git.
 
 2. Vergelijk de actuele pagina met de referentie:
 

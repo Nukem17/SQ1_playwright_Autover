@@ -8,7 +8,7 @@ import { once } from 'node:events';
 import { chromium, expect } from '@playwright/test';
 
 test('Alle bestaande runners leveren centrale JSON- en HTML-resultaten', () => {
-  for (const file of ['scripts/run-lancyr-browsers.sh', 'scripts/run-lancyr-visual.sh']) {
+  for (const file of ['scripts/run-lancyr-browsers.sh', 'scripts/run-lancyr-visual.sh', 'scripts/run-schade-regressie.sh']) {
     const source = readFileSync(file, 'utf8');
     assert.match(source, /test-runs\//);
     assert.match(source, /PLAYWRIGHT_JSON_OUTPUT_FILE=.*results\.json/);

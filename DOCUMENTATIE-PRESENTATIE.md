@@ -32,9 +32,9 @@ Er is geen centraal groeiend resultatenlogboek. Resultaten staan uitsluitend per
 
 | Bestand | Taak |
 | --- | --- |
-| `test/lancyr-autoverzekering.spec.ts` | Drie functionele tests; optionele bewuste fout aan het einde van de funnel. |
-| `test/lancyr-visual.spec.ts` | Aparte visuele vergelijking van de startpagina in Chromium. |
-| `test/lancyr-visual.spec.ts-snapshots/` | Referentiescreenshot, te beoordelen en samen met de test te versioneren. |
+| `test/autoverzerkeringsfunnel/lancyr-autoverzekering.spec.ts` | Drie functionele tests; optionele bewuste fout aan het einde van de funnel. |
+| `test/autoverzerkeringsfunnel/lancyr-visual.spec.ts` | Aparte visuele vergelijking van de startpagina in Chromium. |
+| `test/autoverzerkeringsfunnel/lancyr-visual.spec.ts-snapshots/` | Referentiescreenshot, te beoordelen en samen met de test te versioneren. |
 | `scripts/run-lancyr-browsers.sh` | Start headless, headed, visible of funnel-demo. |
 | `scripts/run-lancyr-visual.sh` | Start referentieopname, visuele vergelijking of CSS-demo. |
 | `scripts/run-and-summarize.sh` | Tests en rapportverwerking in Docker; bewaart foutcodes. |
