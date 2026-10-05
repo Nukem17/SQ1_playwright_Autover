@@ -4,7 +4,13 @@ import { expect, test } from '@playwright/test';
 test.skip(!process.env.LANCYR_VISUAL_MODE, 'Gebruik scripts/run-lancyr-visual.sh');
 test.use({ viewport: { width: 1440, height: 700 }, locale: 'nl-NL', colorScheme: 'light', reducedMotion: 'reduce' });
 
-test('autoverzekering startpagina komt overeen met de referentie', async ({ page }, testInfo) => {
+test('autoverzekering startpagina komt overeen met de referentie', {
+  annotation: [
+    { type: 'Onderdeel', description: 'Autoverzekering' },
+    { type: 'Testgroep', description: 'Visuele controle' },
+    { type: 'Testsoort', description: 'Visueel' },
+  ],
+}, async ({ page }, testInfo) => {
   test.setTimeout(60000);
   await page.goto('https://www.lancyr.nl/prive/autoverzekering/');
   const cookies = page.locator('#cookie-overlay');

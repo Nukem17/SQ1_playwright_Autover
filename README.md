@@ -80,3 +80,11 @@ Updates gebeuren bewust in een aparte branch bij beveiligingsproblemen, aflopend
 - [Presentatiedocumentatie: ontwerp, Docker en Git](DOCUMENTATIE-PRESENTATIE.md)
 
 Een fout met screenshot en trace van de volledige funnel demonstreren? Gebruik `bash scripts/run-lancyr-browsers.sh funnel-demo`. Deze aparte demonstratie draait headless in Chromium en faalt bewust bij de winkelwagen.
+
+## Centraal testresultaten bekijken
+
+```bash
+bash scripts/view-reports.sh
+```
+
+Open **http://localhost:8070**. Bekijk alle opgeslagen runs, filter op gebruiker/browser/resultaat en open foutdetails, screenshots, traces en de bestaande Playwright-rapporten. Nieuwe resultaten verschijnen automatisch; de pagina controleert elke tien seconden. Zie [de uitleg van de rapportpagina](README-reportpage.md).
