@@ -25,7 +25,13 @@ async function vulVeld(page: Page, naam: string, waarde: string) {
   await expect(veld).toHaveValue(waarde);
 }
 
-test('de ingang van de premieberekening is zichtbaar', async ({ page }) => {
+test('de ingang van de premieberekening is zichtbaar', {
+  annotation: [
+    { type: 'Onderdeel', description: 'Autoverzekering' },
+    { type: 'Testgroep', description: 'Pagina en invoer' },
+    { type: 'Testsoort', description: 'Functioneel' },
+  ],
+}, async ({ page }) => {
   await page.goto(AUTO);
   await expect(page.getByRole('heading', { name: /Autoverzekering\s+afsluiten/i })).toBeVisible();
   const kenteken = page.getByRole('textbox', { name: 'Kenteken Auto' });
@@ -34,7 +40,13 @@ test('de ingang van de premieberekening is zichtbaar', async ({ page }) => {
   await expect(page.getByText('Bereken Premie', { exact: true })).toBeVisible();
 });
 
-test('een leeg kenteken houdt de gebruiker op de autopagina', async ({ page }) => {
+test('een leeg kenteken houdt de gebruiker op de autopagina', {
+  annotation: [
+    { type: 'Onderdeel', description: 'Autoverzekering' },
+    { type: 'Testgroep', description: 'Pagina en invoer' },
+    { type: 'Testsoort', description: 'Functioneel' },
+  ],
+}, async ({ page }) => {
   await page.goto(AUTO);
   await sluitCookieMelding(page);
   await page.getByText('Bereken Premie', { exact: true }).click();
@@ -42,7 +54,13 @@ test('een leeg kenteken houdt de gebruiker op de autopagina', async ({ page }) =
   await expect(page).toHaveURL(AUTO);
 });
 
-test('doorloop de funnel tot vlak vóór Sluit af', async ({ page }, testInfo) => {
+test('doorloop de funnel tot vlak vóór Sluit af', {
+  annotation: [
+    { type: 'Onderdeel', description: 'Autoverzekering' },
+    { type: 'Testgroep', description: 'Klantreis' },
+    { type: 'Testsoort', description: 'Functioneel' },
+  ],
+}, async ({ page }, testInfo) => {
   // De live premieberekening kan langer duren dan een korte paginatest.
   test.setTimeout(120000);
   const gegevens = await test.step('0. Haal testscenario op uit SQLite', () => haalTestscenarioOp());

@@ -23,7 +23,7 @@ test('Nieuwe runs en resultaten verschijnen live; filters, details en foutmeldin
   const report = (browser='chromium', scenario='anna') => ({
     stats: { startTime: new Date().toISOString(), duration: 100 },
     suites: [{ title:'bestand', specs:[{title:'Voorbeeldtest', tests:[{
-      status:'expected', projectName:browser, annotations:[{type:'Testdata',description:scenario}], results:[{status:'passed',duration:100}],
+      status:'expected', projectName:browser, annotations:[{type:'Testdata',description:scenario},{type:'Onderdeel',description:'Autoverzekering'},{type:'Testgroep',description:'Pagina en invoer'}], results:[{status:'passed',duration:100}],
     }]}]}],
   });
   mkdirSync(join(root,'eerste'));
@@ -36,6 +36,7 @@ test('Nieuwe runs en resultaten verschijnen live; filters, details en foutmeldin
     const page=await browser.newPage();
     await page.goto('http://127.0.0.1:8079');
     await expect(page.locator('.run')).toHaveCount(1);
+    await page.locator('#advanced>summary').click();
     await page.selectOption('#browser','chromium');
     await page.locator('.run>summary').click();
     await page.locator('.test>summary').click();
@@ -58,6 +59,71 @@ test('Nieuwe runs en resultaten verschijnen live; filters, details en foutmeldin
     await page.unroute('**/api/runs');
     await page.click('#refresh');
     await expect(page.locator('#sync')).toContainText('Laatst gecontroleerd');
+    // A failed test appears first, with evidence before technical data.
+    const mixed=report('firefox','SQLite-scenario: testgebruiker-bram');
+    mixed.suites[0].specs.push({title:'Premie berekenen',tests:[{
+      status:'unexpected',projectName:'firefox',annotations:[{type:'Testdata',description:'SQLite-scenario: testgebruiker-bram'},{type:'Onderdeel',description:'Autoverzekering'},{type:'Testgroep',description:'Klantreis'}],
+      results:[{status:'failed',duration:200,steps:[{title:'Controleer de premie',error:{message:'Premie ontbreekt\nDetails van de fout'}}],errors:[{message:'Premie ontbreekt\nDetails van de fout'}],stdout:[{text:'Technisch log'}]}],
+    }]});
+    writeFileSync(join(root,'nieuwe-run/results.json'),JSON.stringify(mixed));
+    await page.click('#refresh');
+    const run=page.locator('#nieuwe-run');
+    await expect(run.locator(':scope>summary')).toContainText('Bram · Functionele test');
+    await expect(run.locator('.result-counts')).toHaveText('1 geslaagd · 1 gefaald');
+    await run.locator(':scope>summary').click();
+    await expect(run.locator('.test').first().locator('summary').first()).toContainText('Premie berekenen');
+    await expect(run.locator('.error-preview')).toBeVisible();
+    await expect(run.locator('.error-preview')).toHaveText('Stap “Controleer de premie” is niet geslaagd.');
+    await run.getByText('Bekijk fout',{exact:true}).click();
+    await expect(run.getByRole('heading',{name:'Wat ging er mis?'})).toBeVisible();
+    await expect(run.getByText('Na deze mislukte stap zijn geen volgende teststappen vastgelegd.',{exact:false})).toBeVisible();
+    await expect(run.getByText('Technisch log',{exact:true})).not.toBeVisible();
+    await expect(run.getByRole('heading',{name:'Oorspronkelijke foutmelding'})).not.toBeVisible();
+    await run.getByText('Technische details en bijlagen',{exact:true}).first().click();
+    await expect(run.getByRole('heading',{name:'Oorspronkelijke foutmelding'})).toBeVisible();
+    await page.getByRole('button',{name:'Met fouten',exact:true}).click();
+    await expect(page.locator('.run')).toHaveCount(1);
+    await expect(page.locator('.test')).toHaveCount(1);
+    await expect(page.getByRole('button',{name:'Met fouten',exact:true})).toHaveAttribute('aria-pressed','true');
+    await page.getByRole('button',{name:'Geslaagd',exact:true}).click();
+    await expect(page.locator('.test')).toHaveCount(2);
+    await page.click('#reset');
+    await page.locator('#advanced>summary').click();
+    await expect(page.locator('#browser')).not.toBeVisible();
+    // A separate page is discovered without changing the page; one run can contain both.
+    mixed.suites[0].specs.push({title:'Controleer het contactformulier',tests:[{
+      status:'expected',projectName:'chromium',annotations:[
+        {type:'Onderdeel',description:'Contactpagina'},
+        {type:'Testgroep',description:'Formulierweergave'},
+        {type:'Testsoort',description:'Visueel'},
+      ],results:[{status:'passed',duration:50}],
+    }]});
+    writeFileSync(join(root,'nieuwe-run/results.json'),JSON.stringify(mixed));
+    await page.click('#refresh');
+    await expect(page.locator('#area option[value="Contactpagina"]')).toHaveCount(1);
+    await expect(page.locator('.run')).toHaveCount(2);
+    await page.selectOption('#area','Contactpagina');
+    await expect(page.locator('.run')).toHaveCount(1);
+    await expect(page.locator('.test')).toHaveCount(1);
+    await expect(page.locator('#count')).toContainText('1 testresultaten');
+    await page.locator('#nieuwe-run>summary').click();
+    await expect(page.locator('.test-group>h3')).toHaveText('Contactpagina · Formulierweergave');
+    await page.locator('.test>summary').click();
+    await page.locator('#advanced>summary').click();
+    await page.selectOption('#kind','Visueel');
+    await page.selectOption('#testGroup','Formulierweergave');
+    await expect(page.locator('.test')).toHaveCount(1);
+    await page.reload();
+    await expect(page.locator('#area')).toHaveValue('Contactpagina');
+    await expect(page.locator('#testGroup')).toHaveValue('Formulierweergave');
+    await expect(page.locator('.test')).toHaveCount(1);
+    await page.click('#reset');
+    await expect(page.locator('.run')).toHaveCount(2);
+    await expect(page.locator('.test')).toHaveCount(4);
+    await expect(page.locator('.area-section>h2').filter({hasText:'Meerdere onderdelen'})).toHaveCount(1);
+    await page.setViewportSize({width:375,height:812});
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+
   } finally {
     if(browser)await browser.close();
     server.kill();await once(server,'exit').catch(()=>{});
