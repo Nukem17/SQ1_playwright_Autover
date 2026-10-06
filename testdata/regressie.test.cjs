@@ -5,6 +5,8 @@ const { mkdtempSync, readFileSync, readdirSync, rmSync } = require('node:fs');
 const { tmpdir } = require('node:os');
 const { join } = require('node:path');
 const { haalRegressieSetOp } = require('./regressie.ts');
+// Test de gegevenslaag met een tijdelijke database; de echte database blijft onaangeraakt.
+// Bouw dezelfde tabellen op en verwijder de tijdelijke bestanden na iedere test.
 function setup() {
   const dir=mkdtempSync(join(tmpdir(),'schade-data-')), path=join(dir,'data.sqlite');
   const db=new DatabaseSync(path);
@@ -12,6 +14,8 @@ function setup() {
   for(const file of readdirSync('testdata/migrations').filter(f=>f.endsWith('.sql')).sort()) db.exec(readFileSync(join('testdata/migrations',file),'utf8'));
   return {db,path,close(){db.close();rmSync(dir,{recursive:true,force:true});}};
 }
+// Controleer de beginaantallen, het inlezen van wijzigingen en het behoud van Anna’s gegevens.
+// Controleer ook dat ongeldige invoer geen andere selectie of nieuwe database oplevert.
 test('Regressiegegevens dekken de CSV-selectie en reageren op SQL-wijzigingen',()=>{
   const f=setup();
   try{
@@ -27,6 +31,8 @@ test('Regressiegegevens dekken de CSV-selectie en reageren op SQL-wijzigingen',(
     assert.throws(()=>haalRegressieSetOp('Schade melden',join(tmpdir(),'niet-bestaande-regressie-db.sqlite')),/ontbreekt/);
   }finally{f.close();}
 });
+// Maak gegevens bewust ongeldig en controleer dat de lezer ze afwijst.
+// Dit zijn fouten in de testinrichting, geen controles van de live website.
 test('Ongeldige pagina’s, ontbrekende doelen en onbekende acties stoppen vóór de browser start',()=>{
   const f=setup();
   try{

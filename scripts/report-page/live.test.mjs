@@ -130,3 +130,45 @@ test('Nieuwe runs en resultaten verschijnen live; filters, details en foutmeldin
     rmSync(root,{recursive:true,force:true});
   }
 });
+
+// Controleer dat één controle met drie browsers als één uitklapbare rij verschijnt.
+test('Regressiecontroles groeperen browsers en behouden fouten, filters en open details', { timeout: 60000 }, async () => {
+  const root=mkdtempSync(join(tmpdir(),'report-groups-'));
+  const result={stats:{startTime:new Date().toISOString(),duration:100},suites:[{title:'schade',specs:[{title:'Hoofdtitel controleren',file:'pagina.spec.ts',tests:['chromium','firefox','webkit'].map(browser=>({
+    status:browser==='firefox'?'unexpected':'expected',projectName:browser,annotations:[{type:'Onderdeel',description:'Schade melden'},{type:'Testgroep',description:'Pagina-inhoud'},{type:'Regressiecase',description:'SCH-H1'}],
+    results:[{status:browser==='firefox'?'failed':'passed',duration:100,errors:browser==='firefox'?[{message:'Hoofdtitel ontbreekt'}]:[]}],
+  }))}]}]};
+  mkdirSync(join(root,'groep-run'));writeFileSync(join(root,'groep-run/results.json'),JSON.stringify(result));
+  const server=spawn(process.execPath,[resolve('scripts/report-page/server.mjs')],{env:{...process.env,REPORT_RUNS_DIR:root,PORT:'8078',REPORT_HOST:'127.0.0.1'},stdio:['ignore','pipe','pipe']});
+  let browser;
+  try{
+    await Promise.race([once(server.stdout,'data'),once(server,'exit').then(()=>{throw Error('Server stopped')}),new Promise((_,reject)=>{const t=setTimeout(()=>reject(Error('Server timeout')),5000);t.unref()})]);
+    browser=await chromium.launch();const page=await browser.newPage();
+    await page.goto('http://127.0.0.1:8078');
+    await page.locator('.run>summary').click();
+    await expect(page.locator('.regression-group')).toHaveCount(1);
+    await expect(page.locator('.case')).toHaveCount(1);
+    await expect(page.locator('.regression-group>summary')).toContainText('1 gefaald');
+    await expect(page.locator('.case>summary')).not.toBeVisible();
+    await page.locator('.regression-group>summary').click();
+    await expect(page.locator('.case>summary')).toContainText('firefox: Gefaald');
+    await page.locator('.case>summary').click();
+    await expect(page.locator('.test')).toHaveCount(3);
+    await page.locator('.test>summary').first().click();
+    await expect(page.getByRole('heading',{name:'Wat ging er mis?'})).toBeVisible();
+    result.stats.duration=200;writeFileSync(join(root,'groep-run/results.json'),JSON.stringify(result));
+    await page.click('#refresh');
+    await expect(page.locator('.regression-group')).toHaveAttribute('open','');
+    await expect(page.locator('.case')).toHaveAttribute('open','');
+    await expect(page.getByRole('heading',{name:'Wat ging er mis?'})).toBeVisible();
+    await page.getByRole('button',{name:'Met fouten',exact:true}).click();
+    await expect(page.locator('.case')).toHaveCount(1);await expect(page.locator('.test')).toHaveCount(1);
+    await expect(page.locator('.regression-group>summary')).toContainText('1 browserresultaten');
+    await page.fill('#search','SCH-H1');await expect(page.locator('.case')).toHaveCount(1);
+    await page.setViewportSize({width:375,height:812});
+    await page.locator('.run>summary').click();await page.locator('.regression-group>summary').click();await page.locator('.case>summary').click();
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  }finally{
+    if(browser)await browser.close();server.kill();await once(server,'exit').catch(()=>{});rmSync(root,{recursive:true,force:true});
+  }
+});

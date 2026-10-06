@@ -25,7 +25,7 @@ De CSV `moz_lancyr_crawl_issues_09302026.csv` bevat **27 meldingen voor 14 versc
 | Paginering | Pagina 1 → 2 → 1, andere vragen, herladen en browser-terug/vooruit. |
 | URL-varianten | `cst`, expliciete pagina 1/2 en beide parametervolgordes leveren dezelfde bedoelde vragen en paginastand. |
 
-Dit zijn **74 tests per browser, 222 bij een volledige run**. De eisen zijn bewust onafhankelijk: een ontbrekende H1 blokkeert de navigatietests niet. Sommige koppen staan buiten `main`; de inhoudscontrole accepteert die locatie, terwijl de aparte H1-test wel het afgesproken headingniveau vereist.
+Dit zijn **74 controles, uitgevoerd in drie browsers: 222 browserresultaten bij een volledige run**. De centrale rapportpagina toont zes uitklapbare testgroepen. Daaronder staat elke controle één keer, met de resultaten per browser en vervolgens de foutuitleg en bijlagen. Een controle met een fout in één browser wordt als gefaald getoond. De tellers volgen de actieve filters; bij alleen regressieresultaten tellen ze controles per run. De eisen zijn bewust onafhankelijk: een ontbrekende H1 blokkeert de navigatietests niet. Sommige koppen staan buiten `main`; de inhoudscontrole accepteert die locatie, terwijl de aparte H1-test wel het afgesproken headingniveau vereist.
 
 De FAQ-antwoorden zitten in uitklappers; de ‘Lees meer’-link wordt pas daarbinnen zichtbaar. Het doel van links wordt gecontroleerd in het huidige of nieuwe tabblad, zoals de website dat aanbiedt. Externe schadeformulieren worden niet ingevuld, geopend of verzonden; de suite controleert de zichtbare link en de afgesproken bestemming.
 

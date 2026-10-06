@@ -1,5 +1,7 @@
 import { test, expect, dataset, details, registreer, pagina, url, openPagina, controleerInhoud, sluitCookies, dezelfdeUrl } from './helpers';
 
+// Controleer of bezoekers via de schadeopties op de bedoelde pagina terechtkomen.
+// De database bepaalt welke routes en externe verwijzingen we controleren.
 test.setTimeout(45000);
 for (const scenario of dataset.scenarios.filter(s=>s.type==='navigatie')) {
   test(scenario.naam,details('Navigatie',scenario),async({page},info)=>{
@@ -8,11 +10,12 @@ for (const scenario of dataset.scenarios.filter(s=>s.type==='navigatie')) {
     await openPagina(page,pagina(scenario.bronPaginaId));
     await sluitCookies(page);
     await test.step(`Open ${doel.naam} via de schadeoptie`,async()=>{
-      // Exact destination distinguishes the identically labelled damage buttons.
+      // Sommige knoppen hebben dezelfde tekst. Het webadres bepaalt welke we nodig hebben.
       const target = page.getByRole('main').locator(`a[href=${JSON.stringify(url(doel.pad))}], a[href=${JSON.stringify(doel.pad)}]`);
       await expect(target,'De schadeoptie moet beschikbaar zijn.').toHaveCount(1);
       await expect(target).toBeVisible();
       let bestemming = page;
+// Volg de link zoals de website die aanbiedt: in hetzelfde of in een nieuw tabblad.
       if (await target.getAttribute('target') === '_blank') {
         const nieuwTabblad = page.waitForEvent('popup');
         await target.click();
@@ -26,6 +29,8 @@ for (const scenario of dataset.scenarios.filter(s=>s.type==='navigatie')) {
     });
   });
 }
+// Controleer alleen de zichtbaarheid en bestemming van externe formulierlinks.
+// Deze tests openen, vullen en verzenden geen schadeformulier.
 for (const scenario of dataset.scenarios.filter(s=>s.type==='extern-link')) {
   test(scenario.naam,details('Navigatie',scenario),async({page},info)=>{
     await registreer(info,scenario);

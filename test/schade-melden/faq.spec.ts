@@ -1,6 +1,9 @@
 import { test, expect, dataset, details, registreer, pagina, url, openPagina, sluitCookies, faqInhoud, faqPagina, dezelfdeUrl } from './helpers';
 
+// Test de FAQ-bediening apart van de controles op titels en beschrijvingen.
+// Elke groep hieronder gebruikt de bijbehorende scenario’s uit de database.
 test.setTimeout(60000);
+// Open een vraag, lees het volledige antwoord en keer terug naar dezelfde vragenlijst.
 for (const scenario of dataset.scenarios.filter(s=>s.type==='faq-antwoord')) {
   test(scenario.naam,details('FAQ',scenario),async({page},info)=>{
     await registreer(info,scenario);
@@ -9,6 +12,7 @@ for (const scenario of dataset.scenarios.filter(s=>s.type==='faq-antwoord')) {
     await sluitCookies(page);
     const vragen = await faqInhoud(page);
     await test.step('Klap de gekozen vraag open',async()=>{
+      // Zoek de vraag via de afgesproken antwoordlink; de Lees meer-link zit in de uitklapper.
       const item = page.getByRole('main').locator('.wp-block-post-template > li').filter({has:page.locator(`a[href=${JSON.stringify(url(scenario.instellingen.doelPad!))}]`)});
       await item.locator('.faq-toggle').click();
       await expect(item.locator('.faq-content')).toBeVisible();
@@ -28,6 +32,8 @@ for (const scenario of dataset.scenarios.filter(s=>s.type==='faq-antwoord')) {
     });
   });
 }
+// Controleer wisselen van pagina, herladen en de terug-/vooruitknoppen van de browser.
+// Bewaar beide vragenlijsten om te zien of de juiste inhoud terugkomt.
 for (const scenario of dataset.scenarios.filter(s=>s.type==='paginering')) {
   test(scenario.naam,details('Paginering',scenario),async({page},info)=>{
     await registreer(info,scenario);
@@ -63,6 +69,8 @@ for (const scenario of dataset.scenarios.filter(s=>s.type==='paginering')) {
     });
   });
 }
+// Verschillende URL-parameters moeten dezelfde bedoelde vragenlijst opleveren.
+// We eisen hier niet dat de website cst verwijdert of een andere voorkeurs-URL instelt.
 for (const scenario of dataset.scenarios.filter(s=>s.type==='url-variant')) {
   test(scenario.naam,details('URL-varianten',scenario),async({page},info)=>{
     await registreer(info,scenario);
@@ -76,6 +84,9 @@ for (const scenario of dataset.scenarios.filter(s=>s.type==='url-variant')) {
   });
 }
 
+// Controleer open-, dicht- en opnieuw openklappen als een zelfstandige test.
+// Daardoor kan doorklikken naar een antwoord slagen terwijl dichtklappen nog fout gaat.
+// Een bekende websitefout blijft rood totdat het gedrag is hersteld.
 for (const scenario of dataset.scenarios.filter(s=>s.type==='faq-uitklappen')) {
   test(scenario.naam,details('FAQ',scenario),async({page},info)=>{
     await registreer(info,scenario);
