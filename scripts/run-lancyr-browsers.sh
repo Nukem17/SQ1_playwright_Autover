@@ -8,8 +8,10 @@ cd "$project_dir"
 
 # Alle modi gebruiken de browserprojecten uit playwright.config.ts.
 mode="${1:-headless}"
-if [[ $# -gt 2 || "$mode" != headless && "$mode" != headed && "$mode" != visible && "$mode" != funnel-demo ]]; then
-  echo 'Gebruik: bash scripts/run-lancyr-browsers.sh [headless|headed|visible|funnel-demo] [scenario-id]' >&2
+# De derde keuze is optioneel; bestaande startcommando’s blijven alle browsers gebruiken.
+browser="${3:-all}"
+if [[ $# -gt 3 || "$mode" != headless && "$mode" != headed && "$mode" != visible && "$mode" != funnel-demo || "$browser" != all && "$browser" != chromium && "$browser" != firefox && "$browser" != webkit ]]; then
+  echo 'Gebruik: bash scripts/run-lancyr-browsers.sh [headless|headed|visible|funnel-demo] [scenario-id] [all|chromium|firefox|webkit]' >&2
   exit 2
 fi
 image=sq1-playwright
@@ -17,6 +19,11 @@ container_options=()
 workers=2
 browser_command=(npx playwright test)
 test_options=()
+if [[ "$browser" != all ]]; then test_options=("--project=$browser"); fi
+if [[ "$mode" == funnel-demo && "$browser" != all && "$browser" != chromium ]]; then
+  echo 'De funnel-demo ondersteunt alleen Chromium.' >&2
+  exit 2
+fi
 funnel_demo=0
 if [[ "$mode" == funnel-demo ]]; then
   funnel_demo=1

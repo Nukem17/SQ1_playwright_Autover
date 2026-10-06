@@ -2,6 +2,20 @@
 
 Dit project test onderdelen van de Lancyr-website met Playwright en TypeScript: de autoverzekeringsfunnel en de pagina’s/FAQ van Schade melden. Tests draaien in Chromium, Firefox en WebKit via Docker. De autoverzekeringsfunnel stopt vóór **Sluit af**.
 
+## Starten via het keuzemenu in VS Code
+
+Open dit project in VS Code in de Bash-/Docker-omgeving (bijvoorbeeld WSL). Kies **Terminal → Run Task… → Lancyr: tests starten**. De terminal krijgt automatisch de focus. Kies daar het onderdeel, de browser en de uitvoermodus. Enter kiest de getoonde standaardwaarde; in het hoofdmenu sluit Enter het menu af.
+
+- **Autoverzekering:** kies ook een database-scenario; standaard wordt `standaard` gebruikt.
+- **Schade melden:** draait de volledige schade-suite voor de gekozen browser(s).
+- **Beide functionele suites:** voert autoverzekering met het gekozen scenario en daarna Schade melden uit, ook als de eerste suite testfouten vindt. Dit zijn twee afzonderlijke rapporten.
+- **Visuele tests:** vergelijkt in Chromium met de bestaande referentie. Het menu vernieuwt de referentie niet.
+- **Rapportage:** kies **Lancyr: rapportage openen** bij de VS Code-taken. Open vervolgens de getoonde link naar http://localhost:8070. Een bestaande server wordt hergebruikt; een nieuw gestarte server blijft draaien zolang die terminal open is.
+
+De modus met een virtueel scherm opent geen zichtbaar browservenster op je computer. Na uitvoering zie je de uitslag en de rapportlocatie. Ctrl+C onderbreekt de uitvoering. De bestaande losse commando’s blijven beschikbaar.
+
+Buiten VS Code start je hetzelfde menu met `bash scripts/testmenu.sh`.
+
 ## Snel starten
 
 Voor uitvoering via de shellscripts heb je Bash en een werkende Docker Engine nodig. Tests en samenvattingen worden in dezelfde container uitgevoerd:
