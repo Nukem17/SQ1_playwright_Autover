@@ -6,7 +6,7 @@ Dit project test onderdelen van de Lancyr-website met Playwright en TypeScript: 
 
 Open dit project in VS Code in de Bash-/Docker-omgeving (bijvoorbeeld WSL). Kies **Terminal → Run Task… → Lancyr: tests starten**. De terminal krijgt automatisch de focus. Kies daar het onderdeel, de browser en de uitvoermodus. Enter kiest de getoonde standaardwaarde; in het hoofdmenu sluit Enter het menu af.
 
-- **Autoverzekering:** kies ook een database-scenario; standaard wordt `standaard` gebruikt.
+- **Autoverzekering:** kies ook een database-scenario; standaard wordt `standaard` gebruikt. Uitvoermodus **3. Live meekijken via noVNC** start de zichtbare viewer met één worker. Wacht op de melding dat de viewer klaarstaat, open `http://localhost:6080/vnc.html?autoconnect=true&resize=scale` in Live Preview of je browser en druk daarna in de terminal op Enter. Na afloop druk je opnieuw op Enter om de viewer af te sluiten.
 - **Schade melden:** draait de volledige schade-suite voor de gekozen browser(s).
 - **Beide functionele suites:** voert autoverzekering met het gekozen scenario en daarna Schade melden uit, ook als de eerste suite testfouten vindt. Dit zijn twee afzonderlijke rapporten.
 - **Visuele tests:** vergelijkt in Chromium met de bestaande referentie. Het menu vernieuwt de referentie niet.

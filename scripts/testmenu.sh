@@ -64,8 +64,13 @@ if [[ "$action" != 4 ]]; then
   choose 'Keuze [1]: ' '1 2 3 4' '1'
   case "$choice" in 1) browser=all ;; 2) browser=chromium ;; 3) browser=firefox ;; 4) browser=webkit ;; esac
   printf '\nUitvoering\n1. Zonder browservenster\n2. Met virtueel scherm in Docker (geen zichtbaar venster op je computer)\n'
-  choose 'Keuze [1]: ' '1 2' '1'
-  [[ "$choice" != 2 ]] || mode=headed
+  if [[ "$action" == 1 ]]; then
+    echo '3. Live meekijken via noVNC (zichtbare browser in de viewer)'
+    choose 'Keuze [1]: ' '1 2 3' '1'
+  else
+    choose 'Keuze [1]: ' '1 2' '1'
+  fi
+  case "$choice" in 2) mode=headed ;; 3) mode=visible ;; esac
 fi
 if [[ "$action" == 1 || "$action" == 3 ]]; then
   echo
@@ -73,6 +78,14 @@ if [[ "$action" == 1 || "$action" == 3 ]]; then
   echo 'Bijvoorbeeld standaard of testgebruiker-anna. De runner controleert of het bestaat.'
   if ! read -r -p 'Scenario-ID [standaard]: ' scenario; then echo; exit 0; fi
   scenario="${scenario:-standaard}"
+fi
+
+if [[ "$mode" == visible ]]; then
+  echo
+  echo 'Wacht totdat de viewer klaarstaat en open dan deze URL in Live Preview of je browser:'
+  echo 'http://localhost:6080/vnc.html?autoconnect=true&resize=scale'
+  echo 'Verbind met de viewer en druk daarna in deze terminal op Enter om de tests te starten.'
+  echo 'Na de tests druk je opnieuw op Enter om de viewer af te sluiten.'
 fi
 
 # Voer beide suites ook uit als de eerste fouten vindt. Bewaar wel de foutstatus.
