@@ -1,55 +1,39 @@
-# Visuele vergelijking van de Lancyr-autopagina
+# Visuele referentietest
 
-Deze aparte proef controleert het uiterlijk van het eerste scherm van de autoverzekeringsfunnel, met een leeg kentekenveld. Hij draait alleen in Chromium headless in de bestaande `sq1-playwright`-image. De gewone funnelrunner voert deze test niet uit. De test doet geen premieberekening of aanvraag.
+Vergelijkt het eerste scherm van de autoverzekeringspagina met een beoordeelde screenshot. Alleen Chromium headless, één worker en geen retries. Deze proef doet geen premieberekening; de gewone funnelrunner voert hem niet uit.
 
-## Demonstreren
+## Uitvoeren
 
-Voer vanuit de projectmap uit; Docker en Bash zijn nodig, lokale Node/npm niet.
+```bash
+bash scripts/run-lancyr-visual.sh check      # bestaande referentie vergelijken
+bash scripts/run-lancyr-visual.sh demo       # bewuste afwijking tonen
+bash scripts/run-lancyr-visual.sh reference  # referentie maken/vernieuwen
+```
 
-1. Maak een voorgestelde referentie:
+De npm-varianten zijn `test:visual`, `test:visual:demo` en `test:visual:reference`.
 
-   ```bash
-   bash scripts/run-lancyr-visual.sh reference
-   ```
+**Alleen `reference` vernieuwt de norm.** Beoordeel logo, tekst, veld en knop voordat je de PNG accepteert. Bewaar de goedgekeurde referentie samen met de test in Git:
 
-   Bekijk `test/lancyr-visual.spec.ts-snapshots/autoverzekering-start-chromium-linux.png`. Controleer zelf logo, tekst, kentekenveld en knop. Een succesvolle opname bewijst nog niet dat het ontwerp juist is. Dit commando vernieuwt ook een bestaande referentie; gebruik het alleen voor een bewust beoordeelde wijziging. Bewaar de goedgekeurde PNG samen met de test in Git.
+`test/autoverzerkeringsfunnel/lancyr-visual.spec.ts-snapshots/autoverzekering-start-chromium-linux.png`
 
-2. Vergelijk de actuele pagina met de referentie:
+Een normale check maakt geen ontbrekende referentie aan. De demo verschuift het kentekenveld lokaal 60 pixels naar rechts en hoort op een screenshotverschil te falen. De website en referentie veranderen niet.
 
-   ```bash
-   bash scripts/run-lancyr-visual.sh
-   ```
+## Beelden en rapporten
 
-   De vergelijking hoort te slagen wanneer de pagina gelijk is. Een ontbrekende referentie geeft een fout; deze run maakt of vervangt geen referentie.
+Open **Referentie, actueel en verschil** via [de rapportpagina](README-reportpage.md), of `VISUEEL-OVERZICHT.html` in de runmap.
 
-3. Toon een zichtbare afwijking:
+| Beeld | Betekenis |
+| --- | --- |
+| Referentie | Beoordeelde norm. |
+| Actueel | Screenshot tijdens deze run, ook bewaard bij succes. |
+| Verschil | Door Playwright gemarkeerde afwijkingen; bij succes geen verschilbeeld. |
 
-   ```bash
-   bash scripts/run-lancyr-visual.sh demo
-   ```
+Playwright levert de vergelijking en verschilbeelden. Het project voegt het HTML-overzicht en de CSS-demo toe. De geselecteerde beelden blijven per run in `overzicht-beelden/` staan, ook na een latere referentie-update. JSON, samenvatting, HTML en fouttraces volgen de gewone runstructuur.
 
-   Deze modus verschuift het kentekenveld 60 pixels naar rechts, uitsluitend in de tijdelijke testbrowser. Dezelfde screenshotvergelijking hoort nu te falen. De foutcode blijft behouden. Er verandert niets aan de website of referentie. Controleer in het rapport dat de fout daadwerkelijk een screenshotverschil is, geen laad- of netwerkfout.
+## Vergelijkingsvoorwaarden
 
-4. Voer de gewone vergelijking opnieuw uit om te laten zien dat de wijziging tijdelijk was.
+Viewport **1440 × 700**, Nederlandse locale, licht thema en leeg kenteken. De test sluit cookies, wacht op lettertypen en zichtbare afbeeldingen, scrollt naar boven en schakelt animaties en de tekstcursor uit bij de opname.
 
-De overeenkomstige npm-commando's zijn `npm run test:visual:reference`, `npm run test:visual` en `npm run test:visual:demo`.
+Alleen het eerste scherm wordt vergeleken. `maxDiffPixels: 0` staat geen afwijkende pixels boven Playwrights standaard kleurdrempel toe. Een verschil toont waar het beeld afwijkt, niet automatisch waarom. Gebruik dezelfde browseromgeving en beoordeel wijzigingen voordat je de referentie of tolerantie aanpast.
 
-## Resultaten
-
-Open eerst `VISUEEL-OVERZICHT.html` in de runmap. Dit overzicht werkt rechtstreeks in je browser en toont **Zo hoort het**, **Zo ziet het er nu uit** en **Dit wijkt af** naast elkaar. Klik op een afbeelding voor de volledige grootte. Bij succes staat bij het derde paneel dat er geen verschil is gevonden. De drie geselecteerde beelden worden in `overzicht-beelden/` bewaard, zodat het overzicht ook na een latere referentie-update bij deze run blijft horen. De overige screenshots zijn alleen nodig voor technisch onderzoek.
-
-Iedere uitvoering krijgt een eigen `test-runs/<datum-tijd>_visual-<modus>_<code>/` met:
-
-- `SAMENVATTING.md`: uitslag en modus.
-- `results.json` en `html/index.html`: machineleesbaar en HTML-rapport.
-- `test-results/`: `actueel.png` per test, ook bij succes; bij visuele afwijkingen daarnaast de verwachte screenshot, actuele screenshot en verschilafbeelding van Playwright. Bij fouten blijft ook een trace beschikbaar.
-
-De actuele screenshot is als bijlage aan het HTML-rapport gekoppeld. Bij een afwijking kun je daar de vergelijking bekijken. Referenties staan bewust buiten de runmappen: ze zijn testinvoer en horen bij versiebeheer.
-
-## Vaste omstandigheden
-
-De test gebruikt een viewport van 1440 × 700, een lichte kleurmodus, Nederlandse locale en een lege invoer. Hij sluit de cookiemelding, wacht op lettertypen en zichtbare afbeeldingen, zet de scrollpositie bovenaan en schakelt animaties tijdens de opname uit. Alleen het eerste browserbeeld wordt vergeleken, niet de volledige pagina onder de vouw. De klantreviews onder het formulier vallen zo buiten deze proef.
-
-Er zijn nul afwijkende pixels toegestaan volgens Playwrights pixelvergelijking (de standaard kleurdrempel blijft van toepassing). Verhoog de tolerantie niet zomaar om een onverwachte fout te verbergen. De live site kan veranderen; beoordeel dan de verschillen voordat je de referentie vernieuwt. Gebruik voor opname en vergelijking dezelfde Docker-omgeving, browser en modus.
-
-Bronnen: [Playwright visual comparisons](https://playwright.dev/docs/test-snapshots) en [toHaveScreenshot](https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1).
+Bron: [Playwright screenshotvergelijking](https://playwright.dev/docs/test-snapshots).

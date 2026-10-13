@@ -71,20 +71,22 @@ test('Initialisatie migreert bestaande data eenmaal en behoudt latere wijziginge
     db.close();
     execFileSync(process.execPath, [init], { cwd: dir });
     db = new DatabaseSync(path);
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 1);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 2);
     const bram = db.prepare("SELECT * FROM autoverzekering_scenarios WHERE id='testgebruiker-bram'").get();
     assert.equal(bram.straat, 'Eigen straat');
     assert.equal(bram.bestuurder, 'Partner');
     db.exec("UPDATE autoverzekering_scenarios SET kilometrage='15000' WHERE id='testgebruiker-bram'");
+    db.exec("UPDATE regressie_paginas SET verwachteTitel='Eigen titel' WHERE id='schade-start'");
     db.close();
     execFileSync(process.execPath, [init], { cwd: dir });
     db = new DatabaseSync(path);
     assert.equal(db.prepare("SELECT kilometrage FROM autoverzekering_scenarios WHERE id='testgebruiker-bram'").get().kilometrage, '15000');
+    assert.equal(db.prepare("SELECT verwachteTitel FROM regressie_paginas WHERE id='schade-start'").get().verwachteTitel, 'Eigen titel');
     db.close();
     rmSync(path);
     execFileSync(process.execPath, [init], { cwd: dir });
     db = new DatabaseSync(path);
-    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 1);
+    assert.equal(db.prepare('PRAGMA user_version').get().user_version, 2);
     assert.equal(db.prepare('SELECT count(*) AS n FROM autoverzekering_scenarios').get().n, 6);
     db.close();
   } finally { rmSync(dir, { recursive: true, force: true }); }

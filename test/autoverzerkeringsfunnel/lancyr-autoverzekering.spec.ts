@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { haalTestscenarioOp, bepaalIngangsdatum } from '../testdata/scenarios';
+import { haalTestscenarioOp, bepaalIngangsdatum } from '../../testdata/scenarios';
 
 // Playwright geeft elke test een verse 'page': een nieuw browsertabblad.
 // Met expect checken we wat de gebruiker echt ziet of heeft ingevuld.
