@@ -1,9 +1,9 @@
 # Bronmeldingen Schade melden
 
-Bron: `moz_lancyr_crawl_issues_09302026.csv`. Regelnummers tellen de kopregel mee.
+Bron: [Moz-CSV](../moz_lancyr_crawl_issues_09302026.csv). Selectie: **27 meldingen, 14 URL’s**. Regelnummers tellen de kopregel mee.
 
 | Pagina | CSV-regels | Meldingen |
-|---|---|---|
+| --- | --- | --- |
 | `/schade-melden/` | 9 | missing h1 |
 | `/schade-melden/eenzijdig-schade-melden/` | 153, 235 | missing description, missing h1 |
 | `/schade-melden/tweezijdig-schade-melden/` | 158, 240 | missing description, missing h1 |
@@ -19,6 +19,6 @@ Bron: `moz_lancyr_crawl_issues_09302026.csv`. Regelnummers tellen de kopregel me
 | `/schade-melden/faq/?cst&query-11-page=1` | 348, 352 | missing description, missing h1 |
 | `/schade-melden/faq/?query-11-page=1&cst` | 349, 353 | missing description, missing h1 |
 
-De CSV is historische broninformatie. Elke pagina krijgt onafhankelijke controles voor bereikbaarheid, titel, H1 en description. De eisen blijven gelden als de website wordt gerepareerd.
+De CSV is historische broninformatie. De tests lezen pagina’s en verwachtingen uit SQLite, niet rechtstreeks uit dit bestand. Elke URL krijgt onafhankelijke controles voor bereikbaarheid, titel, H1 en description.
 
-Meldingen over `/faq/...`-artikelen die alleen via de verwijzende URL bij schade horen, vallen buiten deze eerste metadata-selectie. De FAQ-doorkliktest controleert wel één antwoord.
+`/faq/...`-antwoordartikelen vallen buiten deze metadata-selectie. De FAQ-doorkliktest controleert wel één antwoord. De dichtklapcontrole komt uit aanvullende browserinspectie. Zie [de regressiesuite](../README-schade-regressie.md).
