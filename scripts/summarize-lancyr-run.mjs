@@ -20,7 +20,7 @@ function allSpecs(suites) {
 
 const finishedAt = new Date().toISOString();
 const timestamp = `${amsterdamTime(startedAt)} – ${amsterdamTime(finishedAt)}`;
-let result = 'NIET UITGEVOERD';
+let result;
 let testLines = [];
 let scenarioLines = [];
 

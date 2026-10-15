@@ -26,6 +26,7 @@ container_dir="/app/test-runs/$(basename "$run_dir")"
 echo "Run: ${run_dir#$project_dir/}"
 docker run --rm --init --ipc=host --user "$(id -u):$(id -g)" \
   -e "LANCYR_VISUAL_MODE=$mode" \
+  -e LANCYR_LINT_SUITE=visueel \
   -e PLAYWRIGHT_HTML_OPEN=never \
   -e "PLAYWRIGHT_HTML_OUTPUT_DIR=$container_dir/html" \
   -e "PLAYWRIGHT_JSON_OUTPUT_FILE=$container_dir/results.json" \

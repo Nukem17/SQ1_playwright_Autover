@@ -10,8 +10,8 @@ cd "$project_dir"
 mode="${1:-headless}"
 # De derde keuze is optioneel; bestaande startcommando’s blijven alle browsers gebruiken.
 browser="${3:-all}"
-if [[ $# -gt 3 || "$mode" != headless && "$mode" != headed && "$mode" != visible && "$mode" != funnel-demo || "$browser" != all && "$browser" != chromium && "$browser" != firefox && "$browser" != webkit ]]; then
-  echo 'Gebruik: bash scripts/run-lancyr-browsers.sh [headless|headed|visible|funnel-demo] [scenario-id] [all|chromium|firefox|webkit]' >&2
+if [[ $# -gt 3 || "$mode" != headless && "$mode" != headed && "$mode" != visible && "$mode" != funnel && "$mode" != funnel-demo || "$browser" != all && "$browser" != chromium && "$browser" != firefox && "$browser" != webkit ]]; then
+  echo 'Gebruik: bash scripts/run-lancyr-browsers.sh [headless|headed|visible|funnel|funnel-demo] [scenario-id] [all|chromium|firefox|webkit]' >&2
   exit 2
 fi
 image=sq1-playwright
@@ -20,6 +20,10 @@ workers=2
 browser_command=(npx playwright test)
 test_options=()
 if [[ "$browser" != all ]]; then test_options=("--project=$browser"); fi
+if [[ "$mode" == funnel ]]; then
+  # Alleen de echte klantreis; geen korte paginatests of kunstmatige foutdemo.
+  test_options+=(--grep 'doorloop de funnel tot vlak vóór Sluit af$' --retries=0)
+fi
 if [[ "$mode" == funnel-demo && "$browser" != all && "$browser" != chromium ]]; then
   echo 'De funnel-demo ondersteunt alleen Chromium.' >&2
   exit 2
@@ -81,6 +85,8 @@ container_run_dir="/app/test-runs/$(basename "$run_dir")"
 docker run "${container_options[@]}" --rm --init --ipc=host --user "$(id -u):$(id -g)" \
   -e "LANCYR_TEST_SCENARIO=$scenario" \
   -e "LANCYR_FUNNEL_DEMO=$funnel_demo" \
+  -e LANCYR_LINT_SUITE=autoverzekering \
+  -e "CI=${CI:-}" \
   -e PLAYWRIGHT_HTML_OPEN=never \
   -e "PLAYWRIGHT_HTML_OUTPUT_DIR=$container_run_dir/html" \
   -e "PLAYWRIGHT_JSON_OUTPUT_FILE=$container_run_dir/results.json" \

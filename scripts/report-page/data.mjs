@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync, realpathSync, statSync } from 'n
 import { resolve, relative, sep, join } from 'node:path';
 import { explainAttempt } from './error-explanation.mjs';
 import { classifyTest } from './classification.mjs';
+// eslint-disable-next-line no-control-regex -- ANSI-escapes uit terminalmeldingen verwijderen.
 export const clean = value => String(value ?? '').replace(/\x1b\[[0-9;]*m/g, '');
 export function safeFile(root, path) {
   try {
@@ -15,7 +16,9 @@ export function readRuns(root) {
     const id = entry.name, dir = join(root, id);
     const link = path => safeFile(root, `${id}/${path}`) ? '/runs/' + [id, ...path.split('/')].map(encodeURIComponent).join('/') : null;
     let summary = '';
-    try { summary = readFileSync(safeFile(root, `${id}/SAMENVATTING.md`), 'utf8'); } catch {}
+    try { summary = readFileSync(safeFile(root, `${id}/SAMENVATTING.md`), 'utf8'); } catch {
+      // Een lopende of oudere run kan nog geen samenvatting hebben.
+    }
     const mode = summary.match(/\*\*Browsermodus:\*\* (.+)/)?.[1] || 'Niet vastgelegd';
     const kind = /visual/.test(mode + id) ? 'Visueel' : 'Functioneel';
     const demo = /demo/.test(mode + id), reference = /reference/.test(mode + id);

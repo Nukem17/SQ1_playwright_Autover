@@ -39,6 +39,7 @@ echo "Run: ${run_dir#$project_dir/}"
 # Bewaar HTML, JSON en foutbijlagen; maak daarna de leesbare samenvatting.
 # Een falende test geeft ook een foutstatus terug aan degene die dit script start.
 docker run --rm --init --ipc=host --user "$(id -u):$(id -g)" \
+  -e LANCYR_LINT_SUITE=schade \
   -e PLAYWRIGHT_HTML_OPEN=never \
   -e "PLAYWRIGHT_HTML_OUTPUT_DIR=$container_dir/html" \
   -e "PLAYWRIGHT_JSON_OUTPUT_FILE=$container_dir/results.json" \

@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 // Deze instellingen gelden voor alle .spec.ts-bestanden in test/.
 export default defineConfig({
+  globalSetup: './scripts/playwright-global-setup.mjs',
   testDir: './test',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,

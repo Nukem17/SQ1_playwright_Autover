@@ -42,6 +42,6 @@ Bij een Novulo-scenario beschrijf je beginsituatie, rol, invoer en verwachte sta
 - Het eerste scherm wordt visueel vergeleken, niet de hele website.
 - 74 controles leveren 222 browserresultaten op; twee workers gelden samen over de browsers.
 - Een groene run bewijst alleen de gekozen verwachtingen op dat moment. Exacte premies, mobiele dekking en definitieve aanvragen zijn niet volledig getest.
-- Er is nog geen CI-workflow, Elasticsearch-koppeling of centraal teamportaal.
+- GitHub Actions controleert linting en types. Een aparte workflow plant de funnel dagelijks om 11:30 Nederlandse tijd; activering vraagt opname op de standaardbranch. Elasticsearch en een centraal teamportaal zijn nog niet ingericht.
 
 Versies, commando’s en installatie: [README](README.md). Testdekking: [autoverzekering](README-lancyr-test.md) en [Schade melden](README-schade-regressie.md).
