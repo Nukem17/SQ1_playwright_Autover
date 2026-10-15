@@ -3,8 +3,8 @@ name: Autoverzekering — dagelijkse funnel
 on:
   schedule:
     # Expliciet UTC; de planning-job selecteert zomer- of wintertijd.
-    - cron: '0 10 * * *'
-    - cron: '0 11 * * *'
+    - cron: '45 11 * * *'
+    - cron: '45 12 * * *'
   workflow_dispatch:
 
 permissions:
