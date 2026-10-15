@@ -63,7 +63,9 @@ test('doorloop de funnel tot vlak vóór Sluit af', {
 }, async ({ page }, testInfo) => {
   // De live premieberekening kan langer duren dan een korte paginatest.
   test.setTimeout(120000);
+
   const gegevens = await test.step('0. Haal testscenario op uit SQLite', () => haalTestscenarioOp());
+
   testInfo.annotations.push({ type: 'Testdata', description: `SQLite-scenario: ${gegevens.id}` });
   await testInfo.attach('Gebruikte testdata uit SQLite', {
     body: JSON.stringify(gegevens, null, 2), contentType: 'application/json',

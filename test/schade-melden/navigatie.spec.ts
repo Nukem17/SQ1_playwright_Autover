@@ -9,6 +9,7 @@ for (const scenario of dataset.scenarios.filter(s=>s.type==='navigatie')) {
     const doel = pagina(scenario.doelPaginaId!);
     await openPagina(page,pagina(scenario.bronPaginaId));
     await sluitCookies(page);
+
     await test.step(`Open ${doel.naam} via de schadeoptie`,async()=>{
       // Sommige knoppen hebben dezelfde tekst. Het webadres bepaalt welke we nodig hebben.
       const target = page.getByRole('main').locator(`a[href=${JSON.stringify(url(doel.pad))}], a[href=${JSON.stringify(doel.pad)}]`);
@@ -36,6 +37,7 @@ for (const scenario of dataset.scenarios.filter(s=>s.type==='extern-link')) {
     await registreer(info,scenario);
     await openPagina(page,pagina(scenario.bronPaginaId));
     await sluitCookies(page);
+
     await test.step('Controleer de verwijzing naar het externe schadeformulier',async()=>{
       const link = page.getByRole('main').getByRole('link',{name:scenario.instellingen.linkTekst!,exact:true});
       await expect(link).toBeVisible();

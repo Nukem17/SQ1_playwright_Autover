@@ -1,6 +1,6 @@
 # Sidequest: basis voor de Novulo-testsuite
 
-Projectuitleg voor lezers zonder programmeerervaring. Bijgewerkt op **13 oktober 2026**, op basis van de projectcode en opgeslagen resultaten. Dit document onderscheidt de huidige proef van de geplande Novulo-suite.
+Projectuitleg voor lezers zonder programmeerervaring. Bijgewerkt op **15 oktober 2026**, op basis van de projectcode en opgeslagen resultaten. Dit document onderscheidt de huidige proef van de geplande Novulo-suite.
 
 ## Aanleiding en doel
 
@@ -35,11 +35,13 @@ Git bewaart wijzigingen als commits. Een merge voegt werk uit een ontwikkeltak s
 | Node.js | 24.21.0, uit de LTS-reeks voor langdurige ondersteuning. |
 | npm | 11.19.0; gecontroleerd tijdens de Docker-build. |
 | Playwright | 1.63.0; gelijk aan de browserimage. |
-| TypeScript / @types/node | 7.0.2 / 24.19.0. |
+| TypeScript / @types/node | 6.0.3 / 24.19.0. |
 | Dependencies | Exact vastgelegd in `package-lock.json`; installatie met `npm ci`. |
 | Docker-basisimages | Vaste versies én digests die de image-inhoud identificeren. |
 
 Deze combinatie houdt de omgeving consistent. LTS geldt hier voor Node.js; de andere tools zijn vastgelegde projectversies. Versies kunnen mee als uitgangspunt voor Novulo, maar moeten bewust worden onderhouden.
+
+TypeScript is voor ESLint-ondersteuning aangepast van 7.0.2 naar 6.0.3. Node.js, npm en Playwright blijven gelijk. De GitHub-workflow voert bij pushes en pull requests ESLint en typecontrole uit, zonder browsertests.
 
 ## Docker en uitvoering
 
@@ -136,7 +138,7 @@ Een Novulo-scenario beschrijft bijvoorbeeld een conceptorder, de benodigde rol, 
 
 Elasticsearch bewaart JSON-documenten in indices in plaats van SQL-tabellen. De gegevenslaag moet documenten ophalen, authenticeren en valideren. De regressiesuite verzamelt data nu synchroon; netwerkdata kan bijvoorbeeld vóór de run worden opgehaald als vaste dataset. Deze koppeling is nog niet gebouwd.
 
-Voor centrale inzet zijn ook login/rollen, testomgevingen, veilig credentialbeheer, unieke procesrecords, opruimen en gedeelde rapportopslag nodig. De lokale rapportpagina heeft geen accountbeheer. Er is geen CI-workflow; configuratieopties alleen vormen geen pipeline.
+Voor centrale inzet zijn ook login/rollen, testomgevingen, veilig credentialbeheer, unieke procesrecords, opruimen en gedeelde rapportopslag nodig. De lokale rapportpagina heeft geen accountbeheer. GitHub Actions controleert linting en types. Een aparte workflow plant alleen de funnel dagelijks om 11:30 Nederlandse tijd, na opname op de standaardbranch. Gedeelde opslag en centrale teamhosting zijn nog niet ingericht.
 
 De sidequest levert de keten **starten → uitvoeren → controleren → bewaren → onderzoeken**. De volgende stap is deze basis op één afgesproken Novulo-proces toepassen en daarna uitbreiden.
 

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 // Alleen de aparte visual-runner schakelt deze proef in.
+// eslint-disable-next-line playwright/no-skipped-test -- Gewone funnelruns mogen de visuele proef niet starten.
 test.skip(!process.env.LANCYR_VISUAL_MODE, 'Gebruik scripts/run-lancyr-visual.sh');
 test.use({ viewport: { width: 1440, height: 700 }, locale: 'nl-NL', colorScheme: 'light', reducedMotion: 'reduce' });
 

@@ -54,6 +54,7 @@ export function failedStep(steps = []) {
   return '';
 }
 
+// eslint-disable-next-line no-control-regex -- ANSI-escapes uit terminalmeldingen verwijderen.
 const messageOf = error => String(error?.message || error?.stack || '').replace(/\x1b\[[0-9;]*m/g, '');
 const comparableMessage = error => messageOf(error).split(/\n(?:\s*>?\s*\d+\s*\||\s+at\s)/)[0].trim();
 

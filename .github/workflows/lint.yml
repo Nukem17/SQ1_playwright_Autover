@@ -1,0 +1,44 @@
+name: Codekwaliteit
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codekwaliteit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: ESLint en TypeScript
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Project ophalen
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Node.js instellen
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Vastgelegde npm-versie instellen
+        run: npm install --global "$(node -p 'require("./package.json").packageManager')"
+
+      - name: Dependencies installeren
+        id: install
+        run: npm ci
+
+      - name: Code linten
+        run: npm run lint
+
+      - name: Types controleren
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run typecheck

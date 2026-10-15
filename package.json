@@ -8,6 +8,8 @@
   },
   "packageManager": "npm@11.19.0",
   "scripts": {
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test:lancyr": "bash scripts/run-lancyr-browsers.sh",
     "test:lancyr:headed": "bash scripts/run-lancyr-browsers.sh headed",
@@ -15,11 +17,18 @@
     "test:lancyr:funnel-demo": "bash scripts/run-lancyr-browsers.sh funnel-demo",
     "test:visual": "bash scripts/run-lancyr-visual.sh",
     "test:visual:reference": "bash scripts/run-lancyr-visual.sh reference",
-    "test:visual:demo": "bash scripts/run-lancyr-visual.sh demo"
+    "test:visual:demo": "bash scripts/run-lancyr-visual.sh demo",
+    "lint:suite": "node scripts/lint-suite.mjs",
+    "test:lancyr:funnel": "bash scripts/run-lancyr-browsers.sh funnel"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@playwright/test": "1.63.0",
     "@types/node": "24.19.0",
-    "typescript": "7.0.2"
+    "eslint": "10.12.0",
+    "eslint-plugin-playwright": "2.12.1",
+    "globals": "17.13.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2"
   }
 }

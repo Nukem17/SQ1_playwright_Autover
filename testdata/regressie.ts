@@ -29,11 +29,13 @@ function localPath(value: unknown, field: string) {
 }
 // SQLite bewaart bronmeldingen en instellingen als tekst. Zet die om naar leesbare velden.
 // Ongeldige JSON geeft een fout, zodat we niet met verkeerde gegevens verder testen.
-function object(value: unknown, field: string): any {
+function object(value: unknown, field: string): Record<string, unknown> {
   try {
     const parsed = JSON.parse(String(value));
     if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
-  } catch {}
+  } catch {
+    // Ongeldige JSON krijgt hieronder dezelfde begrijpelijke validatiefout.
+  }
   throw new Error(`${field} moet een JSON-object zijn.`);
 }
 
@@ -66,7 +68,7 @@ export function haalRegressieSetOp(onderdeel = 'Schade melden', databasePath = p
       const instellingen = object(row.instellingen,`${row.id}: instellingen`);
       if (['navigatie','paginering','url-variant'].includes(String(row.type)) && !ids.has(String(row.doelPaginaId))) throw new Error(`${row.id}: doelpagina ontbreekt binnen het onderdeel.`);
       // Elk soort scenario heeft eigen verplichte instellingen.
-      if (row.type === 'url-variant' && ![1,2].includes(instellingen.verwachtePagina)) throw new Error(`${row.id}: verwachtePagina moet 1 of 2 zijn.`);
+      if (row.type === 'url-variant' && instellingen.verwachtePagina !== 1 && instellingen.verwachtePagina !== 2) throw new Error(`${row.id}: verwachtePagina moet 1 of 2 zijn.`);
       if (row.type === 'faq-antwoord' || row.type === 'faq-uitklappen') {
         localPath(instellingen.doelPad, `${row.id}: doelPad`);
         text(instellingen.verwachteHoofdtitel, `${row.id}: verwachteHoofdtitel`);
