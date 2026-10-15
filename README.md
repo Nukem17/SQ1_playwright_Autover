@@ -94,13 +94,13 @@ De scenario-afhankelijke funnel/visuele tests en popupnavigatie hebben gerichte 
 
 ## Dagelijkse funnel in GitHub Actions
 
-[De funnelworkflow](.github/workflows/autoverzekering.yml) draait dagelijks om **12:00 Europe/Amsterdam**, inclusief zomer-/wintertijd. Alleen de echte klantreis tot vóór **Sluit af** draait met scenario `standaard` in Chromium, Firefox en WebKit: drie browserresultaten, twee workers en geen retries. Playwright voert eerst de suite-lintcontrole uit. De korte paginatests, schade-suite, visuele test en foutdemo draaien niet mee.
+[De funnelworkflow](.github/workflows/autoverzekering.yml) draait dagelijks om **12:00 Nederlandse tijd**, inclusief zomer-/wintertijd. Er zijn twee UTC-triggers (10:00 en 11:00). Een voorbereidende job selecteert met `Europe/Amsterdam` de juiste voor het seizoen; de andere workflowrun slaat de funnel over. De selectie gebruikt de geplande tijd, zodat een vertraagde start niet op het verkeerde uur wordt afgewezen. Alleen de echte klantreis tot vóór **Sluit af** draait met scenario `standaard` in Chromium, Firefox en WebKit: drie browserresultaten, twee workers en geen retries. Playwright voert eerst de suite-lintcontrole uit. De korte paginatests, schade-suite, visuele test en foutdemo draaien niet mee.
 
 De planning wordt actief zodra de workflow op de standaardbranch staat (doorgaans `main`) en Actions is ingeschakeld. Alleen op `feature/actions` zetten activeert de dagelijkse planning niet. De workflow heeft ook een **Run workflow**-knop. GitHub kan geplande runs vertragen; openbare repositories kunnen hun planning na 60 dagen zonder activiteit verliezen. Zie [GitHub scheduling](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
 
 Resultaten verschijnen bij **Actions → Autoverzekering — dagelijkse funnel → run**. Het downloadbare artefact bevat de runmap met HTML, JSON, samenvatting en foutbijlagen, en blijft zeven dagen bewaard. Ontbrekende output na een buildfout wordt in de samenvatting gemeld. GitHub-resultaten verschijnen niet automatisch in je lokale rapportpagina; plaats gedownloade runmappen onder `test-runs/` om ze daar te bekijken.
 
-Planning aanpassen: wijzig `cron` en `timezone` in het workflowbestand. Stoppen: **Disable workflow** in GitHub Actions. Standaard Linux-runners gebruiken het beschikbare Actions-tegoed; bewaakte minuten en artefactopslag blijven van belang.
+Planning aanpassen: werk de UTC-crons in het workflowbestand en de tijdselectie in `scripts/funnel-schedule.mjs` samen bij. Stoppen: **Disable workflow** in GitHub Actions. Standaard Linux-runners gebruiken het beschikbare Actions-tegoed; bewaakte minuten en artefactopslag blijven van belang.
 
 Dezelfde selectie lokaal starten:
 

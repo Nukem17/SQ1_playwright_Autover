@@ -14,7 +14,7 @@ const common = [
 ];
 
 export const suiteFiles = {
-  autoverzekering: [...common, 'test/autoverzerkeringsfunnel/lancyr-autoverzekering.spec.ts', 'testdata/scenarios.ts'],
+  autoverzekering: [...common, 'test/autoverzerkeringsfunnel/lancyr-autoverzekering.spec.ts', 'testdata/scenarios.ts', 'scripts/funnel-schedule.mjs'],
   schade: [...common, 'test/schade-melden/**/*.ts', 'testdata/regressie.ts'],
   visueel: [...common, 'test/autoverzerkeringsfunnel/lancyr-visual.spec.ts', 'scripts/create-visual-overview.mjs'],
 };

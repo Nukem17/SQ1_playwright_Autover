@@ -2,8 +2,9 @@ name: Autoverzekering — dagelijkse funnel
 
 on:
   schedule:
-    - cron: '0 12 * * *'
-      timezone: Europe/Amsterdam
+    # Expliciet UTC; de planning-job selecteert zomer- of wintertijd.
+    - cron: '0 10 * * *'
+    - cron: '0 11 * * *'
   workflow_dispatch:
 
 permissions:
@@ -14,7 +15,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  planning:
+    name: Nederlandse tijd controleren
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.schedule.outputs.run }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Geplande tijd controleren
+        id: schedule
+        env:
+          SCHEDULE_CRON: ${{ github.event.schedule }}
+        run: node scripts/funnel-schedule.mjs >> "$GITHUB_OUTPUT"
+
   funnel:
+    needs: planning
+    if: ${{ needs.planning.outputs.run == 'true' }}
     name: Klantreis in Chromium, Firefox en WebKit
     runs-on: ubuntu-24.04
     timeout-minutes: 30
@@ -45,7 +68,7 @@ jobs:
 
       - name: Rapporten, screenshots en traces bewaren
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: autoverzekering-${{ github.run_id }}-${{ github.run_attempt }}
           path: test-runs/
