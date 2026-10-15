@@ -138,7 +138,7 @@ Een Novulo-scenario beschrijft bijvoorbeeld een conceptorder, de benodigde rol, 
 
 Elasticsearch bewaart JSON-documenten in indices in plaats van SQL-tabellen. De gegevenslaag moet documenten ophalen, authenticeren en valideren. De regressiesuite verzamelt data nu synchroon; netwerkdata kan bijvoorbeeld vóór de run worden opgehaald als vaste dataset. Deze koppeling is nog niet gebouwd.
 
-Voor centrale inzet zijn ook login/rollen, testomgevingen, veilig credentialbeheer, unieke procesrecords, opruimen en gedeelde rapportopslag nodig. De lokale rapportpagina heeft geen accountbeheer. GitHub Actions controleert linting en types. Een aparte workflow plant alleen de funnel dagelijks om 11:30 Nederlandse tijd, na opname op de standaardbranch. Gedeelde opslag en centrale teamhosting zijn nog niet ingericht.
+Voor centrale inzet zijn ook login/rollen, testomgevingen, veilig credentialbeheer, unieke procesrecords, opruimen en gedeelde rapportopslag nodig. De lokale rapportpagina heeft geen accountbeheer. GitHub Actions controleert linting en types. Een aparte workflow plant alleen de funnel dagelijks om 12:00 Nederlandse tijd, na opname op de standaardbranch. Gedeelde opslag en centrale teamhosting zijn nog niet ingericht.
 
 De sidequest levert de keten **starten → uitvoeren → controleren → bewaren → onderzoeken**. De volgende stap is deze basis op één afgesproken Novulo-proces toepassen en daarna uitbreiden.
 

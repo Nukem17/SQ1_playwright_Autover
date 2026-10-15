@@ -2,7 +2,7 @@ name: Autoverzekering — dagelijkse funnel
 
 on:
   schedule:
-    - cron: '30 11 * * *'
+    - cron: '0 12 * * *'
       timezone: Europe/Amsterdam
   workflow_dispatch:
 

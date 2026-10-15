@@ -10,7 +10,7 @@ npm run test:lancyr
 
 Argumenten: **modus → scenario → browser**. Modi: `headless`, `headed`, `visible`, `funnel`, `funnel-demo`. Browsers: `all`, `chromium`, `firefox`, `webkit`. Per run wordt één scenario gebruikt; zie [testdata](README-testdata.md).
 
-De modus `funnel` selecteert alleen de echte klantreis in de gekozen browsers, zonder retries of bewuste fout. Deze selectie wordt ook dagelijks om 11:30 Nederlandse tijd door [GitHub Actions](.github/workflows/autoverzekering.yml) gebruikt, zodra de workflow op de standaardbranch staat.
+De modus `funnel` selecteert alleen de echte klantreis in de gekozen browsers, zonder retries of bewuste fout. Deze selectie wordt ook dagelijks om 12:00 Nederlandse tijd door [GitHub Actions](.github/workflows/autoverzekering.yml) gebruikt, zodra de workflow op de standaardbranch staat.
 
 ## Controles
 
