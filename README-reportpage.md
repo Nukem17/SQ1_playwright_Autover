@@ -66,3 +66,7 @@ Checks na een Docker-build:
 ```bash
 docker run --rm sq1-playwright node --test scripts/report-page/data.test.mjs scripts/report-page/live.test.mjs scripts/report-page/browser-filter.test.mjs
 ```
+
+## Elasticsearch naast de rapportpagina
+
+De runners bewaren runs, testpogingen en artefactverwijzingen ook in Elasticsearch. Deze rapportpagina blijft de lokale bestanden lezen; zij vraagt Elasticsearch niet rechtstreeks op. Bij een mislukte opslag blijven HTML en bijlagen beschikbaar. De runmap bevat de opslagstatus en een exportbestand voor opnieuw opslaan. Zie [Elasticsearch-resultaatopslag](README-elasticsearch.md#runs-en-resultaten-opslaan-stap-5).

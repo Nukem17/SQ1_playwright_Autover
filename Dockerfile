@@ -19,4 +19,4 @@ RUN npm ci
 COPY . .
 
 # Standaardcommando; de run-scripts geven bij docker run een specifiek testcommando mee.
-CMD ["npx", "playwright", "test"]
+CMD ["node", "scripts/with-elasticsearch-data.mjs", "npx", "playwright", "test"]

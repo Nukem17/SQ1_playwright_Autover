@@ -43,6 +43,27 @@
         "panel": "dedicated"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Lancyr: data bekijken (Kibana)",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/scripts/testmenu.sh",
+        "--kibana"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "problemMatcher": []
     }
   ]
 }

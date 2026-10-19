@@ -1,0 +1,62 @@
+name: sq1-local-elasticsearch
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.5.5@sha256:13b4a40bb095774f5fda635e45fd5677cc6a26565e42b24997b0c72b88e75984
+    environment:
+      discovery.type: single-node
+      cluster.name: sq1-local
+      node.name: sq1-local-01
+      xpack.security.enabled: 'true'
+      # Alleen voor lokale ontwikkeling: authenticatie aan, HTTP uitsluitend op loopback.
+      xpack.security.http.ssl.enabled: 'false'
+      xpack.license.self_generated.type: basic
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?Start via scripts/elasticsearch.sh start}
+    ports:
+      - '127.0.0.1:9200:9200'
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    mem_limit: 1g
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'curl --fail --silent --user "elastic:$$ELASTIC_PASSWORD" "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s" > /dev/null'
+      interval: 10s
+      timeout: 8s
+      retries: 12
+      start_period: 30s
+
+  # Alleen gestart via scripts/kibana.sh; CI heeft deze webinterface niet nodig.
+  kibana:
+    profiles: [ui]
+    image: docker.elastic.co/kibana/kibana:9.5.5@sha256:13b72ce7222c36e4213229004ae62a87aeb32fd372ebfa6fb38f7a3285fdbb78
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      SERVER_NAME: sq1-local-kibana
+      SERVER_HOST: 0.0.0.0
+      SERVER_PUBLICBASEURL: http://localhost:5601
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+      ELASTICSEARCH_USERNAME: kibana_system
+      ELASTICSEARCH_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+      XPACK_SECURITY_ENCRYPTIONKEY: ${KIBANA_SECURITY_KEY:-}
+      XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: ${KIBANA_SAVED_OBJECTS_KEY:-}
+      XPACK_REPORTING_ENCRYPTIONKEY: ${KIBANA_REPORTING_KEY:-}
+      TELEMETRY_ENABLED: 'false'
+      NODE_OPTIONS: --max-old-space-size=768
+    ports:
+      - '127.0.0.1:5601:5601'
+    volumes:
+      - kibana-data:/usr/share/kibana/data
+    mem_limit: 1g
+    healthcheck:
+      test: [CMD-SHELL, 'curl --fail --silent http://localhost:5601/api/status > /dev/null']
+      interval: 10s
+      timeout: 8s
+      retries: 24
+      start_period: 60s
+
+volumes:
+  elasticsearch-data:
+  kibana-data:

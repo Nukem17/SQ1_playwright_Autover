@@ -1,0 +1,78 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "_meta": {
+      "schemaVersie": 1
+    },
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "suite": {
+        "type": "keyword"
+      },
+      "omgeving": {
+        "type": "keyword"
+      },
+      "schemaVersie": {
+        "type": "integer",
+        "coerce": false
+      },
+      "bijgewerktOp": {
+        "type": "date",
+        "format": "strict_date_optional_time"
+      },
+      "gegevens": {
+        "type": "object",
+        "dynamic": "strict",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "onderdeel": {
+            "type": "keyword"
+          },
+          "naam": {
+            "type": "keyword"
+          },
+          "pad": {
+            "type": "keyword"
+          },
+          "verwachteTitel": {
+            "type": "keyword"
+          },
+          "verwachteHoofdtitel": {
+            "type": "keyword"
+          },
+          "verwachteStatus": {
+            "type": "integer",
+            "coerce": false
+          },
+          "bron": {
+            "type": "object",
+            "dynamic": "strict",
+            "properties": {
+              "bestand": {
+                "type": "keyword"
+              },
+              "issues": {
+                "type": "keyword"
+              },
+              "regels": {
+                "type": "integer",
+                "coerce": false
+              },
+              "melding": {
+                "type": "text"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

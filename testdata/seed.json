@@ -1,0 +1,656 @@
+{
+  "schemaVersie": 1,
+  "funnel": [
+    {
+      "id": "standaard",
+      "kenteken": "88-LSV-7",
+      "verwachtVoertuig": "Toyota Prius",
+      "postcode": "1102NN",
+      "huisnummer": "224",
+      "straat": "Haardstee",
+      "plaats": "Amsterdam",
+      "geboortedatum": "2004-04-14",
+      "ondernemer": "Ja",
+      "gezin": "alleenstaande_zonder_kinderen",
+      "privacy": "Ja",
+      "bestuurder": "Ikzelf",
+      "schadevrij": "6",
+      "kilometrage": "20000",
+      "ingangsMaand": 9,
+      "ingangsDag": 20,
+      "dekking": "bc",
+      "dekkingTitel": "WA +",
+      "dekkingWinkelwagen": "WA+",
+      "extraDekkingen": [
+        "Schade Voor Inzittenden Basis",
+        "Rechtsbijstand Motorrijtuigen Basis"
+      ],
+      "aanbodProductId": "20566",
+      "geboortedatumPartner": null,
+      "verwachteUitkomst": "winkelwagen",
+      "geselecteerdeExtras": []
+    },
+    {
+      "id": "testgebruiker-anna",
+      "kenteken": "88-LSV-7",
+      "verwachtVoertuig": "Toyota Prius",
+      "postcode": "1011DL",
+      "huisnummer": "143",
+      "straat": "Oosterdokskade",
+      "plaats": "Amsterdam",
+      "geboortedatum": "1992-03-18",
+      "ondernemer": "Nee",
+      "gezin": "alleenstaande_zonder_kinderen",
+      "privacy": "Ja",
+      "bestuurder": "Ikzelf",
+      "schadevrij": "0",
+      "kilometrage": "7500",
+      "ingangsMaand": 9,
+      "ingangsDag": 20,
+      "dekking": "wa",
+      "dekkingTitel": "WA",
+      "dekkingWinkelwagen": "WA",
+      "extraDekkingen": [],
+      "aanbodProductId": "72",
+      "geboortedatumPartner": null,
+      "verwachteUitkomst": "winkelwagen",
+      "geselecteerdeExtras": []
+    },
+    {
+      "id": "testgebruiker-bram",
+      "kenteken": "88-LSV-7",
+      "verwachtVoertuig": "Toyota Prius",
+      "postcode": "1071TT",
+      "huisnummer": "430",
+      "straat": "Roelof Hartplein",
+      "plaats": "Amsterdam",
+      "geboortedatum": "1985-07-09",
+      "ondernemer": "Ja",
+      "gezin": "gezin_zonder_kinderen",
+      "privacy": "Ja",
+      "bestuurder": "Partner",
+      "schadevrij": "12",
+      "kilometrage": "10000",
+      "ingangsMaand": 9,
+      "ingangsDag": 20,
+      "dekking": "bc",
+      "dekkingTitel": "WA +",
+      "dekkingWinkelwagen": "WA+",
+      "extraDekkingen": [
+        "Schade Voor Inzittenden Basis",
+        "Rechtsbijstand Motorrijtuigen Basis"
+      ],
+      "aanbodProductId": "20566",
+      "geboortedatumPartner": "1988-04-12",
+      "verwachteUitkomst": "winkelwagen",
+      "geselecteerdeExtras": [
+        "Schade Voor Inzittenden Basis"
+      ]
+    },
+    {
+      "id": "testgebruiker-celine",
+      "kenteken": "88-LSV-7",
+      "verwachtVoertuig": "Toyota Prius",
+      "postcode": "1094HW",
+      "huisnummer": "2",
+      "straat": "Javaplein",
+      "plaats": "Amsterdam",
+      "geboortedatum": "1998-11-24",
+      "ondernemer": "Nee",
+      "gezin": "alleenstaande_met_kinderen",
+      "privacy": "Ja",
+      "bestuurder": "Ikzelf",
+      "schadevrij": "4",
+      "kilometrage": "25000",
+      "ingangsMaand": 9,
+      "ingangsDag": 20,
+      "dekking": "vc",
+      "dekkingTitel": "All-risk",
+      "dekkingWinkelwagen": "All Risk",
+      "extraDekkingen": [
+        "Schade Voor Inzittenden Basis",
+        "Rechtsbijstand Motorrijtuigen Basis"
+      ],
+      "aanbodProductId": "20566",
+      "geboortedatumPartner": null,
+      "verwachteUitkomst": "winkelwagen",
+      "geselecteerdeExtras": [
+        "Rechtsbijstand Motorrijtuigen Basis"
+      ]
+    },
+    {
+      "id": "testgebruiker-daan",
+      "kenteken": "88-LSV-7",
+      "verwachtVoertuig": "Toyota Prius",
+      "postcode": "1068EL",
+      "huisnummer": "16",
+      "straat": "Osdorpplein",
+      "plaats": "Amsterdam",
+      "geboortedatum": "1976-01-30",
+      "ondernemer": "Ja",
+      "gezin": "gezin_met_kinderen",
+      "privacy": "Ja",
+      "bestuurder": "Kind-inwonend",
+      "schadevrij": "20",
+      "kilometrage": "20000",
+      "ingangsMaand": 9,
+      "ingangsDag": 20,
+      "dekking": "bc",
+      "dekkingTitel": "WA +",
+      "dekkingWinkelwagen": "WA+",
+      "extraDekkingen": [
+        "Schade Voor Inzittenden Basis",
+        "Rechtsbijstand Motorrijtuigen Basis"
+      ],
+      "aanbodProductId": "20566",
+      "geboortedatumPartner": null,
+      "verwachteUitkomst": "bestuurder-geblokkeerd",
+      "geselecteerdeExtras": []
+    },
+    {
+      "id": "testgebruiker-emma",
+      "kenteken": "88-LSV-7",
+      "verwachtVoertuig": "Toyota Prius",
+      "postcode": "1024NB",
+      "huisnummer": "302",
+      "straat": "Waterlandplein",
+      "plaats": "Amsterdam",
+      "geboortedatum": "2001-06-12",
+      "ondernemer": "Nee",
+      "gezin": "gezin_met_kinderen",
+      "privacy": "Ja",
+      "bestuurder": "Partner",
+      "schadevrij": "2",
+      "kilometrage": "35000",
+      "ingangsMaand": 9,
+      "ingangsDag": 20,
+      "dekking": "vc",
+      "dekkingTitel": "All-risk",
+      "dekkingWinkelwagen": "All Risk",
+      "extraDekkingen": [
+        "Schade Voor Inzittenden Basis",
+        "Rechtsbijstand Motorrijtuigen Basis"
+      ],
+      "aanbodProductId": "20566",
+      "geboortedatumPartner": "1999-02-08",
+      "verwachteUitkomst": "winkelwagen",
+      "geselecteerdeExtras": [
+        "Schade Voor Inzittenden Basis",
+        "Rechtsbijstand Motorrijtuigen Basis"
+      ]
+    }
+  ],
+  "paginas": [
+    {
+      "id": "schade-eenzijdig",
+      "onderdeel": "Schade melden",
+      "naam": "Eenzijdige schade",
+      "pad": "/schade-melden/eenzijdig-schade-melden/",
+      "verwachteTitel": "Eenzijdig schade melden - Lancyr",
+      "verwachteHoofdtitel": "Eenzijdig schade melden",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          153,
+          235
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-faq",
+      "onderdeel": "Schade melden",
+      "naam": "Veelgestelde vragen",
+      "pad": "/schade-melden/faq/",
+      "verwachteTitel": "Veel gestelde vragen: schade - Lancyr",
+      "verwachteHoofdtitel": "Veel gestelde vragen: schade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          154,
+          236
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-faq-cst",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ: cst",
+      "pad": "/schade-melden/faq/?cst",
+      "verwachteTitel": "Veel gestelde vragen: schade - Lancyr",
+      "verwachteHoofdtitel": "Veel gestelde vragen: schade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          316,
+          331
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-faq-cst-p1",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ: cst&query-11-page=1",
+      "pad": "/schade-melden/faq/?cst&query-11-page=1",
+      "verwachteTitel": "Veel gestelde vragen: schade - Lancyr",
+      "verwachteHoofdtitel": "Veel gestelde vragen: schade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          348,
+          352
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-faq-cst-p2",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ: cst&query-11-page=2",
+      "pad": "/schade-melden/faq/?cst&query-11-page=2",
+      "verwachteTitel": "Veel gestelde vragen: schade - Lancyr",
+      "verwachteHoofdtitel": "Veel gestelde vragen: schade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          339,
+          344
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-faq-p1",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ: query-11-page=1",
+      "pad": "/schade-melden/faq/?query-11-page=1",
+      "verwachteTitel": "Veel gestelde vragen: schade - Lancyr",
+      "verwachteHoofdtitel": "Veel gestelde vragen: schade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          317,
+          332
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-faq-p1-cst",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ: query-11-page=1&cst",
+      "pad": "/schade-melden/faq/?query-11-page=1&cst",
+      "verwachteTitel": "Veel gestelde vragen: schade - Lancyr",
+      "verwachteHoofdtitel": "Veel gestelde vragen: schade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          349,
+          353
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-faq-p2",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ: query-11-page=2",
+      "pad": "/schade-melden/faq/?query-11-page=2",
+      "verwachteTitel": "Veel gestelde vragen: schade - Lancyr",
+      "verwachteHoofdtitel": "Veel gestelde vragen: schade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          272,
+          294
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-faq-p2-cst",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ: query-11-page=2&cst",
+      "pad": "/schade-melden/faq/?query-11-page=2&cst",
+      "verwachteTitel": "Veel gestelde vragen: schade - Lancyr",
+      "verwachteHoofdtitel": "Veel gestelde vragen: schade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          340,
+          345
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-herstel",
+      "onderdeel": "Schade melden",
+      "naam": "Herstelnetwerk auto",
+      "pad": "/schade-melden/herstelnetwerk-auto/",
+      "verwachteTitel": "Herstelnetwerk auto - Lancyr",
+      "verwachteHoofdtitel": "Herstelnetwerk auto",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          155,
+          237
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-reis",
+      "onderdeel": "Schade melden",
+      "naam": "Hulp bij reisschade",
+      "pad": "/schade-melden/hulp-bij-schade-reis/",
+      "verwachteTitel": "Hulp bij schade reis - Lancyr",
+      "verwachteHoofdtitel": "Hulp bij schade reis",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          156,
+          238
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-ruit",
+      "onderdeel": "Schade melden",
+      "naam": "Ruitschade",
+      "pad": "/schade-melden/ruitschade/",
+      "verwachteTitel": "Ruitschade - Lancyr",
+      "verwachteHoofdtitel": "Ruitschade",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          157,
+          239
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-start",
+      "onderdeel": "Schade melden",
+      "naam": "Schade melden",
+      "pad": "/schade-melden/",
+      "verwachteTitel": "Schade melden - Lancyr",
+      "verwachteHoofdtitel": "Schade melden",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          9
+        ],
+        "issues": [
+          "missing h1"
+        ]
+      }
+    },
+    {
+      "id": "schade-tweezijdig",
+      "onderdeel": "Schade melden",
+      "naam": "Tweezijdige schade",
+      "pad": "/schade-melden/tweezijdig-schade-melden/",
+      "verwachteTitel": "Tweezijdig schade melden - Lancyr",
+      "verwachteHoofdtitel": "Tweezijdig schade melden",
+      "verwachteStatus": 200,
+      "bron": {
+        "bestand": "moz_lancyr_crawl_issues_09302026.csv",
+        "regels": [
+          158,
+          240
+        ],
+        "issues": [
+          "missing description",
+          "missing h1"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "SCH-EXTERN-eenzijdig",
+      "onderdeel": "Schade melden",
+      "naam": "Verwijzing naar schadeformulier: eenzijdig",
+      "type": "extern-link",
+      "bronPaginaId": "schade-eenzijdig",
+      "doelPaginaId": null,
+      "instellingen": {
+        "doelUrl": "https://app.finconnect.nl/iframe/zKYReEdJzQ1we3VDo25CHfYFumhmgoD8l731PmQM51F6yksLG3cIKJ5adQoqkbty/zMGbkax7N3PedaRlBjFHjpMiwoHrDEdp",
+        "linkTekst": "Je kan je schade ook online indienen."
+      }
+    },
+    {
+      "id": "SCH-EXTERN-tweezijdig",
+      "onderdeel": "Schade melden",
+      "naam": "Verwijzing naar schadeformulier: tweezijdig",
+      "type": "extern-link",
+      "bronPaginaId": "schade-tweezijdig",
+      "doelPaginaId": null,
+      "instellingen": {
+        "doelUrl": "https://app.finconnect.nl/iframe/zKYReEdJzQ1we3VDo25CHfYFumhmgoD8l731PmQM51F6yksLG3cIKJ5adQoqkbty/zMGbkax7N3PedaRlBjFHjpMiwoHrDEdp",
+        "linkTekst": "Dien je schadeformulier in"
+      }
+    },
+    {
+      "id": "SCH-FAQ-ANTWOORD",
+      "onderdeel": "Schade melden",
+      "naam": "Een FAQ-antwoord openen en terugkeren",
+      "type": "faq-antwoord",
+      "bronPaginaId": "schade-faq",
+      "doelPaginaId": null,
+      "instellingen": {
+        "doelPad": "/faq/heeft-lancyr-een-lijst-met-aangesloten-herstellers/",
+        "verwachteHoofdtitel": "Heeft Lancyr een lijst met aangesloten herstellers?",
+        "antwoordTekst": "Je meldt eerst je schade"
+      }
+    },
+    {
+      "id": "SCH-FAQ-PAGINERING",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ pagina 1, pagina 2 en terug",
+      "type": "paginering",
+      "bronPaginaId": "schade-faq",
+      "doelPaginaId": "schade-faq-p2",
+      "instellingen": {}
+    },
+    {
+      "id": "SCH-FAQ-UITKLAPPEN",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ-antwoord open- en dichtklappen",
+      "type": "faq-uitklappen",
+      "bronPaginaId": "schade-faq",
+      "doelPaginaId": null,
+      "instellingen": {
+        "doelPad": "/faq/heeft-lancyr-een-lijst-met-aangesloten-herstellers/",
+        "verwachteHoofdtitel": "Heeft Lancyr een lijst met aangesloten herstellers?",
+        "antwoordTekst": "Je meldt eerst je schade",
+        "melding": "SCH-FAQ-UITKLAPPEN: opnieuw klikken sluit het antwoord niet; vastgesteld bij browserinspectie"
+      }
+    },
+    {
+      "id": "SCH-NAV-eenzijdig",
+      "onderdeel": "Schade melden",
+      "naam": "Eenzijdige schade openen vanaf Schade melden",
+      "type": "navigatie",
+      "bronPaginaId": "schade-start",
+      "doelPaginaId": "schade-eenzijdig",
+      "instellingen": {}
+    },
+    {
+      "id": "SCH-NAV-faq",
+      "onderdeel": "Schade melden",
+      "naam": "Veelgestelde vragen openen vanaf Schade melden",
+      "type": "navigatie",
+      "bronPaginaId": "schade-start",
+      "doelPaginaId": "schade-faq",
+      "instellingen": {}
+    },
+    {
+      "id": "SCH-NAV-herstel",
+      "onderdeel": "Schade melden",
+      "naam": "Herstelnetwerk auto openen vanaf Schade melden",
+      "type": "navigatie",
+      "bronPaginaId": "schade-start",
+      "doelPaginaId": "schade-herstel",
+      "instellingen": {}
+    },
+    {
+      "id": "SCH-NAV-reis",
+      "onderdeel": "Schade melden",
+      "naam": "Hulp bij reisschade openen vanaf Schade melden",
+      "type": "navigatie",
+      "bronPaginaId": "schade-start",
+      "doelPaginaId": "schade-reis",
+      "instellingen": {}
+    },
+    {
+      "id": "SCH-NAV-ruit",
+      "onderdeel": "Schade melden",
+      "naam": "Ruitschade openen vanaf Schade melden",
+      "type": "navigatie",
+      "bronPaginaId": "schade-start",
+      "doelPaginaId": "schade-ruit",
+      "instellingen": {}
+    },
+    {
+      "id": "SCH-NAV-tweezijdig",
+      "onderdeel": "Schade melden",
+      "naam": "Tweezijdige schade openen vanaf Schade melden",
+      "type": "navigatie",
+      "bronPaginaId": "schade-start",
+      "doelPaginaId": "schade-tweezijdig",
+      "instellingen": {}
+    },
+    {
+      "id": "SCH-URL-faq-cst",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ-variant cst",
+      "type": "url-variant",
+      "bronPaginaId": "schade-faq",
+      "doelPaginaId": "schade-faq-cst",
+      "instellingen": {
+        "verwachtePagina": 1
+      }
+    },
+    {
+      "id": "SCH-URL-faq-cst-p1",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ-variant cst&query-11-page=1",
+      "type": "url-variant",
+      "bronPaginaId": "schade-faq",
+      "doelPaginaId": "schade-faq-cst-p1",
+      "instellingen": {
+        "verwachtePagina": 1
+      }
+    },
+    {
+      "id": "SCH-URL-faq-cst-p2",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ-variant cst&query-11-page=2",
+      "type": "url-variant",
+      "bronPaginaId": "schade-faq-p2",
+      "doelPaginaId": "schade-faq-cst-p2",
+      "instellingen": {
+        "verwachtePagina": 2
+      }
+    },
+    {
+      "id": "SCH-URL-faq-p1",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ-variant query-11-page=1",
+      "type": "url-variant",
+      "bronPaginaId": "schade-faq",
+      "doelPaginaId": "schade-faq-p1",
+      "instellingen": {
+        "verwachtePagina": 1
+      }
+    },
+    {
+      "id": "SCH-URL-faq-p1-cst",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ-variant query-11-page=1&cst",
+      "type": "url-variant",
+      "bronPaginaId": "schade-faq",
+      "doelPaginaId": "schade-faq-p1-cst",
+      "instellingen": {
+        "verwachtePagina": 1
+      }
+    },
+    {
+      "id": "SCH-URL-faq-p2",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ-variant query-11-page=2",
+      "type": "url-variant",
+      "bronPaginaId": "schade-faq-p2",
+      "doelPaginaId": "schade-faq-p2",
+      "instellingen": {
+        "verwachtePagina": 2
+      }
+    },
+    {
+      "id": "SCH-URL-faq-p2-cst",
+      "onderdeel": "Schade melden",
+      "naam": "FAQ-variant query-11-page=2&cst",
+      "type": "url-variant",
+      "bronPaginaId": "schade-faq-p2",
+      "doelPaginaId": "schade-faq-p2-cst",
+      "instellingen": {
+        "verwachtePagina": 2
+      }
+    }
+  ]
+}

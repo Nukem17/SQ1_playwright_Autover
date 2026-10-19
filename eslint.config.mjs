@@ -9,12 +9,12 @@ export default defineConfig(
     ignores: ['node_modules/**', 'test-runs/**', 'test-results/**', 'playwright-report/**', 'blob-report/**'],
   },
   {
-    files: ['**/*.{js,mjs,cjs,ts}'],
+    files: ['**/*.{js,mjs,cjs,ts,mts}'],
     extends: [js.configs.recommended],
     languageOptions: { globals: globals.node },
   },
   {
-    files: ['**/*.ts'],
+    files: ['**/*.{ts,mts}'],
     extends: [tseslint.configs.recommended],
     languageOptions: { parserOptions: { tsconfigRootDir: import.meta.dirname } },
   },

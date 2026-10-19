@@ -6,11 +6,25 @@ Technische proef voor een toekomstige Novulo-testsuite. Test de autoverzekerings
 
 Je hebt de projectbestanden, **Bash en Docker** nodig. Node.js en npm draaien in Docker; lokale installatie is alleen nodig voor npm-commando’s en ontwikkelcontroles.
 
+De testrunners starten Elasticsearch automatisch en maken ontbrekende indices en begindata aan. Je hoeft daarvoor geen losse opdrachten uit te voeren. Bestaande gegevens en eigen wijzigingen blijven behouden.
+
 In VS Code: **Terminal → Run Task → Lancyr: tests starten**. Buiten VS Code:
 
 ```bash
 bash scripts/testmenu.sh
 ```
+
+Hetzelfde menu regelt ook de omgeving:
+
+| Keuze | Actie |
+| --- | --- |
+| 1–4 | Tests starten; Elasticsearch en ontbrekende begindata worden automatisch voorbereid. |
+| 5 | HTML-rapportage openen/starten. |
+| 6 | Elasticsearch en Kibana starten, gegevensweergaven klaarzetten; daarna open je de getoonde URL. |
+| 7 | Status van Elasticsearch en Kibana bekijken. |
+| 8 | Elasticsearch en Kibana stoppen; gegevens blijven bewaard. |
+
+Rechtstreeks vanuit VS Code kan ook: **Terminal → Run Task → Lancyr: data bekijken (Kibana)**. De eerste start kan langer duren door het downloaden en bouwen van images. Docker moet actief zijn.
 
 Kies suite, browser, uitvoermodus en bij autoverzekering een scenario. Enter kiest de standaardwaarde; in het hoofdmenu sluit Enter af. **Beide functionele suites** maakt twee afzonderlijke runs en voert de tweede ook na gewone testfouten uit. Visuele tests vergelijken met de bestaande referentie.
 
@@ -38,6 +52,8 @@ bash scripts/run-lancyr-visual.sh check
 
 ## Resultaten
 
+Elasticsearch-gegevens kun je bekijken via de optionele [Kibana-webinterface](README-elasticsearch.md#gegevens-bekijken-met-kibana) op `http://localhost:5601`. De HTML-rapportpagina hieronder blijft beschikbaar voor testrapporten en foutbijlagen.
+
 Kies de VS Code-taak **Lancyr: rapportage openen** of start:
 
 ```bash
@@ -46,7 +62,7 @@ bash scripts/view-reports.sh
 
 Open [het resultatenoverzicht](http://localhost:8070) en laat de terminal open. Het overzicht leest lokale runmappen en controleert elke tien seconden op wijzigingen.
 
-Iedere run krijgt een eigen map onder `test-runs/` met `SAMENVATTING.md`, `results.json`, `html/` en foutbijlagen in `test-results/`. Tijdelijke testcontainers worden verwijderd; gekoppelde resultaten blijven bewaard. Een gewone testfout verhindert de samenvatting niet en de foutstatus blijft behouden. Buildfouten of ongeldige data vóór de runmap verschijnen alleen in de terminal.
+Iedere run krijgt een eigen map onder `test-runs/` met `SAMENVATTING.md`, `results.json`, `html/` en foutbijlagen in `test-results/`. Tijdelijke testcontainers worden verwijderd; gekoppelde resultaten blijven bewaard. Runs, testpogingen en artefactverwijzingen worden ook opgeslagen in Elasticsearch. De bestanden zelf blijven lokaal. Bij een opslagfout bewaart `ELASTICSEARCH-EXPORT.json` de export voor opnieuw opslaan; zie [resultaatopslag](README-elasticsearch.md#runs-en-resultaten-opslaan-stap-5). Een gewone testfout verhindert de samenvatting niet en de foutstatus blijft behouden. Buildfouten vóór de runmap verschijnen alleen in de terminal. Problemen bij het laden van Elasticsearch-testdata stoppen de run en worden als voorbereidingsfout zichtbaar.
 
 ## Tooling en ontwikkeling
 
@@ -96,6 +112,8 @@ De scenario-afhankelijke funnel/visuele tests en popupnavigatie hebben gerichte 
 
 [De funnelworkflow](.github/workflows/autoverzekering.yml) draait eenmaal per nacht om **02:00 UTC**: **03:00 Nederlandse wintertijd / 04:00 zomertijd**. Er is één cron-trigger en geen aparte tijdselectie. Alleen de echte klantreis tot vóór **Sluit af** draait met scenario `standaard` in Chromium, Firefox en WebKit: drie browserresultaten, twee workers en geen retries. Playwright voert eerst de suite-lintcontrole uit. De korte paginatests, schade-suite, visuele test en foutdemo draaien niet mee.
 
+De workflow richt per uitvoering een eigen tijdelijke Elasticsearch-server in en importeert de testdata uit de repository. Zij slaat ook resultaten op in die tijdelijke server. De export blijft in het downloadbare artefact beschikbaar; de server zelf is niet blijvend. Lokale wijzigingen aan jouw Elasticsearch zijn daar niet beschikbaar.
+
 De planning wordt actief zodra de workflow op de standaardbranch staat (doorgaans `main`) en Actions is ingeschakeld. Alleen op `feature/actions` zetten activeert de dagelijkse planning niet. De workflow heeft ook een **Run workflow**-knop. GitHub kan geplande runs vertragen; openbare repositories kunnen hun planning na 60 dagen zonder activiteit verliezen. Zie [GitHub scheduling](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
 
 Resultaten verschijnen bij **Actions → Autoverzekering — dagelijkse funnel → run**. Het downloadbare artefact bevat de runmap met HTML, JSON, samenvatting en foutbijlagen, en blijft zeven dagen bewaard. Ontbrekende output na een buildfout wordt in de samenvatting gemeld. GitHub-resultaten verschijnen niet automatisch in je lokale rapportpagina; plaats gedownloade runmappen onder `test-runs/` om ze daar te bekijken.
@@ -112,6 +130,7 @@ npm run test:lancyr:funnel
 
 ## Documentatie
 
+- [Elasticsearch: inrichting, import en testdata gebruiken](README-elasticsearch.md)
 - [Autoverzekering: controles en foutdemo](README-lancyr-test.md)
 - [Visuele vergelijking](README-visual-test.md)
 - [Testdata en scenario’s](README-testdata.md)

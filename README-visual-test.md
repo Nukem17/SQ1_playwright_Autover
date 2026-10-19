@@ -4,6 +4,8 @@ Vergelijkt het eerste scherm van de autoverzekeringspagina met een beoordeelde s
 
 ## Uitvoeren
 
+De runner start Elasticsearch automatisch voor de resultaatopslag; zie [de inrichting](README-elasticsearch.md). De visuele test zelf heeft geen scenariodata nodig.
+
 ```bash
 bash scripts/run-lancyr-visual.sh check      # bestaande referentie vergelijken
 bash scripts/run-lancyr-visual.sh demo       # bewuste afwijking tonen

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+ import { expect, test, type Page } from '@playwright/test';
 import { haalTestscenarioOp, bepaalIngangsdatum } from '../../testdata/scenarios';
 
 // Playwright geeft elke test een verse 'page': een nieuw browsertabblad.
@@ -64,10 +64,10 @@ test('doorloop de funnel tot vlak vóór Sluit af', {
   // De live premieberekening kan langer duren dan een korte paginatest.
   test.setTimeout(120000);
 
-  const gegevens = await test.step('0. Haal testscenario op uit SQLite', () => haalTestscenarioOp());
+  const gegevens = await test.step('0. Haal testscenario op uit Elasticsearch', () => haalTestscenarioOp());
 
-  testInfo.annotations.push({ type: 'Testdata', description: `SQLite-scenario: ${gegevens.id}` });
-  await testInfo.attach('Gebruikte testdata uit SQLite', {
+  testInfo.annotations.push({ type: 'Testdata', description: `Elasticsearch-scenario: ${gegevens.id}` });
+  await testInfo.attach('Gebruikte testdata uit Elasticsearch', {
     body: JSON.stringify(gegevens, null, 2), contentType: 'application/json',
   });
 

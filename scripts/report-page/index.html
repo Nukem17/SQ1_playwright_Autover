@@ -21,7 +21,7 @@ function updateFilterOptions(){
 updateFilterOptions();
 const keys=['area','testGroup','search','status','browser','scenario','kind','demo','sort','from','until'];
 const params=new URLSearchParams(location.search);if(!params.has('area')&&params.has('funnel'))params.set('area',params.get('funnel'));for(const key of keys) if(params.has(key)) $(key).value=params.get(key);
-const scenarioName=s=>s.replace(/^SQLite-scenario:\s*/,'').replace(/^testgebruiker-/,'').replace(/^./,c=>c.toUpperCase());
+const scenarioName=s=>s.replace(/^[^:]+-scenario:\s*/,'').replace(/^testgebruiker-/,'').replace(/^./,c=>c.toUpperCase());
 const runName=r=>[...new Set(r.tests.map(t=>t.scenario).filter(s=>s!=='Geen scenario vastgelegd'))].map(scenarioName).join(', ')||'Algemene controle';
 const counts=r=>Object.entries(labels).filter(([status])=>['expected','unexpected','flaky','skipped','unknown'].includes(status)).map(([status,label])=>{const n=r.tests.filter(t=>t.status===status).length;return n?`${n} ${label.toLowerCase()}`:''}).filter(Boolean).join(' · ')||'Nog geen testresultaten';
 const isRegression=t=>t.annotations.some(a=>a.type==='Regressiecase');

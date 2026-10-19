@@ -1,6 +1,6 @@
 # Sidequest: basis voor de Novulo-testsuite
 
-Projectuitleg voor lezers zonder programmeerervaring. Bijgewerkt op **15 oktober 2026**, op basis van de projectcode en opgeslagen resultaten. Dit document onderscheidt de huidige proef van de geplande Novulo-suite.
+Projectuitleg voor lezers zonder programmeerervaring. Bijgewerkt op **16 oktober 2026**, op basis van de projectcode en opgeslagen resultaten. Dit document onderscheidt de huidige proef van de geplande Novulo-suite.
 
 ## Aanleiding en doel
 
@@ -20,7 +20,7 @@ Git bewaart wijzigingen als commits. Een merge voegt werk uit een ontwikkeltak s
 | 28 september | Versies vastgelegd; PR #1. |
 | 29 september | Headed viewer en WebKit; PR #2 en #3. |
 | 30 september | Visuele referentietest; PR #4. |
-| 30 september–2 oktober | SQLite en gebruikersscenario’s; PR #5. |
+| 30 september–2 oktober | Eerste gegevenslaag en gebruikersscenario’s; PR #5. |
 | 5 oktober | Centrale rapportpagina; PR #6. |
 | 5–7 oktober | Schade-regressiesuite, testgroepen, browserfilter en startmenu met live meekijken. |
 
@@ -51,7 +51,7 @@ Een **image** is het voorbereide pakket met tooling, browsers en testcode. Een *
 Menu of npm → Bash-runner → Docker → Playwright → resultaten → HTML-overzicht
 ```
 
-De runner bouwt de image, initialiseert en valideert de testdata en start een tijdelijke testcontainer. Docker kan ongewijzigde buildlagen hergebruiken. De testcontainer leest de database alleen en schrijft resultaten naar een gekoppelde lokale map: een **bind mount**.
+De runner bouwt de image en start een tijdelijke testcontainer. De functionele suites halen vooraf hun testdata uit Elasticsearch op en valideren deze. Docker kan ongewijzigde buildlagen hergebruiken. De testcontainer gebruikt een tijdelijke gegevenssnapshot en schrijft rapporten naar een gekoppelde lokale map: een **bind mount**. Runs, resultaten en verwijzingen naar bestanden worden daarnaast in Elasticsearch opgeslagen.
 
 Na afloop verwijdert `--rm` de container. De image en resultaten onder `test-runs/` blijven bestaan. De samenvatting wordt ook na een gewone testfout gemaakt; de foutstatus blijft behouden. Een buildfout of abrupt afgebroken container kan volledige rapportage verhinderen.
 
@@ -108,7 +108,7 @@ Een regressietest herhaalt verwachtingen om achteruitgang te signaleren. De eers
 
 ## Gegevens en visuele controles
 
-De **data** bepaalt invoer en verwachte uitkomst; **testcode** bepaalt de handelingen. SQLite bewaart autoverzekeringsscenario’s, regressiepagina’s en actiescenario’s. De gegevenslaag valideert ze vóór de browsers starten. Gebruikte waarden worden bij het rapport bewaard.
+De **data** bepaalt invoer en verwachte uitkomst; **testcode** bepaalt de handelingen. Elasticsearch bewaart autoverzekeringsscenario’s, regressiepagina’s en actiescenario’s. Vóór iedere functionele run wordt een tijdelijke JSON-snapshot uit Elasticsearch geladen, zodat alle workers dezelfde data gebruiken. De gegevenslaag valideert ze vóór de browsers starten. Gebruikte waarden worden bij het rapport bewaard.
 
 Er zijn één standaardscenario en vijf benoemde gebruikersscenario’s. Ze variëren in bestuurder, gezin, dekking en extra’s. Per autoverzekeringsrun wordt één scenario geselecteerd. Database-updates worden eenmaal via migraties toegepast; volgende runs overschrijven handmatige wijzigingen niet opnieuw.
 
@@ -136,7 +136,7 @@ De kern die meegaat: vaste tooling, Docker, uitvoerscripts, gegevenslaag, browse
 
 Een Novulo-scenario beschrijft bijvoorbeeld een conceptorder, de benodigde rol, een goedkeuringsactie en de verwachte status. De order staat in Novulo; de testsuite bewaart scenario’s en verwijzingen. Dit is een toekomstvoorbeeld, geen gebouwde ordertest.
 
-Elasticsearch bewaart JSON-documenten in indices in plaats van SQL-tabellen. De gegevenslaag moet documenten ophalen, authenticeren en valideren. De regressiesuite verzamelt data nu synchroon; netwerkdata kan bijvoorbeeld vóór de run worden opgehaald als vaste dataset. Deze koppeling is nog niet gebouwd.
+Elasticsearch bewaart JSON-documenten in indices in plaats van SQL-tabellen. De lokale koppeling haalt scenario’s op, authenticeert en valideert. Een snapshot vóór de run maakt deze data ook beschikbaar bij het samenstellen van regressietests. Runs en testpogingen gaan na afloop naar aparte indices. Screenshots, traces en HTML blijven bestanden; Elasticsearch bewaart hun metadata en locatie. Bij een opslagfout blijft een lokale export beschikbaar voor opnieuw opslaan. Azure Blob en centrale hosting zijn nog niet aangesloten.
 
 Voor centrale inzet zijn ook login/rollen, testomgevingen, veilig credentialbeheer, unieke procesrecords, opruimen en gedeelde rapportopslag nodig. De lokale rapportpagina heeft geen accountbeheer. GitHub Actions controleert linting en types. Een aparte workflow plant alleen de funnel eenmaal per nacht om 02:00 UTC (03:00 wintertijd / 04:00 zomertijd), na opname op de standaardbranch. Gedeelde opslag en centrale teamhosting zijn nog niet ingericht.
 
@@ -144,11 +144,11 @@ De sidequest levert de keten **starten → uitvoeren → controleren → bewaren
 
 ## Bronnen en verdere uitleg
 
-Onderbouwd met de huidige code, Git-geschiedenis tot `2ed6d83` en opgeslagen JSON-rapporten. Details:
+Onderbouwd met de huidige code, eerdere Git-geschiedenis en opgeslagen JSON-rapporten; de lokale Elasticsearch-inrichting en controles zijn op 16 oktober toegevoegd. Details:
 
 - [Starten en versies](../README.md)
 - [Autoverzekering](../README-lancyr-test.md), [visuele tests](../README-visual-test.md)
-- [Testdata](../README-testdata.md), [Schade melden](../README-schade-regressie.md)
+- [Testdata](../README-testdata.md), [Elasticsearch](../README-elasticsearch.md), [Schade melden](../README-schade-regressie.md)
 - [Rapportpagina](../README-reportpage.md), [CSV-bronregels](../testdata/schade-bronmeldingen.md)
 
 Officiële achtergrond: [Node.js](https://nodejs.org/en/download), [npm ci](https://docs.npmjs.com/cli/v11/commands/npm-ci/), [Playwright Docker](https://playwright.dev/docs/docker), [screenshotvergelijking](https://playwright.dev/docs/test-snapshots), [traces](https://playwright.dev/docs/trace-viewer) en [Elasticsearch-indices](https://www.elastic.co/docs/manage-data/data-store/index-basics).
