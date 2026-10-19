@@ -1,6 +1,4 @@
-import { DatabaseSync } from 'node:sqlite';
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { leesElasticsearchSnapshot } from './snapshot.mts';
 
 // Dit zijn de gegevens die één pagina nodig heeft voor de algemene controles.
 export interface RegressiePagina {
@@ -14,7 +12,7 @@ export interface RegressieScenario {
   id: string; onderdeel: string; naam: string;
   type: 'navigatie' | 'faq-uitklappen' | 'faq-antwoord' | 'paginering' | 'url-variant' | 'extern-link';
   bronPaginaId: string; doelPaginaId: string | null;
-  instellingen: { doelPad?: string; doelUrl?: string; linkTekst?: string; verwachteHoofdtitel?: string; antwoordTekst?: string; verwachtePagina?: number };
+  instellingen: { doelPad?: string; doelUrl?: string; linkTekst?: string; verwachteHoofdtitel?: string; antwoordTekst?: string; verwachtePagina?: number; melding?: string };
 }
 export const LANCYR_ORIGIN = 'https://www.lancyr.nl';
 
@@ -27,61 +25,51 @@ function localPath(value: unknown, field: string) {
   text(value, field);
   if (!value.startsWith('/') || value.startsWith('//') || value.includes('\\') || new URL(value, LANCYR_ORIGIN).origin !== LANCYR_ORIGIN) throw new Error(`${field} moet een lokaal Lancyr-pad zijn.`);
 }
-// SQLite bewaart bronmeldingen en instellingen als tekst. Zet die om naar leesbare velden.
-// Ongeldige JSON geeft een fout, zodat we niet met verkeerde gegevens verder testen.
+// Instellingen en bronverwijzingen zijn echte JSON-objecten.
 function object(value: unknown, field: string): Record<string, unknown> {
-  try {
-    const parsed = JSON.parse(String(value));
-    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
-  } catch {
-    // Ongeldige JSON krijgt hieronder dezelfde begrijpelijke validatiefout.
-  }
+  if (value && typeof value === 'object' && !Array.isArray(value)) return value as Record<string, unknown>;
   throw new Error(`${field} moet een JSON-object zijn.`);
 }
 
-// Lees de gegevens voordat Playwright de tests samenstelt: zo krijgt elk record eigen tests.
-// Deze functie leest alleen; ontbrekende gegevens worden niet aangevuld met vaste waarden.
-// Een ander databasepad is mogelijk, bijvoorbeeld voor controles met een tijdelijke database.
-export function haalRegressieSetOp(onderdeel = 'Schade melden', databasePath = process.env.LANCYR_TEST_DATABASE ?? 'testdata/local.sqlite') {
-  const path = resolve(databasePath);
-  if (!existsSync(path)) throw new Error(`Testdatabase ontbreekt: ${path}. Start via scripts/run-schade-regressie.sh.`);
-  const db = new DatabaseSync(path, { readOnly: true });
-  try {
-    // Selecteer alleen het gevraagde onderdeel. Het vraagteken houdt de invoer los van SQL-code.
-    const pages = db.prepare('SELECT * FROM regressie_paginas WHERE onderdeel = ? ORDER BY id').all(onderdeel);
-    const scenarios = db.prepare('SELECT * FROM regressie_scenarios WHERE onderdeel = ? ORDER BY id').all(onderdeel);
-    if (!pages.length || !scenarios.length) throw new Error(`Geen volledige regressieset voor '${onderdeel}'. Initialiseer de testdatabase.`);
-    // Controleer alle pagina-instellingen voordat er een browser wordt gestart.
-    const paginas: RegressiePagina[] = pages.map(row => {
-      for (const field of ['id','onderdeel','naam','verwachteTitel','verwachteHoofdtitel']) text(row[field],`${row.id}: ${field}`);
-      localPath(row.pad, `${row.id}: pad`);
-      if (!Number.isInteger(row.verwachteStatus) || Number(row.verwachteStatus) < 100 || Number(row.verwachteStatus) > 599) throw new Error(`${row.id}: ongeldige verwachteStatus.`);
-      const bron = object(row.bron, `${row.id}: bron`);
-      return { ...row, bron } as unknown as RegressiePagina;
-    });
-    // Scenario’s moeten verwijzen naar bestaande pagina’s binnen hetzelfde onderdeel.
-    const ids = new Set(paginas.map(p => p.id));
-    const regels: RegressieScenario[] = scenarios.map(row => {
-      for (const field of ['id','onderdeel','naam','type','bronPaginaId']) text(row[field],`${row.id}: ${field}`);
-      if (!['navigatie','faq-uitklappen','faq-antwoord','paginering','url-variant','extern-link'].includes(String(row.type))) throw new Error(`${row.id}: onbekend scenariotype.`);
-      if (!ids.has(String(row.bronPaginaId))) throw new Error(`${row.id}: bronpagina ontbreekt binnen het onderdeel.`);
-      const instellingen = object(row.instellingen,`${row.id}: instellingen`);
-      if (['navigatie','paginering','url-variant'].includes(String(row.type)) && !ids.has(String(row.doelPaginaId))) throw new Error(`${row.id}: doelpagina ontbreekt binnen het onderdeel.`);
-      // Elk soort scenario heeft eigen verplichte instellingen.
-      if (row.type === 'url-variant' && instellingen.verwachtePagina !== 1 && instellingen.verwachtePagina !== 2) throw new Error(`${row.id}: verwachtePagina moet 1 of 2 zijn.`);
-      if (row.type === 'faq-antwoord' || row.type === 'faq-uitklappen') {
-        localPath(instellingen.doelPad, `${row.id}: doelPad`);
-        text(instellingen.verwachteHoofdtitel, `${row.id}: verwachteHoofdtitel`);
-        text(instellingen.antwoordTekst, `${row.id}: antwoordTekst`);
-      }
-      if (row.type === 'extern-link') {
-        text(instellingen.linkTekst, `${row.id}: linkTekst`);
-        text(instellingen.doelUrl, `${row.id}: doelUrl`);
-        if (new URL(instellingen.doelUrl).protocol !== 'https:') throw new Error(`${row.id}: doelUrl moet HTTPS gebruiken.`);
-      }
-      return { ...row, instellingen } as unknown as RegressieScenario;
-    });
-    return { paginas, scenarios: regels };
-  // Sluit de database ook wanneer een controle hierboven een fout geeft.
-  } finally { db.close(); }
+// De vooraf geladen snapshot maakt scenario's beschikbaar bij testcollectie.
+export function haalRegressieSetOp(onderdeel = 'Schade melden') {
+  const data = leesElasticsearchSnapshot();
+  return valideerRegressieSet(data.paginas.filter(row => row.onderdeel === onderdeel),
+    data.scenarios.filter(row => row.onderdeel === onderdeel), onderdeel);
+}
+
+export function valideerRegressieSet(pages: Record<string, unknown>[], scenarios: Record<string, unknown>[], onderdeel: string) {
+  if (!pages.length || !scenarios.length) throw new Error(`Geen volledige regressieset voor '${onderdeel}'. Controleer de testdata.`);
+  // Controleer alle pagina-instellingen voordat er een browser wordt gestart.
+  const paginas: RegressiePagina[] = pages.map(row => {
+    for (const field of ['id','onderdeel','naam','verwachteTitel','verwachteHoofdtitel']) text(row[field],`${row.id}: ${field}`);
+    localPath(row.pad, `${row.id}: pad`);
+    if (!Number.isInteger(row.verwachteStatus) || Number(row.verwachteStatus) < 100 || Number(row.verwachteStatus) > 599) throw new Error(`${row.id}: ongeldige verwachteStatus.`);
+    const bron = object(row.bron, `${row.id}: bron`);
+    return { ...row, bron } as unknown as RegressiePagina;
+  });
+  // Scenario’s moeten verwijzen naar bestaande pagina’s binnen hetzelfde onderdeel.
+  const ids = new Set(paginas.map(p => p.id));
+  const regels: RegressieScenario[] = scenarios.map(row => {
+    for (const field of ['id','onderdeel','naam','type','bronPaginaId']) text(row[field],`${row.id}: ${field}`);
+    if (!['navigatie','faq-uitklappen','faq-antwoord','paginering','url-variant','extern-link'].includes(String(row.type))) throw new Error(`${row.id}: onbekend scenariotype.`);
+    if (!ids.has(String(row.bronPaginaId))) throw new Error(`${row.id}: bronpagina ontbreekt binnen het onderdeel.`);
+    if (row.doelPaginaId != null && !ids.has(String(row.doelPaginaId))) throw new Error(`${row.id}: doelpagina ontbreekt binnen het onderdeel.`);
+    const instellingen = object(row.instellingen,`${row.id}: instellingen`);
+    if (['navigatie','paginering','url-variant'].includes(String(row.type)) && !ids.has(String(row.doelPaginaId))) throw new Error(`${row.id}: doelpagina ontbreekt binnen het onderdeel.`);
+    // Elk soort scenario heeft eigen verplichte instellingen.
+    if (row.type === 'url-variant' && instellingen.verwachtePagina !== 1 && instellingen.verwachtePagina !== 2) throw new Error(`${row.id}: verwachtePagina moet 1 of 2 zijn.`);
+    if (row.type === 'faq-antwoord' || row.type === 'faq-uitklappen') {
+      localPath(instellingen.doelPad, `${row.id}: doelPad`);
+      text(instellingen.verwachteHoofdtitel, `${row.id}: verwachteHoofdtitel`);
+      text(instellingen.antwoordTekst, `${row.id}: antwoordTekst`);
+    }
+    if (row.type === 'extern-link') {
+      text(instellingen.linkTekst, `${row.id}: linkTekst`);
+      text(instellingen.doelUrl, `${row.id}: doelUrl`);
+      if (new URL(instellingen.doelUrl).protocol !== 'https:') throw new Error(`${row.id}: doelUrl moet HTTPS gebruiken.`);
+    }
+    return { ...row, instellingen } as unknown as RegressieScenario;
+  });
+  return { paginas, scenarios: regels };
 }

@@ -60,6 +60,7 @@ const summary = [
   ...scenarioLines,
   '',
   `**HTML-rapport:** \`html/index.html\``,
+  '**Elasticsearch-opslag:** zie `ELASTICSEARCH-STATUS.json` in deze runmap.',
   ...(mode.startsWith('headless-visual-') ? ['', '**Visueel overzicht:** [Zo hoort het / Actueel / Verschil](VISUEEL-OVERZICHT.html)'] : []),
   `**Screenshots en traces bij fouten:** \`test-results/\``,
   '',

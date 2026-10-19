@@ -1,21 +1,20 @@
 # Testdata en scenario’s
 
-SQLite bewaart de invoer en verwachtingen buiten de browsercode. De gegevenslaag haalt ze op en valideert ze. De testcode bepaalt hoe pagina’s worden bediend en gecontroleerd.
+Elasticsearch bewaart de invoer en verwachtingen buiten de browsercode. Vóór elke functionele run worden de gekozen gegevens opgehaald en gevalideerd. De testcode bepaalt de browserhandelingen.
 
-## Opslag
+## Opslag en laden
 
-| Bestand/tabel | Functie |
+Richt eerst de lokale server, indices en import in volgens [README-elasticsearch.md](README-elasticsearch.md). De functionele Docker-runners gebruiken daarna Elasticsearch; ze gebruiken geen tweede database.
+
+| Index | Inhoud |
 | --- | --- |
-| `testdata/local.sqlite` | Lokale database, buiten Git en de Docker-image. |
-| `testdata/seed.sql` | Startgegevens voor een nieuwe database. |
-| `testdata/migrations/` | Eenmalige uitbreidingen; versie via SQLite `user_version`. |
-| `autoverzekering_scenarios` | Voertuig, adres, persoonlijke keuzes, bestuurder, dekking en uitkomst. |
-| `regressie_paginas` | Paden, verwachte titels/status en bronmeldingen. |
-| `regressie_scenarios` | Routes, actietypen en FAQ-/navigatieverwachtingen. |
+| `sq1-autoverzekering-scenarios-v1` | Voertuig, adres, persoonlijke keuzes, bestuurder, dekking en uitkomst. |
+| `sq1-regressie-paginas-v1` | Paden, verwachte titels/status en bronmeldingen. |
+| `sq1-regressie-scenarios-v1` | Routes, actietypen en FAQ-/navigatieverwachtingen. |
 
-De runners initialiseren en migreren de database vóór de tests. Bestaande handmatige wijzigingen blijven bij volgende runs behouden. Wijzigingen aan `seed.sql` veranderen een bestaande database niet. Nieuwe gedeelde aanvullingen horen in een **nieuwe migratie**.
+`with-elasticsearch-data.mjs` haalt vóór Playwright de data op. De gedeelde validatiefuncties in `scenarios.ts` en `regressie.ts` controleren de waarden en paginaverwijzingen. Een tijdelijke JSON-snapshot zorgt dat alle workers dezelfde gegevens gebruiken, ook wanneer de tests al bij het verzamelen scenario's nodig hebben. Na afloop wordt die tijdelijke snapshot verwijderd. De Docker-runners bewaren daarnaast `TESTDATA.json` bij de run; gebruikte gegevens blijven ook als rapportbijlage bewaard en komen bij de resultaten in Elasticsearch.
 
-De testcontainer krijgt de data alleen-lezen. `scenarios.ts` en `regressie.ts` gebruiken geparameteriseerde SQL en weigeren ontbrekende of ongeldige gegevens. Elke gegevensafhankelijke test bewaart de gebruikte waarden als JSON-bijlage.
+Een verbindingsfout, ontbrekend scenario of ongeldige data stopt de run. Er is geen terugval naar een andere database of naar de JSON-begindata. Technische tests gebruiken JSON-testgevallen en HTTP-vervangers.
 
 ## Autoverzekering
 
@@ -36,7 +35,7 @@ Het tweede argument heeft voorrang op `LANCYR_TEST_SCENARIO`; standaard is `stan
 | testgebruiker-daan | Kind-inwonend | Niet bereikt | Bestuurderblokkade verwacht. |
 | testgebruiker-emma | Partner | Allrisk | Partnergeboortedatum; beide extra dekkingen. |
 
-Dit zijn uitgangswaarden uit seed/migraties, geen bewijs van de huidige lokale database. De scenario’s variëren ook in gezin en kilometrage. Alle gebruiken hetzelfde kenteken; dit is gerichte variatie, geen volledige combinatiedekking.
+Dit zijn uitgangswaarden uit seed/migraties, geen bewijs van de huidige Elasticsearch-inhoud. De scenario’s variëren ook in gezin en kilometrage. Alle gebruiken hetzelfde kenteken; dit is gerichte variatie, geen volledige combinatiedekking.
 
 Het productnummer voorkomt afhankelijkheid van de aanbodvolgorde. De ingangsdatum kiest het eerstvolgende jaar bij de opgeslagen maand/dag; 29 februari wordt niet ondersteund.
 
@@ -44,21 +43,26 @@ Bij Anna is historisch een premie-API-fout met nul schadevrije jaren gevonden. D
 
 ## Gegevens wijzigen en controleren
 
-Wijzig met een SQLite-editor, buiten een actieve run, bijvoorbeeld:
+Wijzig het betreffende Elasticsearch-document via een geschikte client. Voorbeeld van een gedeeltelijke update met authenticatie via je client:
 
-```sql
-UPDATE autoverzekering_scenarios SET schadevrij = '7' WHERE id = 'standaard';
+```http
+POST /sq1-autoverzekering-scenarios-v1/_update/lokaal%3Aautoverzekering%3Astandaard?refresh=wait_for
+{"doc":{"gegevens":{"schadevrij":"7"}}}
 ```
 
-De volgende run gebruikt die waarde en bewaart haar bij het resultaat. Technische controles gebruiken tijdelijke databases:
+De volgende run haalt deze waarde opnieuw op. Een reeds gestarte run blijft zijn eigen snapshot gebruiken. Wijzig samenhangende records buiten een run: de afzonderlijke zoekopdrachten vormen geen transactie over meerdere indices. De import is geen synchronisatie; na een bewuste Elasticsearch-wijziging kan `--verify` terecht een verschil met de gedeelde JSON-begindata melden.
+
+Technische controles gebruiken JSON-testgevallen en HTTP-vervangers, zonder live website:
 
 ```bash
-docker build -t sq1-playwright .
-docker run --rm sq1-playwright node --test testdata/scenarios.test.cjs testdata/regressie.test.cjs
+node testdata/scenarios.test.cjs
+node testdata/regressie.test.cjs
+node scripts/elasticsearch-seed.test.mjs
+node scripts/with-elasticsearch-data.test.mjs
 ```
 
 ## Voorbereiding op Novulo
 
-`haalTestscenarioOp()` vormt de grens tussen opslag en browsercode. De geplande Elasticsearch-koppeling moet dezelfde gevalideerde scenariostructuur leveren. Bij regressietests wordt de set nu synchroon verzameld; ophalen via een netwerk vraagt aanvullende voorbereiding, bijvoorbeeld een dataset vóór de run.
+`haalTestscenarioOp()` en `haalRegressieSetOp()` vormen de grens tussen opslag en browsercode. De Elasticsearch-koppeling levert de gevalideerde objecten die de browsercode verwacht. De regressieset is vooraf geladen en kan daardoor synchroon gebruikt worden bij het samenstellen van tests.
 
-De koppeling, authenticatie en unieke procesrecords voor parallelle tests zijn nog niet gebouwd. Zie [de projectuitleg](docs/SIDEQUEST-TESTSUITE.md). Voor schadegegevens en uitbreiden: [Schade melden](README-schade-regressie.md).
+Deze lokale koppeling bewijst de gegevensroute. Bedrijfstoegang, rechten voor een serviceaccount, centrale hosting en unieke procesrecords voor parallelle Novulo-tests volgen later. Testresultaten worden inmiddels ook naar Elasticsearch geschreven, naast de HTML-rapporten. Zie [de projectuitleg](docs/SIDEQUEST-TESTSUITE.md) en [Schade melden](README-schade-regressie.md).

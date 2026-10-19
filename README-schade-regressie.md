@@ -8,11 +8,11 @@ bash scripts/run-schade-regressie.sh headless chromium
 bash scripts/run-schade-regressie.sh headed all        # virtueel scherm, geen viewer
 ```
 
-De runner bouwt Docker, initialiseert en valideert SQLite en draait met **twee workers, zonder retries**. Maximaal twee tests tegelijk, over de gekozen browsers samen.
+De runner bouwt Docker, haalt de regressiedata op uit Elasticsearch en valideert deze en draait met **twee workers, zonder retries**. Maximaal twee tests tegelijk, over de gekozen browsers samen.
 
 ## Bron en dekking
 
-De [Moz-CSV](moz_lancyr_crawl_issues_09302026.csv) bevat 27 meldingen voor 14 URL’s binnen `/schade-melden/`: zeven pagina’s en zeven extra FAQ-varianten. [Bronverwijzingen](testdata/schade-bronmeldingen.md) koppelen ze aan CSV-regels. De CSV is historische broninformatie; de run leest verwachtingen uit SQLite.
+De [Moz-CSV](moz_lancyr_crawl_issues_09302026.csv) bevat 27 meldingen voor 14 URL’s binnen `/schade-melden/`: zeven pagina’s en zeven extra FAQ-varianten. [Bronverwijzingen](testdata/schade-bronmeldingen.md) koppelen ze aan CSV-regels. De CSV is historische broninformatie; de run leest verwachtingen uit Elasticsearch.
 
 | Groep | Controles | Verwachting |
 | --- | --- | --- |
@@ -29,14 +29,14 @@ Externe formulieren worden niet geopend of verzonden. Metadata wordt in de brows
 
 ## Gegevens en uitbreiden
 
-`regressie_paginas` bevat paden, titels, status en bron. `regressie_scenarios` bevat actietypen, pagina-ID’s en instellingen. `testdata/regressie.ts` leest en valideert; browserhandelingen staan in `test/schade-melden/`. Gebruikte gegevens komen als rapportbijlage mee.
+`sq1-regressie-paginas-v1` bevat paden, titels, status en bron. `sq1-regressie-scenarios-v1` bevat actietypen, pagina-ID’s en instellingen. `testdata/regressie.ts` leest en valideert; browserhandelingen staan in `test/schade-melden/`. Gebruikte gegevens komen als rapportbijlage mee.
 
 Voor een uitbreiding:
 
 1. Leg melding, gewenst gedrag en een vast ID vast.
 2. Voeg een pagina toe voor de vier bestaande paginacontroles, of een scenario van een bestaand actietype.
 3. Voeg bij nieuw gedrag gerichte browsercode toe.
-4. Gebruik een nieuwe migratie voor bestaande databases.
+4. Sla het record op in de juiste Elasticsearch-index; gebruik voor wijzigingen aan de structuur een gecontroleerde mappingmigratie.
 5. Geef tests `Onderdeel`, `Testgroep`, `Testsoort` en leesbare `test.step`-namen.
 
 Bekende websitefouten blijven rood totdat het gedrag is hersteld. Pas verwachtingen niet aan om een fout te verbergen.

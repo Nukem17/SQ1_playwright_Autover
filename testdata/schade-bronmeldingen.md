@@ -19,6 +19,6 @@ Bron: [Moz-CSV](../moz_lancyr_crawl_issues_09302026.csv). Selectie: **27 melding
 | `/schade-melden/faq/?cst&query-11-page=1` | 348, 352 | missing description, missing h1 |
 | `/schade-melden/faq/?query-11-page=1&cst` | 349, 353 | missing description, missing h1 |
 
-De CSV is historische broninformatie. De tests lezen pagina’s en verwachtingen uit SQLite, niet rechtstreeks uit dit bestand. Elke URL krijgt onafhankelijke controles voor bereikbaarheid, titel, H1 en description.
+De CSV is historische broninformatie. De tests lezen pagina’s en verwachtingen uit Elasticsearch, niet rechtstreeks uit dit bestand. Elke URL krijgt onafhankelijke controles voor bereikbaarheid, titel, H1 en description.
 
 `/faq/...`-antwoordartikelen vallen buiten deze metadata-selectie. De FAQ-doorkliktest controleert wel één antwoord. De dichtklapcontrole komt uit aanvullende browserinspectie. Zie [de regressiesuite](../README-schade-regressie.md).

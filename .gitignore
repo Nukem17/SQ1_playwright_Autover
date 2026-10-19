@@ -8,6 +8,5 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
-# Lokale SQLite-data wordt apart gekoppeld aan de container.
-testdata/*.sqlite*
-testdata/*.tmp
+# Lokale Elasticsearch-inloggegevens.
+.local/

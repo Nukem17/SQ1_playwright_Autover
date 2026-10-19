@@ -7,12 +7,15 @@ cd "$project_dir"
 # Hiermee kan de menukoppeling worden gecontroleerd zonder Docker of websiteverkeer.
 dry_run=0
 report_only=0
+kibana_only=0
 if [[ "${1:-}" == --dry-run && $# == 1 ]]; then
   dry_run=1
 elif [[ "${1:-}" == --reports && $# == 1 ]]; then
   report_only=1
+elif [[ "${1:-}" == --kibana && $# == 1 ]]; then
+  kibana_only=1
 elif [[ $# != 0 ]]; then
-  echo 'Gebruik: bash scripts/testmenu.sh [--dry-run|--reports]' >&2
+  echo 'Gebruik: bash scripts/testmenu.sh [--dry-run|--reports|--kibana]' >&2
   exit 2
 fi
 
@@ -29,6 +32,8 @@ choose() {
 
 if (( report_only )); then
   action=5
+elif (( kibana_only )); then
+  action=6
 else
 printf '\nLancyr — testmenu\n\n'
 echo '1. Autoverzekeringsfunnel testen'
@@ -36,11 +41,28 @@ echo '2. Schade melden testen'
 echo '3. Beide functionele suites uitvoeren'
 echo '4. Visuele tests uitvoeren (Chromium)'
 echo '5. Rapportage openen/starten'
+echo '6. Gegevens bekijken in Kibana (omgeving automatisch starten)'
+echo '7. Status van Elasticsearch en Kibana bekijken'
+echo '8. Elasticsearch en Kibana stoppen (gegevens blijven bewaard)'
 echo '0. Afsluiten'
-choose 'Wat wil je doen? ' '0 1 2 3 4 5' '0'
+choose 'Wat wil je doen? ' '0 1 2 3 4 5 6 7 8' '0'
 action="$choice"
 fi
 [[ "$action" != 0 ]] || exit 0
+
+if [[ "$action" == 6 || "$action" == 7 || "$action" == 8 ]]; then
+  case "$action" in
+    6) command=(scripts/start-environment.sh --kibana) ;;
+    7) command=(scripts/elasticsearch.sh status) ;;
+    8) command=(scripts/elasticsearch.sh stop) ;;
+  esac
+  if (( dry_run )); then printf '%q ' bash "${command[@]}"; printf '\n'; exit 0; fi
+  if [[ "$action" != 6 && ! -f .local/elasticsearch.env ]]; then
+    echo 'De lokale omgeving is nog niet gestart. Kies optie 6 of start een test.'
+    exit 0
+  fi
+  exec bash "${command[@]}"
+fi
 
 if [[ "$action" == 5 ]]; then
   if (( dry_run )); then

@@ -1,0 +1,113 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "_meta": {
+      "schemaVersie": 1
+    },
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "suite": {
+        "type": "keyword"
+      },
+      "omgeving": {
+        "type": "keyword"
+      },
+      "schemaVersie": {
+        "type": "integer",
+        "coerce": false
+      },
+      "bijgewerktOp": {
+        "type": "date",
+        "format": "strict_date_optional_time"
+      },
+      "gegevens": {
+        "type": "object",
+        "dynamic": "strict",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "kenteken": {
+            "type": "keyword"
+          },
+          "verwachtVoertuig": {
+            "type": "keyword"
+          },
+          "postcode": {
+            "type": "keyword"
+          },
+          "huisnummer": {
+            "type": "keyword"
+          },
+          "straat": {
+            "type": "keyword"
+          },
+          "plaats": {
+            "type": "keyword"
+          },
+          "ondernemer": {
+            "type": "keyword"
+          },
+          "gezin": {
+            "type": "keyword"
+          },
+          "privacy": {
+            "type": "keyword"
+          },
+          "bestuurder": {
+            "type": "keyword"
+          },
+          "schadevrij": {
+            "type": "keyword"
+          },
+          "kilometrage": {
+            "type": "keyword"
+          },
+          "dekking": {
+            "type": "keyword"
+          },
+          "dekkingTitel": {
+            "type": "keyword"
+          },
+          "dekkingWinkelwagen": {
+            "type": "keyword"
+          },
+          "extraDekkingen": {
+            "type": "keyword"
+          },
+          "aanbodProductId": {
+            "type": "keyword"
+          },
+          "verwachteUitkomst": {
+            "type": "keyword"
+          },
+          "geselecteerdeExtras": {
+            "type": "keyword"
+          },
+          "geboortedatum": {
+            "type": "date",
+            "format": "strict_date"
+          },
+          "geboortedatumPartner": {
+            "type": "date",
+            "format": "strict_date"
+          },
+          "ingangsMaand": {
+            "type": "integer",
+            "coerce": false
+          },
+          "ingangsDag": {
+            "type": "integer",
+            "coerce": false
+          }
+        }
+      }
+    }
+  }
+}

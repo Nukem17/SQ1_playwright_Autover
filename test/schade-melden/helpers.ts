@@ -2,7 +2,7 @@ import { test, expect, type Page, type TestInfo } from '@playwright/test';
 import { haalRegressieSetOp, LANCYR_ORIGIN, type RegressiePagina, type RegressieScenario } from '../../testdata/regressie';
 export { test, expect };
 // Deze hulpfuncties worden gedeeld door alle schade-melden-tests.
-// Lees de pagina’s en scenario’s één keer uit de database bij het verzamelen van de tests.
+// Lees de vooraf geladen Elasticsearch-gegevens bij het verzamelen van de tests.
 export const dataset = haalRegressieSetOp();
 // Zoek de volledige paginagegevens bij het ID dat in een scenario staat.
 export const pagina = (id: string) => {

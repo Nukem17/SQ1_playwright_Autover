@@ -1,0 +1,94 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "_meta": {
+      "schemaVersie": 1
+    },
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "runId": {
+        "type": "keyword"
+      },
+      "testId": {
+        "type": "keyword"
+      },
+      "suite": {
+        "type": "keyword"
+      },
+      "omgeving": {
+        "type": "keyword"
+      },
+      "scenarioId": {
+        "type": "keyword"
+      },
+      "scenarioIndex": {
+        "type": "keyword"
+      },
+      "paginaId": {
+        "type": "keyword"
+      },
+      "browser": {
+        "type": "keyword"
+      },
+      "project": {
+        "type": "keyword"
+      },
+      "status": {
+        "type": "keyword"
+      },
+      "uitkomst": {
+        "type": "keyword"
+      },
+      "bestand": {
+        "type": "keyword"
+      },
+      "titel": {
+        "type": "text"
+      },
+      "foutmelding": {
+        "type": "text"
+      },
+      "stack": {
+        "type": "text"
+      },
+      "schemaVersie": {
+        "type": "integer",
+        "coerce": false
+      },
+      "poging": {
+        "type": "integer",
+        "coerce": false
+      },
+      "workerIndex": {
+        "type": "integer",
+        "coerce": false
+      },
+      "regel": {
+        "type": "integer",
+        "coerce": false
+      },
+      "gestartOp": {
+        "type": "date",
+        "format": "strict_date_optional_time"
+      },
+      "duurMs": {
+        "type": "long",
+        "coerce": false
+      },
+      "testdataSnapshot": {
+        "type": "object",
+        "enabled": false
+      },
+      "details": {
+        "type": "object",
+        "enabled": false
+      }
+    }
+  }
+}

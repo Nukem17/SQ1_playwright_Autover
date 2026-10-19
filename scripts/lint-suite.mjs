@@ -9,13 +9,16 @@ const common = [
   'playwright.config.ts',
   'scripts/playwright-global-setup.mjs',
   'scripts/lint-suite.mjs',
-  'scripts/init-testdata.mjs',
   'scripts/summarize-lancyr-run.mjs',
+  'scripts/elasticsearch-results.mjs',
+  'scripts/elasticsearch-local.mjs',
 ];
 
+const dataFiles = ['scripts/with-elasticsearch-data.mjs', 'scripts/elasticsearch-local.mjs',
+  'testdata/snapshot.mts', 'testdata/scenarios.ts', 'testdata/regressie.ts'];
 export const suiteFiles = {
-  autoverzekering: [...common, 'test/autoverzerkeringsfunnel/lancyr-autoverzekering.spec.ts', 'testdata/scenarios.ts'],
-  schade: [...common, 'test/schade-melden/**/*.ts', 'testdata/regressie.ts'],
+  autoverzekering: [...common, ...dataFiles, 'test/autoverzerkeringsfunnel/lancyr-autoverzekering.spec.ts'],
+  schade: [...common, ...dataFiles, 'test/schade-melden/**/*.ts'],
   visueel: [...common, 'test/autoverzerkeringsfunnel/lancyr-visual.spec.ts', 'scripts/create-visual-overview.mjs'],
 };
 

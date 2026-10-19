@@ -1,0 +1,90 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "_meta": {
+      "schemaVersie": 1
+    },
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "suite": {
+        "type": "keyword"
+      },
+      "omgeving": {
+        "type": "keyword"
+      },
+      "status": {
+        "type": "keyword"
+      },
+      "trigger": {
+        "type": "keyword"
+      },
+      "commit": {
+        "type": "keyword"
+      },
+      "branch": {
+        "type": "keyword"
+      },
+      "rapportPad": {
+        "type": "keyword"
+      },
+      "schemaVersie": {
+        "type": "integer",
+        "coerce": false
+      },
+      "workers": {
+        "type": "integer",
+        "coerce": false
+      },
+      "exitCode": {
+        "type": "integer",
+        "coerce": false
+      },
+      "gestartOp": {
+        "type": "date",
+        "format": "strict_date_optional_time"
+      },
+      "afgerondOp": {
+        "type": "date",
+        "format": "strict_date_optional_time"
+      },
+      "duurMs": {
+        "type": "long",
+        "coerce": false
+      },
+      "aantallen": {
+        "type": "object",
+        "dynamic": "strict",
+        "properties": {
+          "geslaagd": {
+            "type": "integer",
+            "coerce": false
+          },
+          "gefaald": {
+            "type": "integer",
+            "coerce": false
+          },
+          "instabiel": {
+            "type": "integer",
+            "coerce": false
+          },
+          "overgeslagen": {
+            "type": "integer",
+            "coerce": false
+          }
+        }
+      },
+      "foutmelding": {
+        "type": "text"
+      },
+      "opslagStatus": {
+        "type": "keyword"
+      }
+    }
+  }
+}

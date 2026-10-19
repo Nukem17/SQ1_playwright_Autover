@@ -1,0 +1,83 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "_meta": {
+      "schemaVersie": 1
+    },
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "suite": {
+        "type": "keyword"
+      },
+      "omgeving": {
+        "type": "keyword"
+      },
+      "schemaVersie": {
+        "type": "integer",
+        "coerce": false
+      },
+      "bijgewerktOp": {
+        "type": "date",
+        "format": "strict_date_optional_time"
+      },
+      "gegevens": {
+        "type": "object",
+        "dynamic": "strict",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "onderdeel": {
+            "type": "keyword"
+          },
+          "naam": {
+            "type": "keyword"
+          },
+          "type": {
+            "type": "keyword"
+          },
+          "bronPaginaId": {
+            "type": "keyword"
+          },
+          "doelPaginaId": {
+            "type": "keyword"
+          },
+          "instellingen": {
+            "type": "object",
+            "dynamic": "strict",
+            "properties": {
+              "doelPad": {
+                "type": "keyword"
+              },
+              "doelUrl": {
+                "type": "keyword"
+              },
+              "linkTekst": {
+                "type": "keyword"
+              },
+              "verwachteHoofdtitel": {
+                "type": "keyword"
+              },
+              "antwoordTekst": {
+                "type": "keyword"
+              },
+              "melding": {
+                "type": "text"
+              },
+              "verwachtePagina": {
+                "type": "integer",
+                "coerce": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

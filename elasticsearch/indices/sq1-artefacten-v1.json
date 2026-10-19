@@ -1,0 +1,50 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "_meta": {
+      "schemaVersie": 1
+    },
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "runId": {
+        "type": "keyword"
+      },
+      "resultaatId": {
+        "type": "keyword"
+      },
+      "soort": {
+        "type": "keyword"
+      },
+      "opslag": {
+        "type": "keyword"
+      },
+      "pad": {
+        "type": "keyword"
+      },
+      "contentType": {
+        "type": "keyword"
+      },
+      "sha256": {
+        "type": "keyword"
+      },
+      "schemaVersie": {
+        "type": "integer",
+        "coerce": false
+      },
+      "aangemaaktOp": {
+        "type": "date",
+        "format": "strict_date_optional_time"
+      },
+      "grootteBytes": {
+        "type": "long",
+        "coerce": false
+      }
+    }
+  }
+}

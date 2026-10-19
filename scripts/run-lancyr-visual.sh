@@ -19,12 +19,14 @@ if [[ "$mode" == reference ]]; then
   echo 'Referentie maken/vernieuwen: beoordeel de PNG zelf voordat je deze als juist accepteert.'
 fi
 
+source "$project_dir/scripts/elasticsearch-docker.sh"
 docker build -t sq1-playwright .
+prepare_testdata
 mkdir -p test-runs
 run_dir="$(mktemp -d "$project_dir/test-runs/$(date +%Y-%m-%d_%H-%M-%S)_visual-${mode}_XXXXXX")"
 container_dir="/app/test-runs/$(basename "$run_dir")"
 echo "Run: ${run_dir#$project_dir/}"
-docker run --rm --init --ipc=host --user "$(id -u):$(id -g)" \
+docker run "${container_data_options[@]}" --rm --init --ipc=host --user "$(id -u):$(id -g)" \
   -e "LANCYR_VISUAL_MODE=$mode" \
   -e LANCYR_LINT_SUITE=visueel \
   -e PLAYWRIGHT_HTML_OPEN=never \

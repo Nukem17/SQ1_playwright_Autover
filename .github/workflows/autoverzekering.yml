@@ -26,6 +26,17 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Node voor lokale testdata-inrichting
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24.21.0'
+
+      - name: Tijdelijke Elasticsearch met testdata inrichten
+        run: |
+          bash scripts/elasticsearch.sh start
+          node scripts/elasticsearch-setup.mjs
+          node scripts/elasticsearch-seed.mjs
+
       - name: Funnel uitvoeren met lintcontrole
         run: bash scripts/run-lancyr-browsers.sh funnel standaard all
 
@@ -51,3 +62,7 @@ jobs:
           path: test-runs/
           if-no-files-found: warn
           retention-days: 7
+
+      - name: Elasticsearch stoppen
+        if: ${{ always() }}
+        run: bash scripts/elasticsearch.sh stop

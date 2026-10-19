@@ -19,16 +19,11 @@ if [[ "$mode" == headed ]]; then browser_command=(xvfb-run -a npx playwright tes
 project_options=()
 if [[ "$browser" != all ]]; then project_options=("--project=$browser"); fi
 
+source "$project_dir/scripts/elasticsearch-docker.sh"
+
 # Bouw een image met de huidige testcode en benodigde browsers.
 docker build -t sq1-playwright .
-# Pas nieuwe database-migraties toe. Bestaande testgegevens blijven behouden.
-docker run --rm --user "$(id -u):$(id -g)" \
-  -v "$project_dir/testdata:/app/testdata" sq1-playwright node scripts/init-testdata.mjs
-# Controleer de gegevens vóór de testrun. Deze container mag de database alleen lezen.
-docker run --rm --user "$(id -u):$(id -g)" \
-  -v "$project_dir/testdata:/app/testdata:ro" sq1-playwright node -e \
-  "const data=require('./testdata/regressie.ts').haalRegressieSetOp(); console.log(data.paginas.length+' pagina’s en '+data.scenarios.length+' scenario’s gevalideerd.');"
-
+prepare_testdata
 # Geef iedere run een unieke map, zodat eerdere rapporten bewaard blijven.
 mkdir -p test-runs
 run_dir="$(mktemp -d "$project_dir/test-runs/$(date +%Y-%m-%d_%H-%M-%S)_schade-regressie_XXXXXX")"
@@ -38,12 +33,12 @@ echo "Run: ${run_dir#$project_dir/}"
 # Draai twee tests tegelijk en probeer fouten niet automatisch opnieuw.
 # Bewaar HTML, JSON en foutbijlagen; maak daarna de leesbare samenvatting.
 # Een falende test geeft ook een foutstatus terug aan degene die dit script start.
-docker run --rm --init --ipc=host --user "$(id -u):$(id -g)" \
+docker run "${container_data_options[@]}" --rm --init --ipc=host --user "$(id -u):$(id -g)" \
   -e LANCYR_LINT_SUITE=schade \
   -e PLAYWRIGHT_HTML_OPEN=never \
   -e "PLAYWRIGHT_HTML_OUTPUT_DIR=$container_dir/html" \
   -e "PLAYWRIGHT_JSON_OUTPUT_FILE=$container_dir/results.json" \
-  -v "$run_dir:$container_dir" -v "$project_dir/testdata:/app/testdata:ro" \
+  -v "$run_dir:$container_dir" \
   sq1-playwright bash scripts/run-and-summarize.sh "$container_dir" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$mode-schade-regressie" \
   "${browser_command[@]}" test/schade-melden "${project_options[@]}" \
   --workers=2 --retries=0 --output="$container_dir/test-results" --reporter=list,html,json

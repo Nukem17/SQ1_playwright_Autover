@@ -60,9 +60,9 @@ test('Nieuwe runs en resultaten verschijnen live; filters, details en foutmeldin
     await page.click('#refresh');
     await expect(page.locator('#sync')).toContainText('Laatst gecontroleerd');
     // A failed test appears first, with evidence before technical data.
-    const mixed=report('firefox','SQLite-scenario: testgebruiker-bram');
+    const mixed=report('firefox','Elasticsearch-scenario: testgebruiker-bram');
     mixed.suites[0].specs.push({title:'Premie berekenen',tests:[{
-      status:'unexpected',projectName:'firefox',annotations:[{type:'Testdata',description:'SQLite-scenario: testgebruiker-bram'},{type:'Onderdeel',description:'Autoverzekering'},{type:'Testgroep',description:'Klantreis'}],
+      status:'unexpected',projectName:'firefox',annotations:[{type:'Testdata',description:'Elasticsearch-scenario: testgebruiker-bram'},{type:'Onderdeel',description:'Autoverzekering'},{type:'Testgroep',description:'Klantreis'}],
       results:[{status:'failed',duration:200,steps:[{title:'Controleer de premie',error:{message:'Premie ontbreekt\nDetails van de fout'}}],errors:[{message:'Premie ontbreekt\nDetails van de fout'}],stdout:[{text:'Technisch log'}]}],
     }]});
     writeFileSync(join(root,'nieuwe-run/results.json'),JSON.stringify(mixed));

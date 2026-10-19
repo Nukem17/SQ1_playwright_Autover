@@ -5,12 +5,14 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "strict": true,
+    "allowImportingTsExtensions": true,
     "types": ["node"],
     "skipLibCheck": true
   },
   "include": [
     "playwright.config.ts",
     "test/**/*.ts",
-    "testdata/**/*.ts"
+    "testdata/**/*.ts",
+    "testdata/**/*.mts"
   ]
 }
